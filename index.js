@@ -100,11 +100,11 @@ class ChildProcessWebpackPlugin {
       const { stdout, stderr } = result;
 
       if (stdout) {
-        this.log.info(`Stdout: ${result.stdout}`);
+        this.log.info(result.stdout);
       }
 
       if (stderr) {
-        this.log.warn(`Stderr: ${result.stderr}`);
+        this.log.warn(result.stderr);
       }
 
       results.push(result);
