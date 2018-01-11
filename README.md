@@ -141,7 +141,7 @@ module.exports = {
 
 ## Thanks
 
-* [execa](https://github.com/sindresorhus/execa) - api.
+* [execa](https://github.com/sindresorhus/execa) - API.
 
 ## [Changelog](CHANGELOG.md)
 

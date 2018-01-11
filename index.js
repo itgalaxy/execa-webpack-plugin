@@ -49,20 +49,8 @@ class ChildProcessWebpackPlugin {
           const nestedResults = this.execute([arg]);
           const [result] = nestedResults;
 
-          if (!result.stdout) {
+          if (!result || !result.stdout) {
             hasFailedNestedChildProcess = true;
-
-            const error = new Error(
-              `Nested process "${arg.cmd} ${arg.args.join(
-                " "
-              )}" did not return anything`
-            );
-
-            this.log.error(error);
-
-            if (this.options.bail) {
-              throw error;
-            }
           } else {
             args[index] = result.stdout;
           }
@@ -90,21 +78,29 @@ class ChildProcessWebpackPlugin {
       try {
         result = execa.sync(cmd, args, opts);
       } catch (error) {
-        this.log.error(error);
+        this.log.error(
+          new Error(
+            `Process "${cmd}${
+              args.length > 0 ? ` ${args.join(" ")}` : ""
+            }" return ${error.message}`
+          )
+        );
 
         if (this.options.bail) {
           throw error;
         }
       }
 
-      const { stdout, stderr } = result;
+      if (result) {
+        const { stdout, stderr } = result;
 
-      if (stdout) {
-        this.log.info(result.stdout);
-      }
+        if (stdout) {
+          this.log.info(result.stdout);
+        }
 
-      if (stderr) {
-        this.log.warn(result.stderr);
+        if (stderr) {
+          this.log.warn(result.stderr);
+        }
       }
 
       results.push(result);

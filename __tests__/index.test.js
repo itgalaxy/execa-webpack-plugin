@@ -80,6 +80,28 @@ describe("execa-webpack-plugin", () => {
     });
   });
 
+  it("should works with `onBuildStart` and `dev` is `false` option", () => {
+    mkdirSyncSafe(dir);
+
+    expect(fs.statSync(dir).isDirectory()).toBe(true);
+
+    return run({
+      dev: false,
+      onBuildStart: [
+        {
+          args: [dir],
+          cmd: "del"
+        }
+      ]
+    }).then(() => {
+      expect(() => fs.statSync(dir)).toThrow();
+
+      unlinkSyncSafe(dir);
+
+      return Promise.resolve();
+    });
+  });
+
   it("should works with `onBuildEnd` option", () => {
     mkdirSyncSafe(dir);
 
@@ -101,12 +123,56 @@ describe("execa-webpack-plugin", () => {
     });
   });
 
+  it("should works with `onBuildEnd` and `dev` is `false` options", () => {
+    mkdirSyncSafe(dir);
+
+    expect(fs.statSync(dir).isDirectory()).toBe(true);
+
+    return run({
+      dev: false,
+      onBuildEnd: [
+        {
+          args: [dir],
+          cmd: "del"
+        }
+      ]
+    }).then(() => {
+      expect(() => fs.statSync(dir)).toThrow();
+
+      unlinkSyncSafe(dir);
+
+      return Promise.resolve();
+    });
+  });
+
   it("should works with `onBuildExit` option", () => {
     mkdirSyncSafe(dir);
 
     expect(fs.statSync(dir).isDirectory()).toBe(true);
 
     return run({
+      onBuildExit: [
+        {
+          args: [dir],
+          cmd: "del"
+        }
+      ]
+    }).then(() => {
+      expect(() => fs.statSync(dir)).toThrow();
+
+      unlinkSyncSafe(dir);
+
+      return Promise.resolve();
+    });
+  });
+
+  it("should works with `onBuildExit` and `dev` is `false` options", () => {
+    mkdirSyncSafe(dir);
+
+    expect(fs.statSync(dir).isDirectory()).toBe(true);
+
+    return run({
+      dev: false,
       onBuildExit: [
         {
           args: [dir],
@@ -183,37 +249,6 @@ describe("execa-webpack-plugin", () => {
 
       return Promise.resolve();
     });
-  });
-
-  it("should throw error when nested commands return nothing", () => {
-    let catchError = null;
-
-    return run({
-      bail: true,
-      logLevel: "silent",
-      onBuildStart: [
-        {
-          args: [
-            {
-              args: [path.join(resourcesDir, "nothing.js")],
-              cmd: "node"
-            }
-          ],
-          cmd: "del"
-        }
-      ]
-    })
-      .catch(error => {
-        catchError = error;
-
-        return Promise.resolve();
-      })
-      .then(() => {
-        expect(catchError).toBeInstanceOf(Error);
-        expect(catchError).not.toBeNull();
-
-        return Promise.resolve();
-      });
   });
 
   it("should works when nested commands return nothing and 'bail: false'", () => {
