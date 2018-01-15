@@ -60,6 +60,7 @@ describe("execa-webpack-plugin", () => {
     expect(() => run()).toThrow());
 
   it("should works with `onBuildStart` option", () => {
+    expect.assertions(2);
     mkdirSyncSafe(dir);
 
     expect(fs.statSync(dir).isDirectory()).toBe(true);
@@ -81,6 +82,8 @@ describe("execa-webpack-plugin", () => {
   });
 
   it("should works with `onBuildStart` and `dev` is `false` option", () => {
+    expect.assertions(2);
+
     mkdirSyncSafe(dir);
 
     expect(fs.statSync(dir).isDirectory()).toBe(true);
@@ -103,6 +106,8 @@ describe("execa-webpack-plugin", () => {
   });
 
   it("should works with `onBuildEnd` option", () => {
+    expect.assertions(2);
+
     mkdirSyncSafe(dir);
 
     expect(fs.statSync(dir).isDirectory()).toBe(true);
@@ -124,6 +129,8 @@ describe("execa-webpack-plugin", () => {
   });
 
   it("should works with `onBuildEnd` and `dev` is `false` options", () => {
+    expect.assertions(2);
+
     mkdirSyncSafe(dir);
 
     expect(fs.statSync(dir).isDirectory()).toBe(true);
@@ -146,6 +153,8 @@ describe("execa-webpack-plugin", () => {
   });
 
   it("should works with `onBuildExit` option", () => {
+    expect.assertions(2);
+
     mkdirSyncSafe(dir);
 
     expect(fs.statSync(dir).isDirectory()).toBe(true);
@@ -167,6 +176,8 @@ describe("execa-webpack-plugin", () => {
   });
 
   it("should works with `onBuildExit` and `dev` is `false` options", () => {
+    expect.assertions(2);
+
     mkdirSyncSafe(dir);
 
     expect(fs.statSync(dir).isDirectory()).toBe(true);
@@ -189,6 +200,8 @@ describe("execa-webpack-plugin", () => {
   });
 
   it("should throw error with `bail: true` option", () => {
+    expect.assertions(1);
+
     let catchError = null;
 
     return run({
@@ -226,6 +239,8 @@ describe("execa-webpack-plugin", () => {
     }));
 
   it("should works with nested commands", () => {
+    expect.assertions(2);
+
     mkdirSyncSafe(dir);
 
     expect(fs.statSync(dir).isDirectory()).toBe(true);
@@ -252,6 +267,8 @@ describe("execa-webpack-plugin", () => {
   });
 
   it("should works when nested commands return nothing and 'bail: false'", () => {
+    expect.assertions(1);
+
     let catchError = null;
 
     return run({
