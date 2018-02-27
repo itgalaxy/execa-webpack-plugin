@@ -114,7 +114,9 @@ class ChildProcessWebpackPlugin {
       this.options.bail = compiler.options.bail;
     }
 
-    compiler.plugin("compile", () => {
+    const plugin = { name: "ExecaPlugin" };
+
+    const compileFn = () => {
       if (this.options.onBuildStart.length > 0) {
         this.execute(this.options.onBuildStart);
 
@@ -122,9 +124,16 @@ class ChildProcessWebpackPlugin {
           this.options.onBuildStart = [];
         }
       }
-    });
+    };
 
-    compiler.plugin("after-emit", (compilation, callback) => {
+    if (compiler.hooks) {
+      // Information: `beforeRun.asyncTap` in future major
+      compiler.hooks.compile.tap(plugin, compileFn);
+    } else {
+      compiler.plugin("compile", compileFn);
+    }
+
+    const afterEmitFn = (compilation, callback) => {
       if (this.options.onBuildEnd.length > 0) {
         this.execute(this.options.onBuildEnd);
 
@@ -134,9 +143,15 @@ class ChildProcessWebpackPlugin {
       }
 
       callback();
-    });
+    };
 
-    compiler.plugin("done", () => {
+    if (compiler.hooks) {
+      compiler.hooks.afterEmit.tapAsync(plugin, afterEmitFn);
+    } else {
+      compiler.plugin("after-emit", afterEmitFn);
+    }
+
+    const doneFn = () => {
       if (this.options.onBuildExit.length > 0) {
         this.execute(this.options.onBuildExit);
 
@@ -144,7 +159,14 @@ class ChildProcessWebpackPlugin {
           this.options.onBuildExit = [];
         }
       }
-    });
+    };
+
+    if (compiler.hooks) {
+      // Information: `asyncTap` in future major
+      compiler.hooks.done.tap(plugin, doneFn);
+    } else {
+      compiler.plugin("done", doneFn);
+    }
   }
 }
 

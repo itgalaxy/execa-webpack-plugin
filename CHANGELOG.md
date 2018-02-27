@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](http://semver.org).
 
+## 1.0.4 - 2018-02-27
+
+* Fixed: compatibility with `webpack >= 4.0.0`.
+* Fixed: add `webpack` in `peerDependencies`.
+
 ## 1.0.3 - 2018-01-15
 
 * Chore: minimum required `execa` version is now `^0.9.0`.

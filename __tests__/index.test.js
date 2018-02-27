@@ -11,6 +11,7 @@ const resourcesDir = path.join(__dirname, "resources");
 function getConfig(options = {}) {
   return {
     entry: path.join(resourcesDir, "app.js"),
+    mode: "development",
     output: {
       filename: "bundle.js",
       path: tempy.directory()

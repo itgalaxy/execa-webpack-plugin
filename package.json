@@ -1,6 +1,6 @@
 {
   "name": "execa-webpack-plugin",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "A better `child_process` for `webpack`",
   "keywords": [
     "exec",
@@ -59,7 +59,10 @@
     "remark-cli": "^5.0.0",
     "remark-preset-lint-itgalaxy": "^12.0.0",
     "tempy": "^0.2.1",
-    "webpack": "^3.0.0"
+    "webpack": "^4.0.0"
+  },
+  "peerDependencies": {
+    "webpack": "^2.0.0 || ^3.0.0 || ^4.0.0"
   },
   "scripts": {
     "precommit": "lint-staged",
@@ -67,7 +70,7 @@
     "lint:eslint": "eslint --cache --report-unused-disable-directives . !__tests__/resources/** --ignore-path .gitignore",
     "lint:remark": "remark . -i .gitignore -f -q",
     "lint": "npm-run-all -l -p lint:**",
-    "prettify": "npm run lint:prettier -- --write",
+    "prettify": "npm run lint:prettify -- --write",
     "fix:eslint": "npm run lint:eslint -- --fix",
     "fix": "npm-run-all -l -p 'fix:**'",
     "pretest": "npm run lint",
