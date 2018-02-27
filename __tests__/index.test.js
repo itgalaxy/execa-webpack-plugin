@@ -38,7 +38,6 @@ function run(options) {
 function mkdirSyncSafe(dir) {
   try {
     fs.mkdirSync(dir);
-    // eslint-disable-next-line unicorn/catch-error-name
   } catch (ignoreError) {
     // Nothing
   }
@@ -47,7 +46,6 @@ function mkdirSyncSafe(dir) {
 function unlinkSyncSafe(dir) {
   try {
     fs.unlinkSync(dir);
-    // eslint-disable-next-line unicorn/catch-error-name
   } catch (ignoreError) {
     // Nothing
   }
