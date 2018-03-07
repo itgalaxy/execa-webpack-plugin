@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](http://semver.org).
 
+## 1.0.5 - 2018-03-07
+
+* Refactor: reduce memory usage and increase performance.
+
 ## 1.0.4 - 2018-02-27
 
 * Fixed: compatibility with `webpack >= 4.0.0`.

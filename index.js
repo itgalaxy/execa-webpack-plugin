@@ -116,56 +116,56 @@ class ChildProcessWebpackPlugin {
 
     const plugin = { name: "ExecaPlugin" };
 
-    const compileFn = () => {
-      if (this.options.onBuildStart.length > 0) {
+    if (this.options.onBuildStart.length > 0) {
+      const compileFn = () => {
         this.execute(this.options.onBuildStart);
 
         if (this.options.dev) {
           this.options.onBuildStart = [];
         }
-      }
-    };
+      };
 
-    if (compiler.hooks) {
-      // Information: `beforeRun.asyncTap` in future major
-      compiler.hooks.compile.tap(plugin, compileFn);
-    } else {
-      compiler.plugin("compile", compileFn);
+      if (compiler.hooks) {
+        // Information: `beforeRun.asyncTap` in future major
+        compiler.hooks.compile.tap(plugin, compileFn);
+      } else {
+        compiler.plugin("compile", compileFn);
+      }
     }
 
-    const afterEmitFn = (compilation, callback) => {
-      if (this.options.onBuildEnd.length > 0) {
+    if (this.options.onBuildEnd.length > 0) {
+      const afterEmitFn = (compilation, callback) => {
         this.execute(this.options.onBuildEnd);
 
         if (this.options.dev) {
           this.options.onBuildEnd = [];
         }
+
+        callback();
+      };
+
+      if (compiler.hooks) {
+        compiler.hooks.afterEmit.tapAsync(plugin, afterEmitFn);
+      } else {
+        compiler.plugin("after-emit", afterEmitFn);
       }
-
-      callback();
-    };
-
-    if (compiler.hooks) {
-      compiler.hooks.afterEmit.tapAsync(plugin, afterEmitFn);
-    } else {
-      compiler.plugin("after-emit", afterEmitFn);
     }
 
-    const doneFn = () => {
-      if (this.options.onBuildExit.length > 0) {
+    if (this.options.onBuildExit.length > 0) {
+      const doneFn = () => {
         this.execute(this.options.onBuildExit);
 
         if (this.options.dev) {
           this.options.onBuildExit = [];
         }
-      }
-    };
+      };
 
-    if (compiler.hooks) {
-      // Information: `asyncTap` in future major
-      compiler.hooks.done.tap(plugin, doneFn);
-    } else {
-      compiler.plugin("done", doneFn);
+      if (compiler.hooks) {
+        // Information: `asyncTap` in future major
+        compiler.hooks.done.tap(plugin, doneFn);
+      } else {
+        compiler.plugin("done", doneFn);
+      }
     }
   }
 }
