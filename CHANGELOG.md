@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](http://semver.org).
 
+## 1.0.6 - 2018-03-15
+
+* Chore: minimum required `execa` version is now `^0.10.0`.
+
 ## 1.0.5 - 2018-03-07
 
 * Refactor: reduce memory usage and increase performance.
