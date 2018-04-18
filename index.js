@@ -152,17 +152,19 @@ class ChildProcessWebpackPlugin {
     }
 
     if (this.options.onBuildExit.length > 0) {
-      const doneFn = () => {
+      const doneFn = (stats, callback) => {
         this.execute(this.options.onBuildExit);
 
         if (this.options.dev) {
           this.options.onBuildExit = [];
         }
+
+        callback();
       };
 
       if (compiler.hooks) {
         // Information: `asyncTap` in future major
-        compiler.hooks.done.tap(plugin, doneFn);
+        compiler.hooks.done.tapAsync(plugin, doneFn);
       } else {
         compiler.plugin("done", doneFn);
       }
