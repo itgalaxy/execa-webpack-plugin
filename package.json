@@ -1,6 +1,6 @@
 {
   "name": "execa-webpack-plugin",
-  "version": "1.0.6",
+  "version": "1.1.0",
   "description": "A better `child_process` for `webpack`",
   "keywords": [
     "exec",
