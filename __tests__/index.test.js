@@ -54,6 +54,7 @@ function unlinkSyncSafe(dir) {
 
 describe("execa-webpack-plugin", () => {
   const dir = path.join(__dirname, "dir");
+  const otherDir = path.join(__dirname, "other-dir");
 
   it("should throw error when `onBuildStart`, `onBuildEnd` and `onBuildExit` options are empty", () =>
     expect(() => run()).toThrow());
@@ -198,7 +199,6 @@ describe("execa-webpack-plugin", () => {
     });
   });
 
-  // Need async test
   it("should throw error with `bail: true` option", () => {
     expect.assertions(1);
 
@@ -227,10 +227,49 @@ describe("execa-webpack-plugin", () => {
       });
   });
 
+  it("should throw error with `bail: true` option (async)", () => {
+    expect.assertions(1);
+
+    let catchError = null;
+
+    return run({
+      bail: true,
+      logLevel: "silent",
+      onBuildExit: [
+        {
+          cmd: "not-found"
+        }
+      ]
+    })
+      .catch(error => {
+        catchError = error;
+
+        return Promise.resolve();
+      })
+      .then(() => {
+        // execa not return error instanceOf Error
+        // expect(catchError).toBeInstanceOf(Error);
+        expect(catchError).not.toBeNull();
+
+        return Promise.resolve();
+      });
+  });
+
   it("should works and output 'stdout' and 'stderr' with `logLevel: 'info'` command", () =>
     run({
       logLevel: "info",
       onBuildStart: [
+        {
+          args: [path.join(resourcesDir, "cli-stdout-stderr.js")],
+          cmd: "node"
+        }
+      ]
+    }));
+
+  it("should works and output 'stdout' and 'stderr' with `logLevel: 'info'` command (async)", () =>
+    run({
+      logLevel: "info",
+      onBuildExit: [
         {
           args: [path.join(resourcesDir, "cli-stdout-stderr.js")],
           cmd: "node"
@@ -266,6 +305,75 @@ describe("execa-webpack-plugin", () => {
     });
   });
 
+  it("should works with deep nested commands", () => {
+    expect.assertions(2);
+
+    mkdirSyncSafe(dir);
+
+    expect(fs.statSync(dir).isDirectory()).toBe(true);
+
+    return run({
+      onBuildStart: [
+        {
+          args: [
+            {
+              args: [
+                {
+                  args: [path.join(resourcesDir, "nested-nested.js")],
+                  cmd: "node"
+                }
+              ],
+              cmd: "node"
+            }
+          ],
+          cmd: "del"
+        }
+      ]
+    }).then(() => {
+      expect(() => fs.statSync(dir)).toThrow();
+
+      unlinkSyncSafe(dir);
+
+      return Promise.resolve();
+    });
+  });
+
+  it("should works with multiple nested commands", () => {
+    expect.assertions(4);
+
+    mkdirSyncSafe(dir);
+    mkdirSyncSafe(otherDir);
+
+    expect(fs.statSync(dir).isDirectory()).toBe(true);
+    expect(fs.statSync(otherDir).isDirectory()).toBe(true);
+
+    return run({
+      onBuildStart: [
+        {
+          args: [
+            {
+              args: [path.join(resourcesDir, "nested.js")],
+              cmd: "node"
+            },
+            {
+              args: [path.join(resourcesDir, "nested-other.js")],
+              cmd: "node"
+            }
+          ],
+          cmd: "del"
+        }
+      ]
+    }).then(() => {
+      expect(() => fs.statSync(dir)).toThrow();
+      expect(() => fs.statSync(otherDir)).toThrow();
+
+      unlinkSyncSafe(dir);
+      unlinkSyncSafe(otherDir);
+
+      return Promise.resolve();
+    });
+  });
+
   it("should works with nested commands (async)", () => {
     expect.assertions(2);
 
@@ -294,6 +402,75 @@ describe("execa-webpack-plugin", () => {
     });
   });
 
+  it("should works with deep nested commands (async)", () => {
+    expect.assertions(2);
+
+    mkdirSyncSafe(dir);
+
+    expect(fs.statSync(dir).isDirectory()).toBe(true);
+
+    return run({
+      onBuildExit: [
+        {
+          args: [
+            {
+              args: [
+                {
+                  args: [path.join(resourcesDir, "nested-nested.js")],
+                  cmd: "node"
+                }
+              ],
+              cmd: "node"
+            }
+          ],
+          cmd: "del"
+        }
+      ]
+    }).then(() => {
+      expect(() => fs.statSync(dir)).toThrow();
+
+      unlinkSyncSafe(dir);
+
+      return Promise.resolve();
+    });
+  });
+
+  it("should works with multiple nested commands (async)", () => {
+    expect.assertions(4);
+
+    mkdirSyncSafe(dir);
+    mkdirSyncSafe(otherDir);
+
+    expect(fs.statSync(dir).isDirectory()).toBe(true);
+    expect(fs.statSync(otherDir).isDirectory()).toBe(true);
+
+    return run({
+      onBuildExit: [
+        {
+          args: [
+            {
+              args: [path.join(resourcesDir, "nested.js")],
+              cmd: "node"
+            },
+            {
+              args: [path.join(resourcesDir, "nested-other.js")],
+              cmd: "node"
+            }
+          ],
+          cmd: "del"
+        }
+      ]
+    }).then(() => {
+      expect(() => fs.statSync(dir)).toThrow();
+      expect(() => fs.statSync(otherDir)).toThrow();
+
+      unlinkSyncSafe(dir);
+      unlinkSyncSafe(otherDir);
+
+      return Promise.resolve();
+    });
+  });
+
   it("should works when nested commands return nothing and 'bail: false'", () => {
     expect.assertions(1);
 
@@ -303,6 +480,38 @@ describe("execa-webpack-plugin", () => {
       bail: false,
       logLevel: "silent",
       onBuildStart: [
+        {
+          args: [
+            {
+              args: [path.join(resourcesDir, "nothing.js")],
+              cmd: "node"
+            }
+          ],
+          cmd: "del"
+        }
+      ]
+    })
+      .catch(error => {
+        catchError = error;
+
+        return Promise.resolve();
+      })
+      .then(() => {
+        expect(catchError).toBeNull();
+
+        return Promise.resolve();
+      });
+  });
+
+  it("should works when nested commands return nothing and 'bail: false' (async)", () => {
+    expect.assertions(1);
+
+    let catchError = null;
+
+    return run({
+      bail: false,
+      logLevel: "silent",
+      onBuildExit: [
         {
           args: [
             {

@@ -32,7 +32,10 @@ class ChildProcessWebpackPlugin {
     });
   }
 
-  static buildError(error, cmd, args) {
+  static buildError(error, process) {
+    const { cmd } = process;
+    const args = process.args || [];
+
     return new Error(
       `Process "${cmd}${args.length > 0 ? ` ${args.join(" ")}` : ""}" return ${
         error.message
@@ -41,6 +44,10 @@ class ChildProcessWebpackPlugin {
   }
 
   handleResult(result) {
+    if (!result) {
+      return;
+    }
+
     const { stdout, stderr } = result;
 
     if (stdout) {
@@ -52,8 +59,8 @@ class ChildProcessWebpackPlugin {
     }
   }
 
-  handleError(error, cmd, args) {
-    this.log.error(ChildProcessWebpackPlugin.buildError(error, cmd, args));
+  handleError(error, process) {
+    this.log.error(ChildProcessWebpackPlugin.buildError(error, process));
 
     if (this.options.bail) {
       throw error;
@@ -79,9 +86,7 @@ class ChildProcessWebpackPlugin {
           return asyncResult;
         })
         .catch(error => {
-          this.handleError(error, cmd, args);
-
-          return null;
+          this.handleError(error, process);
         });
     }
 
@@ -90,48 +95,54 @@ class ChildProcessWebpackPlugin {
     try {
       result = execa.sync(cmd, args, opts);
     } catch (error) {
-      this.handleError(error);
+      this.handleError(error, process);
     }
 
     this.handleResult(result, cmd, args);
 
-    return result;
+    return result.stdout;
   }
 
-  execute(processes, callback) {
+  execute(processes, async) {
     const results = [];
-    const hasCallback = Boolean(callback);
 
     processes.forEach(process => {
       const args = process.args || [];
-      let hasFailedNestedChildProcess = false;
 
       args.forEach((arg, index) => {
         if (typeof arg === "object" && Boolean(arg)) {
-          const result = this.runCommand(arg);
+          const commandResult = this.execute([arg], async);
 
-          if (!result || !result.stdout) {
-            hasFailedNestedChildProcess = true;
-          } else {
-            args[index] = result.stdout;
-          }
+          process.args[index] = Array.isArray(commandResult)
+            ? commandResult[0]
+            : commandResult;
+        } else {
+          process.args[index] = async ? Promise.resolve(arg) : arg;
         }
       });
 
-      if (hasFailedNestedChildProcess) {
-        // eslint-disable-next-line prefer-promise-reject-errors
-        results.push(hasCallback ? Promise.reject() : null);
+      let result = null;
 
-        return;
+      if (async) {
+        result = Promise.all(args).then(resolvedArgs => {
+          process.args = resolvedArgs.map(
+            item => (item[0].stdout ? item[0].stdout : item)
+          );
+
+          return this.runCommand(process, async);
+        });
+      } else {
+        result = this.runCommand(process);
       }
-
-      const result = this.runCommand(process, hasCallback);
 
       results.push(result);
     });
 
-    // eslint-disable-next-line promise/no-callback-in-promise
-    return hasCallback ? Promise.all(results).then(() => callback()) : results;
+    return async
+      ? Promise.all(results).catch(error => {
+          this.handleError(error, process);
+        })
+      : results;
   }
 
   apply(compiler) {
@@ -161,17 +172,19 @@ class ChildProcessWebpackPlugin {
 
     if (this.options.onBuildEnd.length > 0) {
       const afterEmitFn = (compilation, callback) => {
-        const done = () => {
+        const done = error => {
           if (this.options.dev) {
             this.options.onBuildEnd = [];
           }
 
-          callback();
+          callback(error);
         };
 
-        this.execute(this.options.onBuildEnd);
-
-        return done();
+        this.execute(this.options.onBuildEnd, true)
+          // eslint-disable-next-line promise/no-callback-in-promise
+          .then(() => done())
+          // eslint-disable-next-line promise/no-callback-in-promise
+          .catch(error => done(error));
       };
 
       /* istanbul ignore else */
@@ -185,17 +198,21 @@ class ChildProcessWebpackPlugin {
     if (this.options.onBuildExit.length > 0) {
       const doneFn = (stats, callback) => {
         // eslint-disable-next-line consistent-return
-        const done = () => {
+        const done = error => {
           if (this.options.dev) {
             this.options.onBuildExit = [];
           }
 
           if (callback) {
-            return callback();
+            return callback(error);
           }
         };
 
-        this.execute(this.options.onBuildExit, done);
+        this.execute(this.options.onBuildExit, true)
+          // eslint-disable-next-line promise/no-callback-in-promise
+          .then(() => done())
+          // eslint-disable-next-line promise/no-callback-in-promise
+          .catch(error => done(error));
       };
 
       /* istanbul ignore else */
