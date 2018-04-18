@@ -32,22 +32,83 @@ class ChildProcessWebpackPlugin {
     });
   }
 
-  execute(childProcesses) {
+  static buildError(error, cmd, args) {
+    return new Error(
+      `Process "${cmd}${args.length > 0 ? ` ${args.join(" ")}` : ""}" return ${
+        error.message
+      }`
+    );
+  }
+
+  handleResult(result) {
+    const { stdout, stderr } = result;
+
+    if (stdout) {
+      this.log.info(stdout);
+    }
+
+    if (stderr) {
+      this.log.warn(stderr);
+    }
+  }
+
+  handleError(error, cmd, args) {
+    this.log.error(ChildProcessWebpackPlugin.buildError(error, cmd, args));
+
+    if (this.options.bail) {
+      throw error;
+    }
+  }
+
+  runCommand(process, async) {
+    const { cmd } = process;
+    const args = process.args || [];
+    const opts = process.opts || {};
+
+    opts.stdio = ["ignore", "pipe", "pipe"];
+
+    this.log.info(
+      `Run process "${cmd}${args.length > 0 ? ` ${args.join(" ")}` : ""}"`
+    );
+
+    if (async) {
+      return execa(cmd, args, opts)
+        .then(asyncResult => {
+          this.handleResult(asyncResult);
+
+          return asyncResult;
+        })
+        .catch(error => {
+          this.handleError(error, cmd, args);
+
+          return null;
+        });
+    }
+
+    let result = null;
+
+    try {
+      result = execa.sync(cmd, args, opts);
+    } catch (error) {
+      this.handleError(error);
+    }
+
+    this.handleResult(result, cmd, args);
+
+    return result;
+  }
+
+  execute(processes, callback) {
     const results = [];
+    const hasCallback = Boolean(callback);
 
-    childProcesses.forEach(childProcess => {
-      const { cmd } = childProcess;
-      let { args, opts } = childProcess;
+    processes.forEach(process => {
+      const args = process.args || [];
       let hasFailedNestedChildProcess = false;
-
-      if (!args) {
-        args = [];
-      }
 
       args.forEach((arg, index) => {
         if (typeof arg === "object" && Boolean(arg)) {
-          const nestedResults = this.execute([arg]);
-          const [result] = nestedResults;
+          const result = this.runCommand(arg);
 
           if (!result || !result.stdout) {
             hasFailedNestedChildProcess = true;
@@ -57,60 +118,24 @@ class ChildProcessWebpackPlugin {
         }
       });
 
-      let result = null;
-
       if (hasFailedNestedChildProcess) {
-        results.push(result);
+        // eslint-disable-next-line prefer-promise-reject-errors
+        results.push(hasCallback ? Promise.reject() : null);
 
         return;
       }
 
-      if (!opts) {
-        opts = {};
-      }
-
-      opts.stdio = ["ignore", "pipe", "pipe"];
-
-      this.log.info(
-        `Run process "${cmd}${args.length > 0 ? ` ${args.join(" ")}` : ""}"`
-      );
-
-      try {
-        result = execa.sync(cmd, args, opts);
-      } catch (error) {
-        this.log.error(
-          new Error(
-            `Process "${cmd}${
-              args.length > 0 ? ` ${args.join(" ")}` : ""
-            }" return ${error.message}`
-          )
-        );
-
-        if (this.options.bail) {
-          throw error;
-        }
-      }
-
-      if (result) {
-        const { stdout, stderr } = result;
-
-        if (stdout) {
-          this.log.info(result.stdout);
-        }
-
-        if (stderr) {
-          this.log.warn(result.stderr);
-        }
-      }
+      const result = this.runCommand(process, hasCallback);
 
       results.push(result);
     });
 
-    return results;
+    // eslint-disable-next-line promise/no-callback-in-promise
+    return hasCallback ? Promise.all(results).then(() => callback()) : results;
   }
 
   apply(compiler) {
-    if (this.options.bail === null) {
+    if (typeof this.options.bail !== "boolean") {
       this.options.bail = compiler.options.bail;
     }
 
@@ -125,6 +150,7 @@ class ChildProcessWebpackPlugin {
         }
       };
 
+      /* istanbul ignore else */
       if (compiler.hooks) {
         // Information: `beforeRun.asyncTap` in future major
         compiler.hooks.compile.tap(plugin, compileFn);
@@ -135,15 +161,20 @@ class ChildProcessWebpackPlugin {
 
     if (this.options.onBuildEnd.length > 0) {
       const afterEmitFn = (compilation, callback) => {
+        const done = () => {
+          if (this.options.dev) {
+            this.options.onBuildEnd = [];
+          }
+
+          callback();
+        };
+
         this.execute(this.options.onBuildEnd);
 
-        if (this.options.dev) {
-          this.options.onBuildEnd = [];
-        }
-
-        callback();
+        return done();
       };
 
+      /* istanbul ignore else */
       if (compiler.hooks) {
         compiler.hooks.afterEmit.tapAsync(plugin, afterEmitFn);
       } else {
@@ -153,15 +184,21 @@ class ChildProcessWebpackPlugin {
 
     if (this.options.onBuildExit.length > 0) {
       const doneFn = (stats, callback) => {
-        this.execute(this.options.onBuildExit);
+        // eslint-disable-next-line consistent-return
+        const done = () => {
+          if (this.options.dev) {
+            this.options.onBuildExit = [];
+          }
 
-        if (this.options.dev) {
-          this.options.onBuildExit = [];
-        }
+          if (callback) {
+            return callback();
+          }
+        };
 
-        callback();
+        this.execute(this.options.onBuildExit, done);
       };
 
+      /* istanbul ignore else */
       if (compiler.hooks) {
         // Information: `asyncTap` in future major
         compiler.hooks.done.tapAsync(plugin, doneFn);

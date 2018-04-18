@@ -198,6 +198,7 @@ describe("execa-webpack-plugin", () => {
     });
   });
 
+  // Need async test
   it("should throw error with `bail: true` option", () => {
     expect.assertions(1);
 
@@ -246,6 +247,34 @@ describe("execa-webpack-plugin", () => {
 
     return run({
       onBuildStart: [
+        {
+          args: [
+            {
+              args: [path.join(resourcesDir, "nested.js")],
+              cmd: "node"
+            }
+          ],
+          cmd: "del"
+        }
+      ]
+    }).then(() => {
+      expect(() => fs.statSync(dir)).toThrow();
+
+      unlinkSyncSafe(dir);
+
+      return Promise.resolve();
+    });
+  });
+
+  it("should works with nested commands (async)", () => {
+    expect.assertions(2);
+
+    mkdirSyncSafe(dir);
+
+    expect(fs.statSync(dir).isDirectory()).toBe(true);
+
+    return run({
+      onBuildExit: [
         {
           args: [
             {
