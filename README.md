@@ -24,7 +24,7 @@ const ExecaPlugin = require("execa-webpack-plugin");
 module.exports = {
   plugins: [
     new ExecaPlugin({
-      onBuildStart: [
+      onBeforeRun: [
         {
           args: ["build"],
           cmd: "del"
@@ -37,54 +37,49 @@ module.exports = {
 
 ## Options
 
-|        Name        |    Type     |         Default         | Description                                                                                                                                   |
-| :----------------: | :---------: | :---------------------: | :-------------------------------------------------------------------------------------------------------------------------------------------- |
-| **`onBuildStart`** |  `{Array}`  |          `[]`           | Array of scripts to execute on the initial build.                                                                                             |
-|  **`onBuildEnd`**  |  `{Array}`  |          `[]`           | Array of scripts to execute after files are emitted at the end of the compilation.                                                            |
-| **`onBuildExit`**  |  `{Array}`  |          `[]`           | array of scripts to execute after webpack's process is complete.                                                                              |
-|     **`bail`**     | `{Boolean}` | `compiler.options.bail` | Report the first error as a hard error instead of tolerating it.                                                                              |
-|     **`dev`**      | `{Boolean}` |         `true`          | Switch for development environments. This causes scripts to execute once. Useful for running HMR on webpack-dev-server or webpack watch mode. |
-|   **`logLevel`**   |  `string`   |         `warn`          | Enable logging.                                                                                                                               |
+|         Name          |    Type     |         Default         | Description                                                                                                                                   |
+| :-------------------: | :---------: | :---------------------: | :-------------------------------------------------------------------------------------------------------------------------------------------- |
+| **`on(NameOfEvent)`** |  `{Array}`  |          `[]`           | Array of scripts to execute on the event.                                                                                                     |  |
+|      **`bail`**       | `{Boolean}` | `compiler.options.bail` | Report the first error as a hard error instead of tolerating it.                                                                              |
+|       **`dev`**       | `{Boolean}` |         `true`          | Switch for development environments. This causes scripts to execute once. Useful for running HMR on webpack-dev-server or webpack watch mode. |
+|    **`logLevel`**     |  `string`   |         `warn`          | Enable logging.                                                                                                                               |
 
-### `onBuildStart`
+### `on(NameOfEvent)`
+
+List of [events](https://webpack.js.org/api/compiler-hooks/).
+Name of event contain - `on` + event name (first character in upper case).
+Examples: `onBeforeRun`, `onRun`, `onWatchRun`, `onCompile` and etc.
 
 ```js
 [
   new ExecaPlugin({
-    onBuildStart: [
+    onBeforeRun: [
       {
         args: ["build"],
         cmd: "del"
       }
-    ]
-  })
-];
-```
-
-### `onBuildEnd`
-
-```js
-[
-  new ExecaPlugin({
-    onBuildEnd: [
+    ],
+    onCompile: [
       {
-        args: ["trash"],
-        cmd: "del"
+        args: ["check"],
+        cmd: "command"
       }
-    ]
-  })
-];
-```
-
-### `onBuildExit`
-
-```js
-[
-  new ExecaPlugin({
-    onBuildExit: [
+    ],
+    // Support nested command
+    onDone: [
       {
-        args: ["trash"],
-        cmd: "del"
+        args: [
+          {
+            args: ["arg"],
+            cmd: "command-return-argument"
+          },
+          "other-argument",
+          {
+            args: ["arg"],
+            cmd: "command-return-other-argument"
+          }
+        ],
+        cmd: "command"
       }
     ]
   })
@@ -97,7 +92,7 @@ module.exports = {
 [
   new ExecaPlugin({
     bail: true,
-    onBuildStart: [
+    onBeforeRun: [
       {
         args: ["build"],
         cmd: "del"
@@ -109,11 +104,13 @@ module.exports = {
 
 ### `dev`
 
+If you want to run command(s) in `watch` mode every time you can set `dev` option to false.
+
 ```js
 [
   new ExecaPlugin({
-    dev: true,
-    onBuildStart: [
+    dev: false,
+    onBeforeRun: [
       {
         args: ["build"],
         cmd: "del"
@@ -125,11 +122,13 @@ module.exports = {
 
 ### `logLevel`
 
+Supports log [levels](https://github.com/webpack-contrib/webpack-log#level).
+
 ```js
 [
   new ExecaPlugin({
     logLevel: "info",
-    onBuildStart: [
+    onBeforeRun: [
       {
         args: ["build"],
         cmd: "del"

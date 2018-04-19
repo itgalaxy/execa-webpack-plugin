@@ -56,17 +56,170 @@ describe("execa-webpack-plugin", () => {
   const dir = path.join(__dirname, "dir");
   const otherDir = path.join(__dirname, "other-dir");
 
-  it("should throw error when `onBuildStart`, `onBuildEnd` and `onBuildExit` options are empty", () =>
+  it("should throw error when `on*` options are empty (no events)", () =>
     expect(() => run()).toThrow());
 
-  it("should works with `onBuildStart` option", () => {
+  it("should works with `on*` options", () =>
+    run({
+      onAdditionalPass: [
+        {
+          args: [path.join(resourcesDir, "nothing.js")],
+          cmd: "node"
+        }
+      ],
+      onAfterCompile: [
+        {
+          args: [path.join(resourcesDir, "nothing.js")],
+          cmd: "node"
+        }
+      ],
+      onAfterEmit: [
+        {
+          args: [path.join(resourcesDir, "nothing.js")],
+          cmd: "node"
+        }
+      ],
+      onBeforeCompile: [
+        {
+          args: [path.join(resourcesDir, "nothing.js")],
+          cmd: "node"
+        }
+      ],
+      onBeforeRun: [
+        {
+          args: [path.join(resourcesDir, "nothing.js")],
+          cmd: "node"
+        }
+      ],
+      onCompilation: [
+        {
+          args: [path.join(resourcesDir, "nothing.js")],
+          cmd: "node"
+        }
+      ],
+      onCompile: [
+        {
+          args: [path.join(resourcesDir, "nothing.js")],
+          cmd: "node"
+        }
+      ],
+      onContextModuleFactory: [
+        {
+          args: [path.join(resourcesDir, "nothing.js")],
+          cmd: "node"
+        }
+      ],
+      onDone: [
+        {
+          args: [path.join(resourcesDir, "nothing.js")],
+          cmd: "node"
+        }
+      ], // in `webpack@3` is sync
+      onEmit: [
+        {
+          args: [path.join(resourcesDir, "nothing.js")],
+          cmd: "node"
+        }
+      ],
+      onFailed: [
+        {
+          args: [path.join(resourcesDir, "nothing.js")],
+          cmd: "node"
+        }
+      ],
+      onInvalid: [
+        {
+          args: [path.join(resourcesDir, "nothing.js")],
+          cmd: "node"
+        }
+      ],
+      onMake: [
+        {
+          args: [path.join(resourcesDir, "nothing.js")],
+          cmd: "node"
+        }
+      ],
+      onNormalModuleFactory: [
+        {
+          args: [path.join(resourcesDir, "nothing.js")],
+          cmd: "node"
+        }
+      ],
+      onRun: [
+        {
+          args: [path.join(resourcesDir, "nothing.js")],
+          cmd: "node"
+        }
+      ],
+      onShouldEmit: [
+        {
+          args: [path.join(resourcesDir, "nothing.js")],
+          cmd: "node"
+        }
+      ],
+      onThisCompilation: [
+        {
+          args: [path.join(resourcesDir, "nothing.js")],
+          cmd: "node"
+        }
+      ],
+      onWatchClose: [
+        {
+          args: [path.join(resourcesDir, "nothing.js")],
+          cmd: "node"
+        }
+      ],
+      onWatchRun: [
+        {
+          args: [path.join(resourcesDir, "nothing.js")],
+          cmd: "node"
+        }
+      ],
+
+      // Will be remove in `webpack@5`
+      /* eslint-disable sort-keys */
+      onEnvironment: [
+        {
+          args: [path.join(resourcesDir, "nothing.js")],
+          cmd: "node"
+        }
+      ],
+      onAfterEnvironment: [
+        {
+          args: [path.join(resourcesDir, "nothing.js")],
+          cmd: "node"
+        }
+      ],
+      onAfterPlugins: [
+        {
+          args: [path.join(resourcesDir, "nothing.js")],
+          cmd: "node"
+        }
+      ],
+      onAfterResolvers: [
+        {
+          args: [path.join(resourcesDir, "nothing.js")],
+          cmd: "node"
+        }
+      ],
+      onEntryOption: [
+        {
+          args: [path.join(resourcesDir, "nothing.js")],
+          cmd: "node"
+        }
+      ]
+      /* eslint-enable sort-keys */
+    }));
+
+  // Need found ways how check `this.eventMap.onCompile` on empty
+  it("should works with `onCompile` option (sync event)", () => {
     expect.assertions(2);
     mkdirSyncSafe(dir);
 
     expect(fs.statSync(dir).isDirectory()).toBe(true);
 
     return run({
-      onBuildStart: [
+      onCompile: [
         {
           args: [dir],
           cmd: "del"
@@ -81,7 +234,7 @@ describe("execa-webpack-plugin", () => {
     });
   });
 
-  it("should works with `onBuildStart` and `dev` is `false` option", () => {
+  it("should works with `onCompile` and `dev` is `false` option (sync event)", () => {
     expect.assertions(2);
 
     mkdirSyncSafe(dir);
@@ -90,7 +243,7 @@ describe("execa-webpack-plugin", () => {
 
     return run({
       dev: false,
-      onBuildStart: [
+      onCompile: [
         {
           args: [dir],
           cmd: "del"
@@ -105,7 +258,8 @@ describe("execa-webpack-plugin", () => {
     });
   });
 
-  it("should works with `onBuildEnd` option", () => {
+  // Need found ways how check `this.eventMap.onDone` on empty
+  it("should works with `onDone` option (async event)", () => {
     expect.assertions(2);
 
     mkdirSyncSafe(dir);
@@ -113,7 +267,7 @@ describe("execa-webpack-plugin", () => {
     expect(fs.statSync(dir).isDirectory()).toBe(true);
 
     return run({
-      onBuildEnd: [
+      onDone: [
         {
           args: [dir],
           cmd: "del"
@@ -128,54 +282,7 @@ describe("execa-webpack-plugin", () => {
     });
   });
 
-  it("should works with `onBuildEnd` and `dev` is `false` options", () => {
-    expect.assertions(2);
-
-    mkdirSyncSafe(dir);
-
-    expect(fs.statSync(dir).isDirectory()).toBe(true);
-
-    return run({
-      dev: false,
-      onBuildEnd: [
-        {
-          args: [dir],
-          cmd: "del"
-        }
-      ]
-    }).then(() => {
-      expect(() => fs.statSync(dir)).toThrow();
-
-      unlinkSyncSafe(dir);
-
-      return Promise.resolve();
-    });
-  });
-
-  it("should works with `onBuildExit` option", () => {
-    expect.assertions(2);
-
-    mkdirSyncSafe(dir);
-
-    expect(fs.statSync(dir).isDirectory()).toBe(true);
-
-    return run({
-      onBuildExit: [
-        {
-          args: [dir],
-          cmd: "del"
-        }
-      ]
-    }).then(() => {
-      expect(() => fs.statSync(dir)).toThrow();
-
-      unlinkSyncSafe(dir);
-
-      return Promise.resolve();
-    });
-  });
-
-  it("should works with `onBuildExit` and `dev` is `false` options", () => {
+  it("should works with `onDone` and `dev` is `false` options (async event)", () => {
     expect.assertions(2);
 
     mkdirSyncSafe(dir);
@@ -184,7 +291,7 @@ describe("execa-webpack-plugin", () => {
 
     return run({
       dev: false,
-      onBuildExit: [
+      onDone: [
         {
           args: [dir],
           cmd: "del"
@@ -199,7 +306,7 @@ describe("execa-webpack-plugin", () => {
     });
   });
 
-  it("should throw error with `bail: true` option", () => {
+  it("should throw error with `bail: true` option (sync event)", () => {
     expect.assertions(1);
 
     let catchError = null;
@@ -207,7 +314,7 @@ describe("execa-webpack-plugin", () => {
     return run({
       bail: true,
       logLevel: "silent",
-      onBuildStart: [
+      onCompile: [
         {
           cmd: "not-found"
         }
@@ -227,7 +334,7 @@ describe("execa-webpack-plugin", () => {
       });
   });
 
-  it("should throw error with `bail: true` option (async)", () => {
+  it("should throw error with `bail: true` option (async event)", () => {
     expect.assertions(1);
 
     let catchError = null;
@@ -235,7 +342,7 @@ describe("execa-webpack-plugin", () => {
     return run({
       bail: true,
       logLevel: "silent",
-      onBuildExit: [
+      onDone: [
         {
           cmd: "not-found"
         }
@@ -255,10 +362,10 @@ describe("execa-webpack-plugin", () => {
       });
   });
 
-  it("should works and output 'stdout' and 'stderr' with `logLevel: 'info'` command", () =>
+  it("should works and output 'stdout' and 'stderr' with `logLevel: 'info'` command (sync event)", () =>
     run({
       logLevel: "info",
-      onBuildStart: [
+      onCompile: [
         {
           args: [path.join(resourcesDir, "cli-stdout-stderr.js")],
           cmd: "node"
@@ -266,10 +373,10 @@ describe("execa-webpack-plugin", () => {
       ]
     }));
 
-  it("should works and output 'stdout' and 'stderr' with `logLevel: 'info'` command (async)", () =>
+  it("should works and output 'stdout' and 'stderr' with `logLevel: 'info'` command (async event)", () =>
     run({
       logLevel: "info",
-      onBuildExit: [
+      onDone: [
         {
           args: [path.join(resourcesDir, "cli-stdout-stderr.js")],
           cmd: "node"
@@ -277,7 +384,7 @@ describe("execa-webpack-plugin", () => {
       ]
     }));
 
-  it("should works with nested commands", () => {
+  it("should works with nested commands (sync event)", () => {
     expect.assertions(2);
 
     mkdirSyncSafe(dir);
@@ -285,7 +392,7 @@ describe("execa-webpack-plugin", () => {
     expect(fs.statSync(dir).isDirectory()).toBe(true);
 
     return run({
-      onBuildStart: [
+      onCompile: [
         {
           args: [
             {
@@ -305,7 +412,7 @@ describe("execa-webpack-plugin", () => {
     });
   });
 
-  it("should works with deep nested commands", () => {
+  it("should works with deep nested commands (sync event)", () => {
     expect.assertions(2);
 
     mkdirSyncSafe(dir);
@@ -313,7 +420,7 @@ describe("execa-webpack-plugin", () => {
     expect(fs.statSync(dir).isDirectory()).toBe(true);
 
     return run({
-      onBuildStart: [
+      onCompile: [
         {
           args: [
             {
@@ -338,7 +445,7 @@ describe("execa-webpack-plugin", () => {
     });
   });
 
-  it("should works with multiple nested commands", () => {
+  it("should works with multiple nested commands(sync event)", () => {
     expect.assertions(4);
 
     mkdirSyncSafe(dir);
@@ -348,7 +455,7 @@ describe("execa-webpack-plugin", () => {
     expect(fs.statSync(otherDir).isDirectory()).toBe(true);
 
     return run({
-      onBuildStart: [
+      onCompile: [
         {
           args: [
             {
@@ -374,7 +481,7 @@ describe("execa-webpack-plugin", () => {
     });
   });
 
-  it("should works with nested commands (async)", () => {
+  it("should works with nested commands (async event)", () => {
     expect.assertions(2);
 
     mkdirSyncSafe(dir);
@@ -382,7 +489,7 @@ describe("execa-webpack-plugin", () => {
     expect(fs.statSync(dir).isDirectory()).toBe(true);
 
     return run({
-      onBuildExit: [
+      onDone: [
         {
           args: [
             {
@@ -402,7 +509,7 @@ describe("execa-webpack-plugin", () => {
     });
   });
 
-  it("should works with deep nested commands (async)", () => {
+  it("should works with deep nested commands (async event)", () => {
     expect.assertions(2);
 
     mkdirSyncSafe(dir);
@@ -410,7 +517,7 @@ describe("execa-webpack-plugin", () => {
     expect(fs.statSync(dir).isDirectory()).toBe(true);
 
     return run({
-      onBuildExit: [
+      onDone: [
         {
           args: [
             {
@@ -435,7 +542,7 @@ describe("execa-webpack-plugin", () => {
     });
   });
 
-  it("should works with multiple nested commands (async)", () => {
+  it("should works with multiple nested commands (async event)", () => {
     expect.assertions(4);
 
     mkdirSyncSafe(dir);
@@ -445,7 +552,7 @@ describe("execa-webpack-plugin", () => {
     expect(fs.statSync(otherDir).isDirectory()).toBe(true);
 
     return run({
-      onBuildExit: [
+      onDone: [
         {
           args: [
             {
@@ -471,7 +578,7 @@ describe("execa-webpack-plugin", () => {
     });
   });
 
-  it("should works when nested commands return nothing and 'bail: false'", () => {
+  it("should works when nested commands return nothing and 'bail: false' (sync event)", () => {
     expect.assertions(1);
 
     let catchError = null;
@@ -479,7 +586,7 @@ describe("execa-webpack-plugin", () => {
     return run({
       bail: false,
       logLevel: "silent",
-      onBuildStart: [
+      onCompile: [
         {
           args: [
             {
@@ -503,7 +610,7 @@ describe("execa-webpack-plugin", () => {
       });
   });
 
-  it("should works when nested commands return nothing and 'bail: false' (async)", () => {
+  it("should works when nested commands return nothing and 'bail: false' (async event)", () => {
     expect.assertions(1);
 
     let catchError = null;
@@ -511,7 +618,7 @@ describe("execa-webpack-plugin", () => {
     return run({
       bail: false,
       logLevel: "silent",
-      onBuildExit: [
+      onDone: [
         {
           args: [
             {

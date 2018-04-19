@@ -3,27 +3,60 @@
 const execa = require("execa");
 const weblog = require("webpack-log");
 
+const eventTypeMap = {
+  onAdditionalPass: true,
+  onAfterCompile: true,
+  onAfterEmit: true,
+  onBeforeCompile: true,
+  onBeforeRun: true,
+  onCompilation: false,
+  onCompile: false,
+  onContextModuleFactory: false,
+  onDone: true,
+  onEmit: true,
+  onFailed: false,
+  onInvalid: false,
+  onMake: true,
+  onNormalModuleFactory: false,
+  onRun: true,
+  onShouldEmit: false,
+  onThisCompilation: false,
+  onWatchClose: false,
+  onWatchRun: true,
+
+  // Will be remove in `webpack@5`
+  /* eslint-disable sort-keys */
+  onEnvironment: false,
+  onAfterEnvironment: false,
+  onAfterPlugins: false,
+  onAfterResolvers: false,
+  onEntryOption: false
+  /* eslint-enable sort-keys */
+};
+
+function firstToLowerCase(str) {
+  return str.substr(0, 1).toLowerCase() + str.substr(1);
+}
+
 class ChildProcessWebpackPlugin {
   constructor(options) {
     const defaultOptions = {
       bail: null,
       dev: true,
-      logLevel: "warn",
-      onBuildEnd: [],
-      onBuildExit: [],
-      onBuildStart: []
+      logLevel: "warn"
     };
 
     this.options = Object.assign(defaultOptions, options);
+    this.eventMap = {};
 
-    if (
-      this.options.onBuildStart.length === 0 &&
-      this.options.onBuildEnd.length === 0 &&
-      this.options.onBuildExit.length === 0
-    ) {
-      throw new TypeError(
-        "One of `onBuildStart`, `onBuildEnd` or `onBuildExit` should be not empty"
-      );
+    Object.keys(this.options).forEach(eventType => {
+      if (eventType.startsWith("on")) {
+        this.eventMap[eventType] = this.options[eventType];
+      }
+    });
+
+    if (Object.keys(this.eventMap).length === 0) {
+      throw new TypeError("No events found");
     }
 
     this.log = weblog({
@@ -44,10 +77,6 @@ class ChildProcessWebpackPlugin {
   }
 
   handleResult(result) {
-    if (!result) {
-      return;
-    }
-
     const { stdout, stderr } = result;
 
     if (stdout) {
@@ -152,77 +181,46 @@ class ChildProcessWebpackPlugin {
 
     const plugin = { name: "ExecaPlugin" };
 
-    if (this.options.onBuildStart.length > 0) {
-      const compileFn = () => {
-        this.execute(this.options.onBuildStart);
+    Object.keys(this.eventMap).forEach(event => {
+      const webpackEvent = firstToLowerCase(event.substr(2));
+      const isAsyncEventType = eventTypeMap[event];
 
-        if (this.options.dev) {
-          this.options.onBuildStart = [];
+      const runCommands = (something, callback) => {
+        // eslint-disable-next-line consistent-return
+        const doneFn = error => {
+          if (this.options.dev) {
+            this.eventMap[event] = [];
+          }
+
+          if (isAsyncEventType) {
+            return callback(error || null);
+          }
+
+          if (error) {
+            throw error;
+          }
+        };
+
+        if (isAsyncEventType) {
+          this.execute(this.eventMap[event], true)
+            .then(() => doneFn())
+            .catch(error => doneFn(error));
+        } else {
+          try {
+            this.execute(this.eventMap[event]);
+          } catch (error) {
+            doneFn(error);
+          }
+
+          doneFn();
         }
       };
 
-      /* istanbul ignore else */
-      if (compiler.hooks) {
-        // Information: `beforeRun.asyncTap` in future major
-        compiler.hooks.compile.tap(plugin, compileFn);
-      } else {
-        compiler.plugin("compile", compileFn);
-      }
-    }
-
-    if (this.options.onBuildEnd.length > 0) {
-      const afterEmitFn = (compilation, callback) => {
-        const done = error => {
-          if (this.options.dev) {
-            this.options.onBuildEnd = [];
-          }
-
-          callback(error);
-        };
-
-        this.execute(this.options.onBuildEnd, true)
-          // eslint-disable-next-line promise/no-callback-in-promise
-          .then(() => done())
-          // eslint-disable-next-line promise/no-callback-in-promise
-          .catch(error => done(error));
-      };
-
-      /* istanbul ignore else */
-      if (compiler.hooks) {
-        compiler.hooks.afterEmit.tapAsync(plugin, afterEmitFn);
-      } else {
-        compiler.plugin("after-emit", afterEmitFn);
-      }
-    }
-
-    if (this.options.onBuildExit.length > 0) {
-      const doneFn = (stats, callback) => {
-        // eslint-disable-next-line consistent-return
-        const done = error => {
-          if (this.options.dev) {
-            this.options.onBuildExit = [];
-          }
-
-          if (callback) {
-            return callback(error);
-          }
-        };
-
-        this.execute(this.options.onBuildExit, true)
-          // eslint-disable-next-line promise/no-callback-in-promise
-          .then(() => done())
-          // eslint-disable-next-line promise/no-callback-in-promise
-          .catch(error => done(error));
-      };
-
-      /* istanbul ignore else */
-      if (compiler.hooks) {
-        // Information: `asyncTap` in future major
-        compiler.hooks.done.tapAsync(plugin, doneFn);
-      } else {
-        compiler.plugin("done", doneFn);
-      }
-    }
+      compiler.hooks[webpackEvent][isAsyncEventType ? "tapAsync" : "tap"](
+        plugin,
+        runCommands
+      );
+    });
   }
 }
 
