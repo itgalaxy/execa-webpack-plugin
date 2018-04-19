@@ -6,7 +6,7 @@ This project adheres to [Semantic Versioning](http://semver.org).
 
 ## 2.0.0 - 2018-04-19
 
-* Changed: remove `webpack@32` and `webpack@3` support.
+* Changed: remove `webpack@2` and `webpack@3` support.
 * Removed: `onBuildStart`, `onBuildEnd` and `onBuildExit` options. Use new events `onCompile`, `onAfterEmit` and `onDone` options.
 
 ## 1.1.0 - 2018-04-18
