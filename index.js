@@ -56,7 +56,7 @@ class ChildProcessWebpackPlugin {
     });
 
     if (Object.keys(this.eventMap).length === 0) {
-      throw new TypeError("No events found");
+      throw new TypeError("Known events not found");
     }
 
     this.log = weblog({
@@ -139,7 +139,11 @@ class ChildProcessWebpackPlugin {
       const args = process.args || [];
 
       args.forEach((arg, index) => {
-        if (typeof arg === "object" && Boolean(arg)) {
+        if (
+          typeof arg === "object" &&
+          Boolean(arg) &&
+          Object.keys(arg).length > 0
+        ) {
           const commandResult = this.execute([arg], async);
 
           process.args[index] = Array.isArray(commandResult)
@@ -155,7 +159,7 @@ class ChildProcessWebpackPlugin {
       if (async) {
         result = Promise.all(args).then(resolvedArgs => {
           process.args = resolvedArgs.map(
-            item => (item[0].stdout ? item[0].stdout : item)
+            item => (item[0] && item[0].stdout ? item[0].stdout : item)
           );
 
           return this.runCommand(process, async);
@@ -167,11 +171,7 @@ class ChildProcessWebpackPlugin {
       results.push(result);
     });
 
-    return async
-      ? Promise.all(results).catch(error => {
-          this.handleError(error, process);
-        })
-      : results;
+    return async ? Promise.all(results) : results;
   }
 
   apply(compiler) {

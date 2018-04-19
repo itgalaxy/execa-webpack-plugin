@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](http://semver.org).
 
+## 2.0.1 - 2018-04-19
+
+* Fix: don't crash when argument is empty (string/array/object).
+* Fix: improve output error on empty or invalid event.
+
 ## 2.0.0 - 2018-04-19
 
 * Changed: remove `webpack@2` and `webpack@3` support.

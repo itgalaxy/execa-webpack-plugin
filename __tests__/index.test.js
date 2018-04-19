@@ -56,8 +56,20 @@ describe("execa-webpack-plugin", () => {
   const dir = path.join(__dirname, "dir");
   const otherDir = path.join(__dirname, "other-dir");
 
-  it("should throw error when `on*` options are empty (no events)", () =>
+  it("should throw error on `on*` options are empty (no events)", () =>
     expect(() => run()).toThrow());
+
+  it("should throw error invalid `onFooBar` option (no events)", () =>
+    expect(() =>
+      run({
+        onFooBar: [
+          {
+            args: [path.join(resourcesDir, "nothing.js")],
+            cmd: "node"
+          }
+        ]
+      })
+    ).toThrow());
 
   it("should works with `on*` options", () =>
     run({
@@ -234,6 +246,29 @@ describe("execa-webpack-plugin", () => {
     });
   });
 
+  it("should works with `onCompile` option with empty argument (sync event) ", () => {
+    expect.assertions(2);
+
+    mkdirSyncSafe(dir);
+
+    expect(fs.statSync(dir).isDirectory()).toBe(true);
+
+    return run({
+      onCompile: [
+        {
+          args: [dir, "", [], {}],
+          cmd: "del"
+        }
+      ]
+    }).then(() => {
+      expect(() => fs.statSync(dir)).toThrow();
+
+      unlinkSyncSafe(dir);
+
+      return Promise.resolve();
+    });
+  });
+
   it("should works with `onCompile` and `dev` is `false` option (sync event)", () => {
     expect.assertions(2);
 
@@ -270,6 +305,29 @@ describe("execa-webpack-plugin", () => {
       onDone: [
         {
           args: [dir],
+          cmd: "del"
+        }
+      ]
+    }).then(() => {
+      expect(() => fs.statSync(dir)).toThrow();
+
+      unlinkSyncSafe(dir);
+
+      return Promise.resolve();
+    });
+  });
+
+  it("should works with `onDone` option with empty argument (async event) ", () => {
+    expect.assertions(2);
+
+    mkdirSyncSafe(dir);
+
+    expect(fs.statSync(dir).isDirectory()).toBe(true);
+
+    return run({
+      onDone: [
+        {
+          args: [dir, "", [], {}],
           cmd: "del"
         }
       ]
