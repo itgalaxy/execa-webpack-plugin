@@ -1,7 +1,6 @@
 "use strict";
 
-const execa = require("execa");
-const weblog = require("webpack-log");
+const CommandRunner = require("./CommandRunner");
 
 const eventTypeMap = {
   onAdditionalPass: true,
@@ -38,7 +37,7 @@ function firstToLowerCase(str) {
   return str.substr(0, 1).toLowerCase() + str.substr(1);
 }
 
-class ChildProcessWebpackPlugin {
+class ExecaWebpackPlugin {
   constructor(options) {
     const defaultOptions = {
       bail: null,
@@ -58,78 +57,6 @@ class ChildProcessWebpackPlugin {
     if (Object.keys(this.eventMap).length === 0) {
       throw new TypeError("Known events not found");
     }
-
-    this.log = weblog({
-      level: this.options.logLevel,
-      name: "execa-webpack-plugin"
-    });
-  }
-
-  static buildError(error, process) {
-    const { cmd } = process;
-    const args = process.args || [];
-
-    return new Error(
-      `Process "${cmd}${args.length > 0 ? ` ${args.join(" ")}` : ""}" return ${
-        error.message
-      }`
-    );
-  }
-
-  handleResult(result) {
-    const { stdout, stderr } = result;
-
-    if (stdout) {
-      this.log.info(stdout);
-    }
-
-    if (stderr) {
-      this.log.warn(stderr);
-    }
-  }
-
-  handleError(error, process) {
-    this.log.error(ChildProcessWebpackPlugin.buildError(error, process));
-
-    if (this.options.bail) {
-      throw error;
-    }
-  }
-
-  runCommand(process, async) {
-    const { cmd } = process;
-    const args = process.args || [];
-    const opts = process.opts || {};
-
-    opts.stdio = ["ignore", "pipe", "pipe"];
-
-    this.log.info(
-      `Run process "${cmd}${args.length > 0 ? ` ${args.join(" ")}` : ""}"`
-    );
-
-    if (async) {
-      return execa(cmd, args, opts)
-        .then(asyncResult => {
-          this.handleResult(asyncResult);
-
-          return asyncResult;
-        })
-        .catch(error => {
-          this.handleError(error, process);
-        });
-    }
-
-    let result = null;
-
-    try {
-      result = execa.sync(cmd, args, opts);
-    } catch (error) {
-      this.handleError(error, process);
-    }
-
-    this.handleResult(result, cmd, args);
-
-    return result.stdout;
   }
 
   execute(processes, async) {
@@ -162,10 +89,10 @@ class ChildProcessWebpackPlugin {
             item => (item[0] && item[0].stdout ? item[0].stdout : item)
           );
 
-          return this.runCommand(process, async);
+          return new CommandRunner(this.options).run(process, async);
         });
       } else {
-        result = this.runCommand(process);
+        result = new CommandRunner(this.options).run(process, async);
       }
 
       results.push(result);
@@ -224,4 +151,4 @@ class ChildProcessWebpackPlugin {
   }
 }
 
-module.exports = ChildProcessWebpackPlugin;
+module.exports = ExecaWebpackPlugin;

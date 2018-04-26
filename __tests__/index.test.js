@@ -4,7 +4,7 @@ const webpack = require("webpack");
 const path = require("path");
 const tempy = require("tempy");
 const fs = require("fs");
-const ExecaPlugin = require("..");
+const ExecaPlugin = require("../src/ExecaWebpackPlugin");
 
 const resourcesDir = path.join(__dirname, "resources");
 
