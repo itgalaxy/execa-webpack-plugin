@@ -59,11 +59,11 @@ class ExecaWebpackPlugin {
     }
   }
 
-  execute(processes, async) {
+  execute(commands, async) {
     const results = [];
 
-    processes.forEach(process => {
-      const args = process.args || [];
+    commands.forEach(command => {
+      const args = command.args || [];
 
       args.forEach((arg, index) => {
         if (
@@ -73,11 +73,11 @@ class ExecaWebpackPlugin {
         ) {
           const commandResult = this.execute([arg], async);
 
-          process.args[index] = Array.isArray(commandResult)
+          command.args[index] = Array.isArray(commandResult)
             ? commandResult[0]
             : commandResult;
         } else {
-          process.args[index] = async ? Promise.resolve(arg) : arg;
+          command.args[index] = async ? Promise.resolve(arg) : arg;
         }
       });
 
@@ -85,14 +85,14 @@ class ExecaWebpackPlugin {
 
       if (async) {
         result = Promise.all(args).then(resolvedArgs => {
-          process.args = resolvedArgs.map(
+          command.args = resolvedArgs.map(
             item => (item[0] && item[0].stdout ? item[0].stdout : item)
           );
 
-          return new CommandRunner(this.options).run(process, async);
+          return new CommandRunner(this.options).run(command, async);
         });
       } else {
-        result = new CommandRunner(this.options).run(process, async);
+        result = new CommandRunner(this.options).run(command, async);
       }
 
       results.push(result);

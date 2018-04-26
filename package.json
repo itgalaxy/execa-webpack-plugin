@@ -65,7 +65,7 @@
   },
   "scripts": {
     "precommit": "lint-staged",
-    "lint:prettify": "prettier --list-different '{lib,__tests__}/**/*.{js,mjs,jsx,md}' '*.{js,mjs,jsx,md}'",
+    "lint:prettify": "prettier --list-different '{src,__tests__}/**/*.{js,mjs,jsx,md}' '*.{js,mjs,jsx,md}'",
     "lint:eslint": "eslint --cache --report-unused-disable-directives . !__tests__/resources/** --ignore-path .gitignore",
     "lint:remark": "remark . -i .gitignore -f -q",
     "lint": "npm-run-all -l -p lint:**",

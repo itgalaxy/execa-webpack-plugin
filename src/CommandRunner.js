@@ -12,14 +12,14 @@ class CommandRunner {
     });
   }
 
-  static buildError(error, process) {
-    const { cmd } = process;
-    const args = process.args || [];
+  static buildError(error, command) {
+    const { cmd } = command;
+    const args = command.args || [];
 
     return new Error(
-      `Process "${cmd}${args.length > 0 ? ` ${args.join(" ")}` : ""}" return ${
+      `Command "${cmd}${args.length > 0 ? ` ${args.join(" ")}` : ""}" return ${
         error.message
-        }`
+      }`
     );
   }
 
@@ -35,23 +35,23 @@ class CommandRunner {
     }
   }
 
-  handleError(error, process) {
-    this.log.error(CommandRunner.buildError(error, process));
+  handleError(error, command) {
+    this.log.error(CommandRunner.buildError(error, command));
 
     if (this.options.bail) {
       throw error;
     }
   }
 
-  run(process, async) {
-    const { cmd } = process;
-    const args = process.args || [];
-    const opts = process.opts || {};
+  run(command, async) {
+    const { cmd } = command;
+    const args = command.args || [];
+    const opts = command.opts || {};
 
     opts.stdio = ["ignore", "pipe", "pipe"];
 
     this.log.info(
-      `Run process "${cmd}${args.length > 0 ? ` ${args.join(" ")}` : ""}"`
+      `Run command "${cmd}${args.length > 0 ? ` ${args.join(" ")}` : ""}"`
     );
 
     if (async) {
@@ -62,7 +62,7 @@ class CommandRunner {
           return asyncResult;
         })
         .catch(error => {
-          this.handleError(error, process);
+          this.handleError(error, command);
         });
     }
 
@@ -71,7 +71,7 @@ class CommandRunner {
     try {
       result = execa.sync(cmd, args, opts);
     } catch (error) {
-      this.handleError(error, process);
+      this.handleError(error, command);
     }
 
     this.handleResult(result, cmd, args);
