@@ -27,13 +27,18 @@ module.exports = {
       onBeforeRun: [
         {
           args: ["build"],
-          cmd: "del"
+          cmd: "del",
+          options: {
+            cwd: process.cwd()
+          }
         }
       ]
     })
   ]
 };
 ```
+
+Note: [list of command options](https://github.com/sindresorhus/execa#options).
 
 ## Options
 

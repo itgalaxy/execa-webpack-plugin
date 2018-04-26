@@ -47,16 +47,16 @@ class CommandRunner {
   }
 
   run(command, async) {
-    const { cmd, args = [], opts = {} } = command;
+    const { cmd, args = [], options = {} } = command;
 
-    opts.stdio = ["ignore", "pipe", "pipe"];
+    options.stdio = ["ignore", "pipe", "pipe"];
 
     this.log.info(
       `Run command "${cmd}${args.length > 0 ? ` ${args.join(" ")}` : ""}"`
     );
 
     if (async) {
-      return execa(cmd, args, opts)
+      return execa(cmd, args, options)
         .then(asyncResult => {
           this.handleResult(asyncResult);
 
@@ -70,7 +70,7 @@ class CommandRunner {
     let result = null;
 
     try {
-      result = execa.sync(cmd, args, opts);
+      result = execa.sync(cmd, args, options);
     } catch (error) {
       this.handleError(error, command);
     }

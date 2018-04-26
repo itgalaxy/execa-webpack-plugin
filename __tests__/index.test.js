@@ -46,7 +46,7 @@ function mkdirSyncSafe(dir) {
 
 function unlinkSyncSafe(dir) {
   try {
-    fs.unlinkSync(dir);
+    fs.rmdirSync(dir);
   } catch (ignoreError) {
     // Nothing
   }
@@ -54,6 +54,7 @@ function unlinkSyncSafe(dir) {
 
 describe("execa-webpack-plugin", () => {
   const dir = path.join(__dirname, "dir");
+  const nestedDir = path.join(dir, "nested");
   const otherDir = path.join(__dirname, "other-dir");
 
   it("should throw error on `on*` options are empty (no events)", () =>
@@ -754,5 +755,61 @@ describe("execa-webpack-plugin", () => {
 
         return Promise.resolve();
       });
+  });
+
+  it("should works with options (sync event)", () => {
+    expect.assertions(3);
+
+    mkdirSyncSafe(dir);
+    mkdirSyncSafe(nestedDir);
+
+    expect(fs.statSync(dir).isDirectory()).toBe(true);
+    expect(fs.statSync(nestedDir).isDirectory()).toBe(true);
+
+    return run({
+      onCompile: [
+        {
+          args: [nestedDir],
+          cmd: "del",
+          options: {
+            cwd: dir
+          }
+        }
+      ]
+    }).then(() => {
+      expect(() => fs.statSync(nestedDir)).toThrow();
+
+      unlinkSyncSafe(dir);
+
+      return Promise.resolve();
+    });
+  });
+
+  it("should works with options (async event)", () => {
+    expect.assertions(3);
+
+    mkdirSyncSafe(dir);
+    mkdirSyncSafe(nestedDir);
+
+    expect(fs.statSync(dir).isDirectory()).toBe(true);
+    expect(fs.statSync(nestedDir).isDirectory()).toBe(true);
+
+    return run({
+      onDone: [
+        {
+          args: [nestedDir],
+          cmd: "del",
+          options: {
+            cwd: dir
+          }
+        }
+      ]
+    }).then(() => {
+      expect(() => fs.statSync(nestedDir)).toThrow();
+
+      unlinkSyncSafe(dir);
+
+      return Promise.resolve();
+    });
   });
 });

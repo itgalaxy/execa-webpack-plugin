@@ -61,7 +61,7 @@ class ExecaWebpackPlugin {
 
   execute(commands, async) {
     const results = [];
-    const runCommandRunner = command => {
+    const runCommand = command => {
       if (async) {
         return Promise.all(command.args).then(resolvedArgs => {
           command.args = resolvedArgs.map(
@@ -96,7 +96,7 @@ class ExecaWebpackPlugin {
         command.args = [];
       }
 
-      results.push(runCommandRunner(command));
+      results.push(runCommand(command));
     });
 
     return async ? Promise.all(results) : results;
