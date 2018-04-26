@@ -61,41 +61,42 @@ class ExecaWebpackPlugin {
 
   execute(commands, async) {
     const results = [];
-
-    commands.forEach(command => {
-      const args = command.args || [];
-
-      args.forEach((arg, index) => {
-        if (
-          typeof arg === "object" &&
-          Boolean(arg) &&
-          Object.keys(arg).length > 0
-        ) {
-          const commandResult = this.execute([arg], async);
-
-          command.args[index] = Array.isArray(commandResult)
-            ? commandResult[0]
-            : commandResult;
-        } else {
-          command.args[index] = async ? Promise.resolve(arg) : arg;
-        }
-      });
-
-      let result = null;
-
+    const runCommandRunner = command => {
       if (async) {
-        result = Promise.all(args).then(resolvedArgs => {
+        return Promise.all(command.args).then(resolvedArgs => {
           command.args = resolvedArgs.map(
             item => (item[0] && item[0].stdout ? item[0].stdout : item)
           );
 
           return new CommandRunner(this.options).run(command, async);
         });
-      } else {
-        result = new CommandRunner(this.options).run(command, async);
       }
 
-      results.push(result);
+      return new CommandRunner(this.options).run(command, async);
+    };
+
+    commands.forEach(command => {
+      if (command.args) {
+        command.args = command.args.map(arg => {
+          if (
+            typeof arg === "object" &&
+            Boolean(arg) &&
+            Object.keys(arg).length > 0
+          ) {
+            const commandResult = this.execute([arg], async);
+
+            return Array.isArray(commandResult)
+              ? commandResult[0]
+              : commandResult;
+          }
+
+          return async ? Promise.resolve(arg) : arg;
+        });
+      } else {
+        command.args = [];
+      }
+
+      results.push(runCommandRunner(command));
     });
 
     return async ? Promise.all(results) : results;

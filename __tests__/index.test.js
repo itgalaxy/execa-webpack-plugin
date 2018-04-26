@@ -420,6 +420,62 @@ describe("execa-webpack-plugin", () => {
       });
   });
 
+  it("should not throw error with `bail: false` option (sync event)", () => {
+    expect.assertions(1);
+
+    let catchError = null;
+
+    return run({
+      bail: false,
+      logLevel: "silent",
+      onCompile: [
+        {
+          cmd: "not-found"
+        }
+      ]
+    })
+      .catch(error => {
+        catchError = error;
+
+        return Promise.resolve();
+      })
+      .then(() => {
+        // execa not return error instanceOf Error
+        // expect(catchError).toBeInstanceOf(Error);
+        expect(catchError).toBeNull();
+
+        return Promise.resolve();
+      });
+  });
+
+  it("should not throw error with `bail: false` option (async event)", () => {
+    expect.assertions(1);
+
+    let catchError = null;
+
+    return run({
+      bail: false,
+      logLevel: "silent",
+      onDone: [
+        {
+          cmd: "not-found"
+        }
+      ]
+    })
+      .catch(error => {
+        catchError = error;
+
+        return Promise.resolve();
+      })
+      .then(() => {
+        // execa not return error instanceOf Error
+        // expect(catchError).toBeInstanceOf(Error);
+        expect(catchError).toBeNull();
+
+        return Promise.resolve();
+      });
+  });
+
   it("should works and output 'stdout' and 'stderr' with `logLevel: 'info'` command (sync event)", () =>
     run({
       logLevel: "info",

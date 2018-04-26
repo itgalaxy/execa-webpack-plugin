@@ -13,8 +13,7 @@ class CommandRunner {
   }
 
   static buildError(error, command) {
-    const { cmd } = command;
-    const args = command.args || [];
+    const { cmd, args } = command;
 
     return new Error(
       `Command "${cmd}${args.length > 0 ? ` ${args.join(" ")}` : ""}" return ${
@@ -24,6 +23,10 @@ class CommandRunner {
   }
 
   handleResult(result) {
+    if (!result) {
+      return;
+    }
+
     const { stdout, stderr } = result;
 
     if (stdout) {
@@ -44,9 +47,7 @@ class CommandRunner {
   }
 
   run(command, async) {
-    const { cmd } = command;
-    const args = command.args || [];
-    const opts = command.opts || {};
+    const { cmd, args = [], opts = {} } = command;
 
     opts.stdio = ["ignore", "pipe", "pipe"];
 
@@ -76,7 +77,7 @@ class CommandRunner {
 
     this.handleResult(result, cmd, args);
 
-    return result.stdout;
+    return result ? result.stdout : null;
   }
 }
 
