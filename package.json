@@ -48,7 +48,7 @@
     "eslint-plugin-prettier": "^2.1.2",
     "eslint-plugin-promise": "^3.5.0",
     "eslint-plugin-react": "^7.1.0",
-    "eslint-plugin-unicorn": "^4.0.0",
+    "eslint-plugin-unicorn": "^5.0.0",
     "jest": "^22.0.3",
     "husky": "^0.14.1",
     "lint-staged": "^7.0.0",
