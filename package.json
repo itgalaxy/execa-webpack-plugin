@@ -32,7 +32,7 @@
   "main": "src/ExecaWebpackPlugin",
   "dependencies": {
     "execa": "^0.10.0",
-    "webpack-log": "^1.0.2"
+    "webpack-log": "^2.0.0"
   },
   "devDependencies": {
     "babel-eslint": "^8.2.2",
