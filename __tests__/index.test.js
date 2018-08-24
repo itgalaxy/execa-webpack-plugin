@@ -58,7 +58,7 @@ describe("execa-webpack-plugin", () => {
   const otherDir = path.join(__dirname, "other-dir");
 
   it("should throw error on `on*` options are empty (no events)", () =>
-    expect(() => run()).toThrow());
+    expect(() => run()).toThrowErrorMatchingSnapshot());
 
   it("should throw error invalid `onFooBar` option (no events)", () =>
     expect(() =>
@@ -70,7 +70,7 @@ describe("execa-webpack-plugin", () => {
           }
         ]
       })
-    ).toThrow());
+    ).toThrowErrorMatchingSnapshot());
 
   it("should works with `on*` options", () =>
     run({
@@ -222,11 +222,18 @@ describe("execa-webpack-plugin", () => {
         }
       ]
       /* eslint-enable sort-keys */
+    }).then(stats => {
+      const { warnings, errors } = stats.compilation;
+
+      expect(errors).toMatchSnapshot("errors");
+      expect(warnings).toMatchSnapshot("warnings");
+
+      return stats;
     }));
 
   // Need found ways how check `this.eventMap.onCompile` on empty
   it("should works with `onCompile` option (sync event)", () => {
-    expect.assertions(2);
+    expect.assertions(4);
     mkdirSyncSafe(dir);
 
     expect(fs.statSync(dir).isDirectory()).toBe(true);
@@ -238,17 +245,21 @@ describe("execa-webpack-plugin", () => {
           cmd: "del"
         }
       ]
-    }).then(() => {
+    }).then(stats => {
+      const { warnings, errors } = stats.compilation;
+
+      expect(errors).toMatchSnapshot("errors");
+      expect(warnings).toMatchSnapshot("warnings");
       expect(() => fs.statSync(dir)).toThrow();
 
       unlinkSyncSafe(dir);
 
-      return Promise.resolve();
+      return stats;
     });
   });
 
   it("should works with `onCompile` option with empty argument (sync event) ", () => {
-    expect.assertions(2);
+    expect.assertions(4);
 
     mkdirSyncSafe(dir);
 
@@ -261,17 +272,21 @@ describe("execa-webpack-plugin", () => {
           cmd: "del"
         }
       ]
-    }).then(() => {
+    }).then(stats => {
+      const { warnings, errors } = stats.compilation;
+
+      expect(errors).toMatchSnapshot("errors");
+      expect(warnings).toMatchSnapshot("warnings");
       expect(() => fs.statSync(dir)).toThrow();
 
       unlinkSyncSafe(dir);
 
-      return Promise.resolve();
+      return stats;
     });
   });
 
   it("should works with `onCompile` and `dev` is `false` option (sync event)", () => {
-    expect.assertions(2);
+    expect.assertions(4);
 
     mkdirSyncSafe(dir);
 
@@ -285,18 +300,22 @@ describe("execa-webpack-plugin", () => {
           cmd: "del"
         }
       ]
-    }).then(() => {
+    }).then(stats => {
+      const { warnings, errors } = stats.compilation;
+
+      expect(errors).toMatchSnapshot("errors");
+      expect(warnings).toMatchSnapshot("warnings");
       expect(() => fs.statSync(dir)).toThrow();
 
       unlinkSyncSafe(dir);
 
-      return Promise.resolve();
+      return stats;
     });
   });
 
   // Need found ways how check `this.eventMap.onDone` on empty
   it("should works with `onDone` option (async event)", () => {
-    expect.assertions(2);
+    expect.assertions(4);
 
     mkdirSyncSafe(dir);
 
@@ -309,17 +328,21 @@ describe("execa-webpack-plugin", () => {
           cmd: "del"
         }
       ]
-    }).then(() => {
+    }).then(stats => {
+      const { warnings, errors } = stats.compilation;
+
+      expect(errors).toMatchSnapshot("errors");
+      expect(warnings).toMatchSnapshot("warnings");
       expect(() => fs.statSync(dir)).toThrow();
 
       unlinkSyncSafe(dir);
 
-      return Promise.resolve();
+      return stats;
     });
   });
 
   it("should works with `onDone` option with empty argument (async event) ", () => {
-    expect.assertions(2);
+    expect.assertions(4);
 
     mkdirSyncSafe(dir);
 
@@ -332,17 +355,21 @@ describe("execa-webpack-plugin", () => {
           cmd: "del"
         }
       ]
-    }).then(() => {
+    }).then(stats => {
+      const { warnings, errors } = stats.compilation;
+
+      expect(errors).toMatchSnapshot("errors");
+      expect(warnings).toMatchSnapshot("warnings");
       expect(() => fs.statSync(dir)).toThrow();
 
       unlinkSyncSafe(dir);
 
-      return Promise.resolve();
+      return stats;
     });
   });
 
   it("should works with `onDone` and `dev` is `false` options (async event)", () => {
-    expect.assertions(2);
+    expect.assertions(4);
 
     mkdirSyncSafe(dir);
 
@@ -356,20 +383,22 @@ describe("execa-webpack-plugin", () => {
           cmd: "del"
         }
       ]
-    }).then(() => {
+    }).then(stats => {
+      const { warnings, errors } = stats.compilation;
+
+      expect(errors).toMatchSnapshot("errors");
+      expect(warnings).toMatchSnapshot("warnings");
       expect(() => fs.statSync(dir)).toThrow();
 
       unlinkSyncSafe(dir);
 
-      return Promise.resolve();
+      return stats;
     });
   });
 
   it("should throw error with `bail: true` option (sync event)", () => {
     expect.assertions(1);
 
-    let catchError = null;
-
     return run({
       bail: true,
       logLevel: "silent",
@@ -378,26 +407,12 @@ describe("execa-webpack-plugin", () => {
           cmd: "not-found"
         }
       ]
-    })
-      .catch(error => {
-        catchError = error;
-
-        return Promise.resolve();
-      })
-      .then(() => {
-        // execa not return error instanceOf Error
-        // expect(catchError).toBeInstanceOf(Error);
-        expect(catchError).not.toBeNull();
-
-        return Promise.resolve();
-      });
+    }).catch(error => expect(error).toMatchSnapshot());
   });
 
   it("should throw error with `bail: true` option (async event)", () => {
     expect.assertions(1);
 
-    let catchError = null;
-
     return run({
       bail: true,
       logLevel: "silent",
@@ -406,25 +421,11 @@ describe("execa-webpack-plugin", () => {
           cmd: "not-found"
         }
       ]
-    })
-      .catch(error => {
-        catchError = error;
-
-        return Promise.resolve();
-      })
-      .then(() => {
-        // execa not return error instanceOf Error
-        // expect(catchError).toBeInstanceOf(Error);
-        expect(catchError).not.toBeNull();
-
-        return Promise.resolve();
-      });
+    }).catch(error => expect(error).toMatchSnapshot());
   });
 
   it("should not throw error with `bail: false` option (sync event)", () => {
-    expect.assertions(1);
-
-    let catchError = null;
+    expect.assertions(2);
 
     return run({
       bail: false,
@@ -434,25 +435,18 @@ describe("execa-webpack-plugin", () => {
           cmd: "not-found"
         }
       ]
-    })
-      .catch(error => {
-        catchError = error;
+    }).then(stats => {
+      const { warnings, errors } = stats.compilation;
 
-        return Promise.resolve();
-      })
-      .then(() => {
-        // execa not return error instanceOf Error
-        // expect(catchError).toBeInstanceOf(Error);
-        expect(catchError).toBeNull();
+      expect(errors).toMatchSnapshot("errors");
+      expect(warnings).toMatchSnapshot("warnings");
 
-        return Promise.resolve();
-      });
+      return stats;
+    });
   });
 
   it("should not throw error with `bail: false` option (async event)", () => {
-    expect.assertions(1);
-
-    let catchError = null;
+    expect.assertions(2);
 
     return run({
       bail: false,
@@ -462,19 +456,14 @@ describe("execa-webpack-plugin", () => {
           cmd: "not-found"
         }
       ]
-    })
-      .catch(error => {
-        catchError = error;
+    }).then(stats => {
+      const { warnings, errors } = stats.compilation;
 
-        return Promise.resolve();
-      })
-      .then(() => {
-        // execa not return error instanceOf Error
-        // expect(catchError).toBeInstanceOf(Error);
-        expect(catchError).toBeNull();
+      expect(errors).toMatchSnapshot("errors");
+      expect(warnings).toMatchSnapshot("warnings");
 
-        return Promise.resolve();
-      });
+      return stats;
+    });
   });
 
   it("should works and output 'stdout' and 'stderr' with `logLevel: 'info'` command (sync event)", () =>
@@ -486,6 +475,13 @@ describe("execa-webpack-plugin", () => {
           cmd: "node"
         }
       ]
+    }).then(stats => {
+      const { warnings, errors } = stats.compilation;
+
+      expect(errors).toMatchSnapshot("errors");
+      expect(warnings).toMatchSnapshot("warnings");
+
+      return stats;
     }));
 
   it("should works and output 'stdout' and 'stderr' with `logLevel: 'info'` command (async event)", () =>
@@ -497,10 +493,17 @@ describe("execa-webpack-plugin", () => {
           cmd: "node"
         }
       ]
+    }).then(stats => {
+      const { warnings, errors } = stats.compilation;
+
+      expect(errors).toMatchSnapshot("errors");
+      expect(warnings).toMatchSnapshot("warnings");
+
+      return stats;
     }));
 
   it("should works with nested commands (sync event)", () => {
-    expect.assertions(2);
+    expect.assertions(4);
 
     mkdirSyncSafe(dir);
 
@@ -518,17 +521,21 @@ describe("execa-webpack-plugin", () => {
           cmd: "del"
         }
       ]
-    }).then(() => {
+    }).then(stats => {
+      const { warnings, errors } = stats.compilation;
+
+      expect(errors).toMatchSnapshot("errors");
+      expect(warnings).toMatchSnapshot("warnings");
       expect(() => fs.statSync(dir)).toThrow();
 
       unlinkSyncSafe(dir);
 
-      return Promise.resolve();
+      return stats;
     });
   });
 
   it("should works with deep nested commands (sync event)", () => {
-    expect.assertions(2);
+    expect.assertions(4);
 
     mkdirSyncSafe(dir);
 
@@ -551,17 +558,21 @@ describe("execa-webpack-plugin", () => {
           cmd: "del"
         }
       ]
-    }).then(() => {
+    }).then(stats => {
+      const { warnings, errors } = stats.compilation;
+
+      expect(errors).toMatchSnapshot("errors");
+      expect(warnings).toMatchSnapshot("warnings");
       expect(() => fs.statSync(dir)).toThrow();
 
       unlinkSyncSafe(dir);
 
-      return Promise.resolve();
+      return stats;
     });
   });
 
   it("should works with multiple nested commands(sync event)", () => {
-    expect.assertions(4);
+    expect.assertions(6);
 
     mkdirSyncSafe(dir);
     mkdirSyncSafe(otherDir);
@@ -585,19 +596,23 @@ describe("execa-webpack-plugin", () => {
           cmd: "del"
         }
       ]
-    }).then(() => {
+    }).then(stats => {
+      const { warnings, errors } = stats.compilation;
+
+      expect(errors).toMatchSnapshot("errors");
+      expect(warnings).toMatchSnapshot("warnings");
       expect(() => fs.statSync(dir)).toThrow();
       expect(() => fs.statSync(otherDir)).toThrow();
 
       unlinkSyncSafe(dir);
       unlinkSyncSafe(otherDir);
 
-      return Promise.resolve();
+      return stats;
     });
   });
 
   it("should works with nested commands (async event)", () => {
-    expect.assertions(2);
+    expect.assertions(4);
 
     mkdirSyncSafe(dir);
 
@@ -615,17 +630,21 @@ describe("execa-webpack-plugin", () => {
           cmd: "del"
         }
       ]
-    }).then(() => {
+    }).then(stats => {
+      const { warnings, errors } = stats.compilation;
+
+      expect(errors).toMatchSnapshot("errors");
+      expect(warnings).toMatchSnapshot("warnings");
       expect(() => fs.statSync(dir)).toThrow();
 
       unlinkSyncSafe(dir);
 
-      return Promise.resolve();
+      return stats;
     });
   });
 
   it("should works with deep nested commands (async event)", () => {
-    expect.assertions(2);
+    expect.assertions(4);
 
     mkdirSyncSafe(dir);
 
@@ -648,17 +667,21 @@ describe("execa-webpack-plugin", () => {
           cmd: "del"
         }
       ]
-    }).then(() => {
+    }).then(stats => {
+      const { warnings, errors } = stats.compilation;
+
+      expect(errors).toMatchSnapshot("errors");
+      expect(warnings).toMatchSnapshot("warnings");
       expect(() => fs.statSync(dir)).toThrow();
 
       unlinkSyncSafe(dir);
 
-      return Promise.resolve();
+      return stats;
     });
   });
 
   it("should works with multiple nested commands (async event)", () => {
-    expect.assertions(4);
+    expect.assertions(6);
 
     mkdirSyncSafe(dir);
     mkdirSyncSafe(otherDir);
@@ -682,21 +705,23 @@ describe("execa-webpack-plugin", () => {
           cmd: "del"
         }
       ]
-    }).then(() => {
+    }).then(stats => {
+      const { warnings, errors } = stats.compilation;
+
+      expect(errors).toMatchSnapshot("errors");
+      expect(warnings).toMatchSnapshot("warnings");
       expect(() => fs.statSync(dir)).toThrow();
       expect(() => fs.statSync(otherDir)).toThrow();
 
       unlinkSyncSafe(dir);
       unlinkSyncSafe(otherDir);
 
-      return Promise.resolve();
+      return stats;
     });
   });
 
   it("should works when nested commands return nothing and 'bail: false' (sync event)", () => {
-    expect.assertions(1);
-
-    let catchError = null;
+    expect.assertions(2);
 
     return run({
       bail: false,
@@ -712,23 +737,18 @@ describe("execa-webpack-plugin", () => {
           cmd: "del"
         }
       ]
-    })
-      .catch(error => {
-        catchError = error;
+    }).then(stats => {
+      const { warnings, errors } = stats.compilation;
 
-        return Promise.resolve();
-      })
-      .then(() => {
-        expect(catchError).toBeNull();
+      expect(errors).toMatchSnapshot("errors");
+      expect(warnings).toMatchSnapshot("warnings");
 
-        return Promise.resolve();
-      });
+      return stats;
+    });
   });
 
   it("should works when nested commands return nothing and 'bail: false' (async event)", () => {
-    expect.assertions(1);
-
-    let catchError = null;
+    expect.assertions(2);
 
     return run({
       bail: false,
@@ -744,21 +764,18 @@ describe("execa-webpack-plugin", () => {
           cmd: "del"
         }
       ]
-    })
-      .catch(error => {
-        catchError = error;
+    }).then(stats => {
+      const { warnings, errors } = stats.compilation;
 
-        return Promise.resolve();
-      })
-      .then(() => {
-        expect(catchError).toBeNull();
+      expect(errors).toMatchSnapshot("errors");
+      expect(warnings).toMatchSnapshot("warnings");
 
-        return Promise.resolve();
-      });
+      return stats;
+    });
   });
 
   it("should works with options (sync event)", () => {
-    expect.assertions(3);
+    expect.assertions(5);
 
     mkdirSyncSafe(dir);
     mkdirSyncSafe(nestedDir);
@@ -776,17 +793,21 @@ describe("execa-webpack-plugin", () => {
           }
         }
       ]
-    }).then(() => {
+    }).then(stats => {
+      const { warnings, errors } = stats.compilation;
+
+      expect(errors).toMatchSnapshot("errors");
+      expect(warnings).toMatchSnapshot("warnings");
       expect(() => fs.statSync(nestedDir)).toThrow();
 
       unlinkSyncSafe(dir);
 
-      return Promise.resolve();
+      return stats;
     });
   });
 
   it("should works with options (async event)", () => {
-    expect.assertions(3);
+    expect.assertions(5);
 
     mkdirSyncSafe(dir);
     mkdirSyncSafe(nestedDir);
@@ -804,12 +825,16 @@ describe("execa-webpack-plugin", () => {
           }
         }
       ]
-    }).then(() => {
+    }).then(stats => {
+      const { warnings, errors } = stats.compilation;
+
+      expect(errors).toMatchSnapshot("errors");
+      expect(warnings).toMatchSnapshot("warnings");
       expect(() => fs.statSync(nestedDir)).toThrow();
 
       unlinkSyncSafe(dir);
 
-      return Promise.resolve();
+      return stats;
     });
   });
 });

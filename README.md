@@ -145,7 +145,7 @@ Supports log [levels](https://github.com/webpack-contrib/webpack-log#level).
 
 ## Thanks
 
-* [execa](https://github.com/sindresorhus/execa) - API.
+- [execa](https://github.com/sindresorhus/execa) - API.
 
 ## [Changelog](CHANGELOG.md)
 

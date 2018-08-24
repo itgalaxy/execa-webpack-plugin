@@ -1,0 +1,93 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`execa-webpack-plugin should not throw error with \`bail: false\` option (async event): errors 1`] = `Array []`;
+
+exports[`execa-webpack-plugin should not throw error with \`bail: false\` option (async event): warnings 1`] = `Array []`;
+
+exports[`execa-webpack-plugin should not throw error with \`bail: false\` option (sync event): errors 1`] = `Array []`;
+
+exports[`execa-webpack-plugin should not throw error with \`bail: false\` option (sync event): warnings 1`] = `Array []`;
+
+exports[`execa-webpack-plugin should throw error invalid \`onFooBar\` option (no events) 1`] = `"Cannot read property 'tap' of undefined"`;
+
+exports[`execa-webpack-plugin should throw error on \`on*\` options are empty (no events) 1`] = `"Known events not found"`;
+
+exports[`execa-webpack-plugin should throw error with \`bail: true\` option (async event) 1`] = `[Error: spawn not-found ENOENT]`;
+
+exports[`execa-webpack-plugin should throw error with \`bail: true\` option (sync event) 1`] = `[Error: spawnSync not-found ENOENT]`;
+
+exports[`execa-webpack-plugin should works and output 'stdout' and 'stderr' with \`logLevel: 'info'\` command (async event): errors 1`] = `Array []`;
+
+exports[`execa-webpack-plugin should works and output 'stdout' and 'stderr' with \`logLevel: 'info'\` command (async event): warnings 1`] = `Array []`;
+
+exports[`execa-webpack-plugin should works and output 'stdout' and 'stderr' with \`logLevel: 'info'\` command (sync event): errors 1`] = `Array []`;
+
+exports[`execa-webpack-plugin should works and output 'stdout' and 'stderr' with \`logLevel: 'info'\` command (sync event): warnings 1`] = `Array []`;
+
+exports[`execa-webpack-plugin should works when nested commands return nothing and 'bail: false' (async event): errors 1`] = `Array []`;
+
+exports[`execa-webpack-plugin should works when nested commands return nothing and 'bail: false' (async event): warnings 1`] = `Array []`;
+
+exports[`execa-webpack-plugin should works when nested commands return nothing and 'bail: false' (sync event): errors 1`] = `Array []`;
+
+exports[`execa-webpack-plugin should works when nested commands return nothing and 'bail: false' (sync event): warnings 1`] = `Array []`;
+
+exports[`execa-webpack-plugin should works with \`on*\` options: errors 1`] = `Array []`;
+
+exports[`execa-webpack-plugin should works with \`on*\` options: warnings 1`] = `Array []`;
+
+exports[`execa-webpack-plugin should works with \`onCompile\` and \`dev\` is \`false\` option (sync event): errors 1`] = `Array []`;
+
+exports[`execa-webpack-plugin should works with \`onCompile\` and \`dev\` is \`false\` option (sync event): warnings 1`] = `Array []`;
+
+exports[`execa-webpack-plugin should works with \`onCompile\` option (sync event): errors 1`] = `Array []`;
+
+exports[`execa-webpack-plugin should works with \`onCompile\` option (sync event): warnings 1`] = `Array []`;
+
+exports[`execa-webpack-plugin should works with \`onCompile\` option with empty argument (sync event) : errors 1`] = `Array []`;
+
+exports[`execa-webpack-plugin should works with \`onCompile\` option with empty argument (sync event) : warnings 1`] = `Array []`;
+
+exports[`execa-webpack-plugin should works with \`onDone\` and \`dev\` is \`false\` options (async event): errors 1`] = `Array []`;
+
+exports[`execa-webpack-plugin should works with \`onDone\` and \`dev\` is \`false\` options (async event): warnings 1`] = `Array []`;
+
+exports[`execa-webpack-plugin should works with \`onDone\` option (async event): errors 1`] = `Array []`;
+
+exports[`execa-webpack-plugin should works with \`onDone\` option (async event): warnings 1`] = `Array []`;
+
+exports[`execa-webpack-plugin should works with \`onDone\` option with empty argument (async event) : errors 1`] = `Array []`;
+
+exports[`execa-webpack-plugin should works with \`onDone\` option with empty argument (async event) : warnings 1`] = `Array []`;
+
+exports[`execa-webpack-plugin should works with deep nested commands (async event): errors 1`] = `Array []`;
+
+exports[`execa-webpack-plugin should works with deep nested commands (async event): warnings 1`] = `Array []`;
+
+exports[`execa-webpack-plugin should works with deep nested commands (sync event): errors 1`] = `Array []`;
+
+exports[`execa-webpack-plugin should works with deep nested commands (sync event): warnings 1`] = `Array []`;
+
+exports[`execa-webpack-plugin should works with multiple nested commands (async event): errors 1`] = `Array []`;
+
+exports[`execa-webpack-plugin should works with multiple nested commands (async event): warnings 1`] = `Array []`;
+
+exports[`execa-webpack-plugin should works with multiple nested commands(sync event): errors 1`] = `Array []`;
+
+exports[`execa-webpack-plugin should works with multiple nested commands(sync event): warnings 1`] = `Array []`;
+
+exports[`execa-webpack-plugin should works with nested commands (async event): errors 1`] = `Array []`;
+
+exports[`execa-webpack-plugin should works with nested commands (async event): warnings 1`] = `Array []`;
+
+exports[`execa-webpack-plugin should works with nested commands (sync event): errors 1`] = `Array []`;
+
+exports[`execa-webpack-plugin should works with nested commands (sync event): warnings 1`] = `Array []`;
+
+exports[`execa-webpack-plugin should works with options (async event): errors 1`] = `Array []`;
+
+exports[`execa-webpack-plugin should works with options (async event): warnings 1`] = `Array []`;
+
+exports[`execa-webpack-plugin should works with options (sync event): errors 1`] = `Array []`;
+
+exports[`execa-webpack-plugin should works with options (sync event): warnings 1`] = `Array []`;

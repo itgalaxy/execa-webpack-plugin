@@ -37,7 +37,7 @@ matrix:
       sudo: required
 
 before_install:
-  - npm i -g npm
+  - npm i -g npm@latest
   - nvm --version
   - node --version
   - npm --version
