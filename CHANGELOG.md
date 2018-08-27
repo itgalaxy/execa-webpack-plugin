@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](http://semver.org).
 
+## 2.1.2 - 2018-08-29
+
+- Chore: minimum required `execa` version is now `^1.0.0`.
+
 ## 2.1.1 - 2018-08-24
 
 - Chore: minimum required `execa` version is now `^0.11.0`.

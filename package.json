@@ -1,6 +1,6 @@
 {
   "name": "execa-webpack-plugin",
-  "version": "2.1.1",
+  "version": "2.1.2",
   "description": "A better `child_process` for `webpack`",
   "keywords": [
     "exec",
@@ -31,7 +31,7 @@
   "bugs": "https://github.com/itgalaxy/execa-webpack-plugin/issues",
   "main": "src/ExecaWebpackPlugin",
   "dependencies": {
-    "execa": "^0.11.0",
+    "execa": "^1.0.0",
     "webpack-log": "^2.0.0"
   },
   "devDependencies": {
