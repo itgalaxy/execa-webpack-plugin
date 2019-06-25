@@ -3,34 +3,35 @@
 const CommandRunner = require("./CommandRunner");
 
 const eventTypeMap = {
-  onAdditionalPass: true,
-  onAfterCompile: true,
-  onAfterEmit: true,
-  onBeforeCompile: true,
-  onBeforeRun: true,
-  onCompilation: false,
-  onCompile: false,
-  onContextModuleFactory: false,
+  onShouldEmit: false,
   onDone: true,
+  onAdditionalPass: true,
+  onBeforeRun: true,
+  onRun: true,
   onEmit: true,
+  onAfterEmit: true,
+
+  onThisCompilation: false,
+  onCompilation: false,
+  onNormalModuleFactory: false,
+  onContextModuleFactory: false,
+
+  onBeforeCompile: true,
+  onCompile: false,
+  onMake: true,
+  onAfterCompile: true,
+
+  onWatchRun: true,
   onFailed: false,
   onInvalid: false,
-  onMake: true,
-  onNormalModuleFactory: false,
-  onRun: true,
-  onShouldEmit: false,
-  onThisCompilation: false,
   onWatchClose: false,
-  onWatchRun: true,
 
   // Will be remove in `webpack@5`
-  /* eslint-disable sort-keys */
   onEnvironment: false,
   onAfterEnvironment: false,
   onAfterPlugins: false,
   onAfterResolvers: false,
   onEntryOption: false
-  /* eslint-enable sort-keys */
 };
 
 function firstToLowerCase(str) {
@@ -64,8 +65,8 @@ class ExecaWebpackPlugin {
     const runCommand = command => {
       if (async) {
         return Promise.all(command.args).then(resolvedArgs => {
-          command.args = resolvedArgs.map(
-            item => (item[0] && item[0].stdout ? item[0].stdout : item)
+          command.args = resolvedArgs.map(item =>
+            item[0] && item[0].stdout ? item[0].stdout : item
           );
 
           return new CommandRunner(this.options).run(command, async);

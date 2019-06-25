@@ -4,7 +4,6 @@
 [![Travis Build Status](https://img.shields.io/travis/itgalaxy/execa-webpack-plugin/master.svg?label=build)](https://travis-ci.org/itgalaxy/execa-webpack-plugin)
 [![dependencies Status](https://david-dm.org/itgalaxy/execa-webpack-plugin/status.svg)](https://david-dm.org/itgalaxy/execa-webpack-plugin)
 [![devDependencies Status](https://david-dm.org/itgalaxy/execa-webpack-plugin/dev-status.svg)](https://david-dm.org/itgalaxy/execa-webpack-plugin?type=dev)
-[![Greenkeeper badge](https://badges.greenkeeper.io/itgalaxy/execa-webpack-plugin.svg)](https://greenkeeper.io)
 
 A better `child_process` for `webpack`.
 
@@ -55,92 +54,116 @@ List of [events](https://webpack.js.org/api/compiler-hooks/).
 Name of event contain - `on` + event name (first character in upper case).
 Examples: `onBeforeRun`, `onRun`, `onWatchRun`, `onCompile` and etc.
 
+**webpack.config.js**
+
 ```js
-[
-  new ExecaPlugin({
-    onBeforeRun: [
-      {
-        args: ["build"],
-        cmd: "del"
-      }
-    ],
-    onCompile: [
-      {
-        args: ["check"],
-        cmd: "command"
-      }
-    ],
-    // Support nested command
-    onDone: [
-      {
-        args: [
+module.exports = {
+  plugins: [
+    [
+      new ExecaPlugin({
+        onBeforeRun: [
           {
-            args: ["arg"],
-            cmd: "command-return-argument"
-          },
-          "other-argument",
-          {
-            args: ["arg"],
-            cmd: "command-return-other-argument"
+            args: ["build"],
+            cmd: "del"
           }
         ],
-        cmd: "command"
-      }
+        onCompile: [
+          {
+            args: ["check"],
+            cmd: "command"
+          }
+        ],
+        // Support nested command
+        onDone: [
+          {
+            args: [
+              {
+                args: ["arg"],
+                cmd: "command-return-argument"
+              },
+              "other-argument",
+              {
+                args: ["arg"],
+                cmd: "command-return-other-argument"
+              }
+            ],
+            cmd: "command"
+          }
+        ]
+      })
     ]
-  })
-];
+  ]
+};
 ```
 
 ### `bail`
 
+Fail out on the first error instead of tolerating it. To enable it:
+
+**webpack.config.js**
+
 ```js
-[
-  new ExecaPlugin({
-    bail: true,
-    onBeforeRun: [
-      {
-        args: ["build"],
-        cmd: "del"
-      }
+module.exports = {
+  plugins: [
+    [
+      new ExecaPlugin({
+        bail: true,
+        onBeforeRun: [
+          {
+            args: ["build"],
+            cmd: "del"
+          }
+        ]
+      })
     ]
-  })
-];
+  ]
+};
 ```
 
 ### `dev`
 
 If you want to run command(s) in `watch` mode every time you can set `dev` option to false.
 
+**webpack.config.js**
+
 ```js
-[
-  new ExecaPlugin({
-    dev: false,
-    onBeforeRun: [
-      {
-        args: ["build"],
-        cmd: "del"
-      }
-    ]
-  })
-];
+module.exports = {
+  plugins: [
+    new ExecaPlugin({
+      dev: false,
+      onBeforeRun: [
+        {
+          args: ["build"],
+          cmd: "del"
+        }
+      ]
+    })
+  ]
+};
 ```
 
 ### `logLevel`
 
-Supports log [levels](https://github.com/webpack-contrib/webpack-log#level).
+Logging for commands.
+
+Supported logger levels [levels](https://github.com/webpack-contrib/webpack-log#level).
+
+**webpack.config.js**
 
 ```js
-[
-  new ExecaPlugin({
-    logLevel: "info",
-    onBeforeRun: [
-      {
-        args: ["build"],
-        cmd: "del"
-      }
-    ]
-  })
-];
+module.exports = {
+  plugins: [
+    new ExecaPlugin({
+      logLevel: "info",
+      onBeforeRun: [
+        {
+          args: ["build"],
+          cmd: "del"
+        }
+      ]
+    })
+  ]
+};
 ```
 
 ## Thanks

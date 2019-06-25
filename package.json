@@ -1,6 +1,6 @@
 {
   "name": "execa-webpack-plugin",
-  "version": "2.1.2",
+  "version": "3.0.0",
   "description": "A better `child_process` for `webpack`",
   "keywords": [
     "exec",
@@ -21,7 +21,7 @@
     "webpack",
     "plugin"
   ],
-  "author": "Itgalaxy",
+  "author": "itgalaxy",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -31,59 +31,62 @@
   "bugs": "https://github.com/itgalaxy/execa-webpack-plugin/issues",
   "main": "src/ExecaWebpackPlugin",
   "dependencies": {
-    "execa": "^1.0.0",
+    "execa": "^2.0.0",
     "webpack-log": "^2.0.0"
   },
   "devDependencies": {
-    "babel-eslint": "^8.2.2",
-    "del-cli": "^1.1.0",
-    "eslint": "^5.4.0",
-    "eslint-plugin-ava": "^5.1.0",
-    "eslint-plugin-import": "^2.14.0",
-    "eslint-plugin-itgalaxy": "^78.0.0",
-    "eslint-plugin-jest": "^21.21.0",
-    "eslint-plugin-jsx-a11y": "^6.1.1",
-    "eslint-plugin-lodash": "^2.4.3",
-    "eslint-plugin-node": "^7.0.1",
-    "eslint-plugin-promise": "^4.0.0",
-    "eslint-plugin-react": "^7.11.1",
-    "eslint-plugin-unicorn": "^6.0.0",
-    "jest": "^23.5.0",
-    "husky": "^0.14.1",
-    "lint-staged": "^7.0.0",
-    "npm-run-all": "^4.0.1",
-    "npmpub": "^4.1.0",
-    "prettier": "^1.5.2",
-    "remark-cli": "^5.0.0",
-    "remark-preset-lint-itgalaxy": "^13.0.0",
-    "tempy": "^0.2.1",
-    "webpack": "^4.0.0"
+    "babel-eslint": "^10.0.2",
+    "del-cli": "^2.0.0",
+    "eslint": "^5.16.0",
+    "eslint-plugin-ava": "^7.1.0",
+    "eslint-plugin-html": "^5.0.5",
+    "eslint-plugin-import": "^2.18.0",
+    "eslint-plugin-itgalaxy": "^102.0.0",
+    "eslint-plugin-jest": "^22.7.1",
+    "eslint-plugin-jsx-a11y": "^6.2.1",
+    "eslint-plugin-lodash": "^5.1.0",
+    "eslint-plugin-markdown": "^1.0.0",
+    "eslint-plugin-node": "^9.1.0",
+    "eslint-plugin-promise": "^4.1.1",
+    "eslint-plugin-react": "^7.14.2",
+    "eslint-plugin-unicorn": "^9.1.1",
+    "jest": "^24.8.0",
+    "husky": "^2.5.0",
+    "lint-staged": "^8.2.1",
+    "npm-run-all": "^4.1.5",
+    "standard-version": "^6.0.1",
+    "prettier": "^1.18.2",
+    "remark-cli": "^6.0.1",
+    "remark-preset-lint-itgalaxy": "^14.0.0",
+    "tempy": "^0.3.0",
+    "webpack": "^4.35.0"
   },
   "peerDependencies": {
     "webpack": "^4.0.0"
   },
   "scripts": {
-    "precommit": "lint-staged",
-    "lint:prettier": "prettier --list-different '{lib,__tests__}/**/*.{js,mjs,jsx,md}' '*.{js,mjs,jsx,md}'",
+    "lint:prettier": "prettier --list-different '{src,__tests__}/**/*.{js,mjs,jsx,md,yml,yaml}' '*.{js,mjs,jsx,md,yml,yaml}'",
     "lint:js": "eslint --cache --report-unused-disable-directives . --ignore-path .gitignore",
     "lint:md": "remark . -i .gitignore -f -q",
     "lint": "npm-run-all -l -p lint:**",
-    "prettify": "npm run lint:prettier -- --write",
+    "prettier": "npm run lint:prettier -- --write",
     "fix:eslint": "npm run lint:eslint -- --fix",
-    "fix": "npm-run-all -l -p 'fix:**'",
+    "fix": "npm-run-all -l prettier -p 'fix:**'",
     "pretest": "npm run lint",
-    "test": "npm run test-only",
-    "test-only": "jest __tests__/index.test.js --coverage",
-    "release": "npmpub"
+    "test:only": "jest --testPathIgnorePatterns=resources",
+    "test:coverage": "jest --testPathIgnorePatterns=resources --coverage",
+    "test": "npm run test:coverage",
+    "release": "standard-version"
   },
   "eslintConfig": {
     "parserOptions": {
       "sourceType": "script"
     },
     "extends": [
-      "plugin:itgalaxy/jest",
+      "plugin:itgalaxy/node",
       "plugin:itgalaxy/esnext",
-      "plugin:itgalaxy/node"
+      "plugin:itgalaxy/jest",
+      "plugin:itgalaxy/markdown"
     ],
     "overrides": [
       {
@@ -91,8 +94,27 @@
           "**/__tests__/**/*.js"
         ],
         "rules": {
-          "node/shebang": "off",
-          "node/no-unsupported-features": "off"
+          "node/shebang": "off"
+        }
+      },
+      {
+        "files": [
+          "**/*.md"
+        ],
+        "parserOptions": {
+          "ecmaFeatures": {
+            "impliedStrict": true
+          }
+        },
+        "rules": {
+          "strict": "off",
+          "no-undef": "off",
+          "no-unused-vars": "off",
+          "no-process-env": "off",
+          "no-process-exit": "off",
+          "no-console": "off",
+          "import/no-unresolved": "off",
+          "node/no-unpublished-require": "off"
         }
       }
     ],
@@ -104,12 +126,11 @@
     ]
   },
   "engines": {
-    "node": ">= 6.9.0 || >= 8.9.0"
+    "node": ">= 8.9.0"
   },
   "files": [
     "LICENSE",
     "CHANGELOG.md",
-    "index.js",
     "src"
   ]
 }
