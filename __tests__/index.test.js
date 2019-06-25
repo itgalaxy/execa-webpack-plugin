@@ -1,12 +1,14 @@
 "use strict";
 
-const webpack = require("webpack");
 const path = require("path");
-const tempy = require("tempy");
 const fs = require("fs");
+const webpack = require("webpack");
+const tempy = require("tempy");
 const ExecaPlugin = require("../src/ExecaWebpackPlugin");
 
 const resourcesDir = path.join(__dirname, "resources");
+
+jest.setTimeout(30000);
 
 function getConfig(options = {}) {
   return {
@@ -74,25 +76,19 @@ describe("execa-webpack-plugin", () => {
 
   it("should works with `on*` options", () =>
     run({
+      onShouldEmit: [
+        {
+          args: [path.join(resourcesDir, "nothing.js")],
+          cmd: "node"
+        }
+      ],
+      onDone: [
+        {
+          args: [path.join(resourcesDir, "nothing.js")],
+          cmd: "node"
+        }
+      ],
       onAdditionalPass: [
-        {
-          args: [path.join(resourcesDir, "nothing.js")],
-          cmd: "node"
-        }
-      ],
-      onAfterCompile: [
-        {
-          args: [path.join(resourcesDir, "nothing.js")],
-          cmd: "node"
-        }
-      ],
-      onAfterEmit: [
-        {
-          args: [path.join(resourcesDir, "nothing.js")],
-          cmd: "node"
-        }
-      ],
-      onBeforeCompile: [
         {
           args: [path.join(resourcesDir, "nothing.js")],
           cmd: "node"
@@ -104,13 +100,38 @@ describe("execa-webpack-plugin", () => {
           cmd: "node"
         }
       ],
+      onRun: [
+        {
+          args: [path.join(resourcesDir, "nothing.js")],
+          cmd: "node"
+        }
+      ],
+      onEmit: [
+        {
+          args: [path.join(resourcesDir, "nothing.js")],
+          cmd: "node"
+        }
+      ],
+      onAfterEmit: [
+        {
+          args: [path.join(resourcesDir, "nothing.js")],
+          cmd: "node"
+        }
+      ],
+
+      onThisCompilation: [
+        {
+          args: [path.join(resourcesDir, "nothing.js")],
+          cmd: "node"
+        }
+      ],
       onCompilation: [
         {
           args: [path.join(resourcesDir, "nothing.js")],
           cmd: "node"
         }
       ],
-      onCompile: [
+      onNormalModuleFactory: [
         {
           args: [path.join(resourcesDir, "nothing.js")],
           cmd: "node"
@@ -122,13 +143,33 @@ describe("execa-webpack-plugin", () => {
           cmd: "node"
         }
       ],
-      onDone: [
+
+      onBeforeCompile: [
         {
           args: [path.join(resourcesDir, "nothing.js")],
           cmd: "node"
         }
-      ], // in `webpack@3` is sync
-      onEmit: [
+      ],
+      onCompile: [
+        {
+          args: [path.join(resourcesDir, "nothing.js")],
+          cmd: "node"
+        }
+      ],
+      onMake: [
+        {
+          args: [path.join(resourcesDir, "nothing.js")],
+          cmd: "node"
+        }
+      ],
+      onAfterCompile: [
+        {
+          args: [path.join(resourcesDir, "nothing.js")],
+          cmd: "node"
+        }
+      ],
+
+      onWatchRun: [
         {
           args: [path.join(resourcesDir, "nothing.js")],
           cmd: "node"
@@ -146,43 +187,7 @@ describe("execa-webpack-plugin", () => {
           cmd: "node"
         }
       ],
-      onMake: [
-        {
-          args: [path.join(resourcesDir, "nothing.js")],
-          cmd: "node"
-        }
-      ],
-      onNormalModuleFactory: [
-        {
-          args: [path.join(resourcesDir, "nothing.js")],
-          cmd: "node"
-        }
-      ],
-      onRun: [
-        {
-          args: [path.join(resourcesDir, "nothing.js")],
-          cmd: "node"
-        }
-      ],
-      onShouldEmit: [
-        {
-          args: [path.join(resourcesDir, "nothing.js")],
-          cmd: "node"
-        }
-      ],
-      onThisCompilation: [
-        {
-          args: [path.join(resourcesDir, "nothing.js")],
-          cmd: "node"
-        }
-      ],
       onWatchClose: [
-        {
-          args: [path.join(resourcesDir, "nothing.js")],
-          cmd: "node"
-        }
-      ],
-      onWatchRun: [
         {
           args: [path.join(resourcesDir, "nothing.js")],
           cmd: "node"
@@ -190,7 +195,6 @@ describe("execa-webpack-plugin", () => {
       ],
 
       // Will be remove in `webpack@5`
-      /* eslint-disable sort-keys */
       onEnvironment: [
         {
           args: [path.join(resourcesDir, "nothing.js")],
@@ -221,7 +225,6 @@ describe("execa-webpack-plugin", () => {
           cmd: "node"
         }
       ]
-      /* eslint-enable sort-keys */
     }).then(stats => {
       const { warnings, errors } = stats.compilation;
 
@@ -250,7 +253,9 @@ describe("execa-webpack-plugin", () => {
 
       expect(errors).toMatchSnapshot("errors");
       expect(warnings).toMatchSnapshot("warnings");
-      expect(() => fs.statSync(dir)).toThrow();
+      expect(() => fs.statSync(dir)).toThrow(
+        /ENOENT: no such file or directory, stat/
+      );
 
       unlinkSyncSafe(dir);
 
@@ -277,7 +282,9 @@ describe("execa-webpack-plugin", () => {
 
       expect(errors).toMatchSnapshot("errors");
       expect(warnings).toMatchSnapshot("warnings");
-      expect(() => fs.statSync(dir)).toThrow();
+      expect(() => fs.statSync(dir)).toThrow(
+        /ENOENT: no such file or directory, stat/
+      );
 
       unlinkSyncSafe(dir);
 
@@ -305,7 +312,9 @@ describe("execa-webpack-plugin", () => {
 
       expect(errors).toMatchSnapshot("errors");
       expect(warnings).toMatchSnapshot("warnings");
-      expect(() => fs.statSync(dir)).toThrow();
+      expect(() => fs.statSync(dir)).toThrow(
+        /ENOENT: no such file or directory, stat/
+      );
 
       unlinkSyncSafe(dir);
 
@@ -333,7 +342,9 @@ describe("execa-webpack-plugin", () => {
 
       expect(errors).toMatchSnapshot("errors");
       expect(warnings).toMatchSnapshot("warnings");
-      expect(() => fs.statSync(dir)).toThrow();
+      expect(() => fs.statSync(dir)).toThrow(
+        /ENOENT: no such file or directory/
+      );
 
       unlinkSyncSafe(dir);
 
@@ -360,7 +371,9 @@ describe("execa-webpack-plugin", () => {
 
       expect(errors).toMatchSnapshot("errors");
       expect(warnings).toMatchSnapshot("warnings");
-      expect(() => fs.statSync(dir)).toThrow();
+      expect(() => fs.statSync(dir)).toThrow(
+        /ENOENT: no such file or directory, stat/
+      );
 
       unlinkSyncSafe(dir);
 
@@ -388,7 +401,9 @@ describe("execa-webpack-plugin", () => {
 
       expect(errors).toMatchSnapshot("errors");
       expect(warnings).toMatchSnapshot("warnings");
-      expect(() => fs.statSync(dir)).toThrow();
+      expect(() => fs.statSync(dir)).toThrow(
+        /ENOENT: no such file or directory, stat/
+      );
 
       unlinkSyncSafe(dir);
 
@@ -526,7 +541,9 @@ describe("execa-webpack-plugin", () => {
 
       expect(errors).toMatchSnapshot("errors");
       expect(warnings).toMatchSnapshot("warnings");
-      expect(() => fs.statSync(dir)).toThrow();
+      expect(() => fs.statSync(dir)).toThrow(
+        /ENOENT: no such file or directory, stat/
+      );
 
       unlinkSyncSafe(dir);
 
@@ -563,7 +580,9 @@ describe("execa-webpack-plugin", () => {
 
       expect(errors).toMatchSnapshot("errors");
       expect(warnings).toMatchSnapshot("warnings");
-      expect(() => fs.statSync(dir)).toThrow();
+      expect(() => fs.statSync(dir)).toThrow(
+        /ENOENT: no such file or directory, stat/
+      );
 
       unlinkSyncSafe(dir);
 
@@ -601,8 +620,12 @@ describe("execa-webpack-plugin", () => {
 
       expect(errors).toMatchSnapshot("errors");
       expect(warnings).toMatchSnapshot("warnings");
-      expect(() => fs.statSync(dir)).toThrow();
-      expect(() => fs.statSync(otherDir)).toThrow();
+      expect(() => fs.statSync(dir)).toThrow(
+        /ENOENT: no such file or directory, stat/
+      );
+      expect(() => fs.statSync(otherDir)).toThrow(
+        /ENOENT: no such file or directory, stat/
+      );
 
       unlinkSyncSafe(dir);
       unlinkSyncSafe(otherDir);
@@ -635,7 +658,9 @@ describe("execa-webpack-plugin", () => {
 
       expect(errors).toMatchSnapshot("errors");
       expect(warnings).toMatchSnapshot("warnings");
-      expect(() => fs.statSync(dir)).toThrow();
+      expect(() => fs.statSync(dir)).toThrow(
+        /ENOENT: no such file or directory, stat/
+      );
 
       unlinkSyncSafe(dir);
 
@@ -672,7 +697,9 @@ describe("execa-webpack-plugin", () => {
 
       expect(errors).toMatchSnapshot("errors");
       expect(warnings).toMatchSnapshot("warnings");
-      expect(() => fs.statSync(dir)).toThrow();
+      expect(() => fs.statSync(dir)).toThrow(
+        /ENOENT: no such file or directory, stat/
+      );
 
       unlinkSyncSafe(dir);
 
@@ -710,8 +737,12 @@ describe("execa-webpack-plugin", () => {
 
       expect(errors).toMatchSnapshot("errors");
       expect(warnings).toMatchSnapshot("warnings");
-      expect(() => fs.statSync(dir)).toThrow();
-      expect(() => fs.statSync(otherDir)).toThrow();
+      expect(() => fs.statSync(dir)).toThrow(
+        /ENOENT: no such file or directory, stat/
+      );
+      expect(() => fs.statSync(otherDir)).toThrow(
+        /ENOENT: no such file or directory, stat/
+      );
 
       unlinkSyncSafe(dir);
       unlinkSyncSafe(otherDir);
@@ -798,7 +829,9 @@ describe("execa-webpack-plugin", () => {
 
       expect(errors).toMatchSnapshot("errors");
       expect(warnings).toMatchSnapshot("warnings");
-      expect(() => fs.statSync(nestedDir)).toThrow();
+      expect(() => fs.statSync(nestedDir)).toThrow(
+        /ENOENT: no such file or directory, stat/
+      );
 
       unlinkSyncSafe(dir);
 
@@ -830,7 +863,9 @@ describe("execa-webpack-plugin", () => {
 
       expect(errors).toMatchSnapshot("errors");
       expect(warnings).toMatchSnapshot("warnings");
-      expect(() => fs.statSync(nestedDir)).toThrow();
+      expect(() => fs.statSync(nestedDir)).toThrow(
+        /ENOENT: no such file or directory, stat/
+      );
 
       unlinkSyncSafe(dir);
 

@@ -12,9 +12,9 @@ exports[`execa-webpack-plugin should throw error invalid \`onFooBar\` option (no
 
 exports[`execa-webpack-plugin should throw error on \`on*\` options are empty (no events) 1`] = `"Known events not found"`;
 
-exports[`execa-webpack-plugin should throw error with \`bail: true\` option (async event) 1`] = `[Error: spawn not-found ENOENT]`;
+exports[`execa-webpack-plugin should throw error with \`bail: true\` option (async event) 1`] = `[Error: Command failed with exit code 2 (ENOENT): not-found]`;
 
-exports[`execa-webpack-plugin should throw error with \`bail: true\` option (sync event) 1`] = `[Error: spawnSync not-found ENOENT]`;
+exports[`execa-webpack-plugin should throw error with \`bail: true\` option (sync event) 1`] = `[Error: Command failed with exit code 2 (ENOENT): not-found]`;
 
 exports[`execa-webpack-plugin should works and output 'stdout' and 'stderr' with \`logLevel: 'info'\` command (async event): errors 1`] = `Array []`;
 
