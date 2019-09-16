@@ -1,24 +1,19 @@
 "use strict";
 
 const execa = require("execa");
-const weblog = require("webpack-log");
 
 class CommandRunner {
   constructor(options) {
     this.options = options;
-    this.log = weblog({
-      level: this.options.logLevel,
-      name: "execa-webpack-plugin"
-    });
   }
 
   static buildError(error, command) {
     const { cmd, args } = command;
 
     return new Error(
-      `Command "${cmd}${args.length > 0 ? ` ${args.join(" ")}` : ""}" return ${
+      `Command "${cmd}${args.length > 0 ? ` ${args.join(" ")}` : ""}" return "${
         error.message
-      }`
+      }"`
     );
   }
 
@@ -30,32 +25,38 @@ class CommandRunner {
     const { stdout, stderr } = result;
 
     if (stdout) {
-      this.log.info(stdout);
+      this.options.logger.info(
+        `The output of the process on stdout: ${stdout}`
+      );
     }
 
     if (stderr) {
-      this.log.warn(stderr);
+      this.options.logger.warn(
+        `The output of the process on stderr: ${stderr}`
+      );
     }
   }
 
   handleError(error, command) {
-    this.log.error(CommandRunner.buildError(error, command));
+    this.options.logger.error(CommandRunner.buildError(error, command));
 
     if (this.options.bail) {
       throw error;
     }
   }
 
-  run(command, async) {
+  run(command, isAsync, asArg) {
     const { cmd, args = [], options = {} } = command;
 
     options.stdio = ["ignore", "pipe", "pipe"];
 
-    this.log.info(
-      `Run command "${cmd}${args.length > 0 ? ` ${args.join(" ")}` : ""}"`
+    this.options.logger.info(
+      `Run command "${cmd}${args.length > 0 ? ` ${args.join(" ")}` : ""}" ${
+        asArg ? "(the result will be used as an argument)" : ""
+      }`
     );
 
-    if (async) {
+    if (isAsync) {
       return execa(cmd, args, options)
         .then(asyncResult => {
           this.handleResult(asyncResult);
@@ -77,7 +78,7 @@ class CommandRunner {
 
     this.handleResult(result, cmd, args);
 
-    return result ? result.stdout : null;
+    return result;
   }
 }
 

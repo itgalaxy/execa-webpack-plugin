@@ -10,7 +10,9 @@ const resourcesDir = path.join(__dirname, "resources");
 
 jest.setTimeout(30000);
 
-function getConfig(options = {}) {
+let logs = [];
+
+function getConfig(pluginOptions = {}) {
   return {
     entry: path.join(resourcesDir, "app.js"),
     mode: "development",
@@ -18,11 +20,33 @@ function getConfig(options = {}) {
       filename: "bundle.js",
       path: tempy.directory()
     },
-    plugins: [new ExecaPlugin(options)]
+    plugins: [
+      new ExecaPlugin(pluginOptions),
+      {
+        apply(compiler) {
+          compiler.hooks.infrastructureLog.tap(
+            "ExecaWebpackTest",
+            (name, type, args) => {
+              logs.push([
+                name,
+                type,
+                args.map(arg =>
+                  typeof arg === "string"
+                    ? arg.replace(new RegExp(process.cwd(), "g"), "")
+                    : arg
+                )
+              ]);
+
+              return false;
+            }
+          );
+        }
+      }
+    ]
   };
 }
 
-function run(options) {
+function compile(options) {
   const compiler = webpack(getConfig(options));
 
   return new Promise((resolve, reject) => {
@@ -58,24 +82,75 @@ describe("execa-webpack-plugin", () => {
   const dir = path.join(__dirname, "dir");
   const nestedDir = path.join(dir, "nested");
   const otherDir = path.join(__dirname, "other-dir");
+  const otherOtherDir = path.join(__dirname, "other-dir");
 
-  it("should throw error on `on*` options are empty (no events)", () =>
-    expect(() => run()).toThrowErrorMatchingSnapshot());
+  beforeEach(() => {
+    logs = [];
+  });
 
-  it("should throw error invalid `onFooBar` option (no events)", () =>
-    expect(() =>
-      run({
+  it("should throw error on 'on*' options are empty (no events)", async () => {
+    expect.assertions(2);
+
+    try {
+      await compile();
+    } catch (error) {
+      // eslint-disable-next-line jest/no-try-expect
+      expect(error).toMatchSnapshot();
+    }
+
+    expect(logs).toMatchSnapshot("logs");
+  });
+
+  it("should throw error invalid 'onFooBar' option (no hooks)", async () => {
+    expect.assertions(2);
+
+    try {
+      await compile({
         onFooBar: [
           {
             args: [path.join(resourcesDir, "nothing.js")],
             cmd: "node"
           }
         ]
-      })
-    ).toThrowErrorMatchingSnapshot());
+      });
+    } catch (error) {
+      // eslint-disable-next-line jest/no-try-expect
+      expect(error).toMatchSnapshot();
+    }
 
-  it("should works with `on*` options", () =>
-    run({
+    expect(logs).toMatchSnapshot("logs");
+  });
+
+  it("should throw error on 'infrastructureLog' hook", async () => {
+    expect.assertions(2);
+
+    try {
+      await compile({
+        onInfrastructureLog: [
+          {
+            args: [path.join(resourcesDir, "nothing.js")],
+            cmd: "node"
+          }
+        ]
+      });
+    } catch (error) {
+      // eslint-disable-next-line jest/no-try-expect
+      expect(error).toMatchSnapshot();
+    }
+
+    expect(logs).toMatchSnapshot("logs");
+  });
+
+  it("should output warning on empty hook", async () => {
+    await compile({
+      onCompile: []
+    });
+
+    expect(logs).toMatchSnapshot("logs");
+  });
+
+  it("should work with 'on*' options", async () => {
+    const stats = await compile({
       onShouldEmit: [
         {
           args: [path.join(resourcesDir, "nothing.js")],
@@ -225,81 +300,83 @@ describe("execa-webpack-plugin", () => {
           cmd: "node"
         }
       ]
-    }).then(stats => {
-      const { warnings, errors } = stats.compilation;
+    });
 
-      expect(errors).toMatchSnapshot("errors");
-      expect(warnings).toMatchSnapshot("warnings");
+    const { warnings, errors } = stats.compilation;
 
-      return stats;
-    }));
+    expect(logs).toMatchSnapshot("logs");
+    expect(errors).toMatchSnapshot("errors");
+    expect(warnings).toMatchSnapshot("warnings");
 
-  // Need found ways how check `this.eventMap.onCompile` on empty
-  it("should works with `onCompile` option (sync event)", () => {
-    expect.assertions(4);
+    return stats;
+  });
+
+  it("many arguments in hook (sync hook)", async () => {
+    const stats = await compile({
+      onThisCompilation: [
+        {
+          args: [path.join(resourcesDir, "nothing.js")],
+          cmd: "node"
+        }
+      ]
+    });
+
+    const { warnings, errors } = stats.compilation;
+
+    expect(logs).toMatchSnapshot("logs");
+    expect(errors).toMatchSnapshot("errors");
+    expect(warnings).toMatchSnapshot("warnings");
+  });
+
+  it("many arguments in hook (async hook)", async () => {
+    const stats = await compile({
+      onAssetEmitted: [
+        {
+          args: [path.join(resourcesDir, "nothing.js")],
+          cmd: "node"
+        }
+      ]
+    });
+
+    const { warnings, errors } = stats.compilation;
+
+    expect(logs).toMatchSnapshot("logs");
+    expect(errors).toMatchSnapshot("errors");
+    expect(warnings).toMatchSnapshot("warnings");
+  });
+
+  it("should work with 'onCompile' option (sync hook)", async () => {
     mkdirSyncSafe(dir);
 
     expect(fs.statSync(dir).isDirectory()).toBe(true);
 
-    return run({
+    const stats = await compile({
       onCompile: [
         {
           args: [dir],
           cmd: "del"
         }
       ]
-    }).then(stats => {
-      const { warnings, errors } = stats.compilation;
-
-      expect(errors).toMatchSnapshot("errors");
-      expect(warnings).toMatchSnapshot("warnings");
-      expect(() => fs.statSync(dir)).toThrow(
-        /ENOENT: no such file or directory, stat/
-      );
-
-      unlinkSyncSafe(dir);
-
-      return stats;
     });
+
+    const { warnings, errors } = stats.compilation;
+
+    expect(logs).toMatchSnapshot("logs");
+    expect(errors).toMatchSnapshot("errors");
+    expect(warnings).toMatchSnapshot("warnings");
+    expect(() => fs.statSync(dir)).toThrow(
+      /ENOENT: no such file or directory, stat/
+    );
+
+    unlinkSyncSafe(dir);
   });
 
-  it("should works with `onCompile` option with empty argument (sync event) ", () => {
-    expect.assertions(4);
-
+  it("should work with 'onCompile' and 'dev' is 'false' option (sync hook)", async () => {
     mkdirSyncSafe(dir);
 
     expect(fs.statSync(dir).isDirectory()).toBe(true);
 
-    return run({
-      onCompile: [
-        {
-          args: [dir, "", [], {}],
-          cmd: "del"
-        }
-      ]
-    }).then(stats => {
-      const { warnings, errors } = stats.compilation;
-
-      expect(errors).toMatchSnapshot("errors");
-      expect(warnings).toMatchSnapshot("warnings");
-      expect(() => fs.statSync(dir)).toThrow(
-        /ENOENT: no such file or directory, stat/
-      );
-
-      unlinkSyncSafe(dir);
-
-      return stats;
-    });
-  });
-
-  it("should works with `onCompile` and `dev` is `false` option (sync event)", () => {
-    expect.assertions(4);
-
-    mkdirSyncSafe(dir);
-
-    expect(fs.statSync(dir).isDirectory()).toBe(true);
-
-    return run({
+    const stats = await compile({
       dev: false,
       onCompile: [
         {
@@ -307,88 +384,50 @@ describe("execa-webpack-plugin", () => {
           cmd: "del"
         }
       ]
-    }).then(stats => {
-      const { warnings, errors } = stats.compilation;
-
-      expect(errors).toMatchSnapshot("errors");
-      expect(warnings).toMatchSnapshot("warnings");
-      expect(() => fs.statSync(dir)).toThrow(
-        /ENOENT: no such file or directory, stat/
-      );
-
-      unlinkSyncSafe(dir);
-
-      return stats;
     });
+
+    const { warnings, errors } = stats.compilation;
+
+    expect(logs).toMatchSnapshot("logs");
+    expect(errors).toMatchSnapshot("errors");
+    expect(warnings).toMatchSnapshot("warnings");
+    expect(() => fs.statSync(dir)).toThrow(
+      /ENOENT: no such file or directory, stat/
+    );
+
+    unlinkSyncSafe(dir);
   });
 
-  // Need found ways how check `this.eventMap.onDone` on empty
-  it("should works with `onDone` option (async event)", () => {
-    expect.assertions(4);
-
+  it("should work with 'onDone' option (async hook)", async () => {
     mkdirSyncSafe(dir);
 
     expect(fs.statSync(dir).isDirectory()).toBe(true);
 
-    return run({
+    const stats = await compile({
       onDone: [
         {
           args: [dir],
           cmd: "del"
         }
       ]
-    }).then(stats => {
-      const { warnings, errors } = stats.compilation;
-
-      expect(errors).toMatchSnapshot("errors");
-      expect(warnings).toMatchSnapshot("warnings");
-      expect(() => fs.statSync(dir)).toThrow(
-        /ENOENT: no such file or directory/
-      );
-
-      unlinkSyncSafe(dir);
-
-      return stats;
     });
+
+    const { warnings, errors } = stats.compilation;
+
+    expect(logs).toMatchSnapshot("logs");
+    expect(errors).toMatchSnapshot("errors");
+    expect(warnings).toMatchSnapshot("warnings");
+    expect(() => fs.statSync(dir)).toThrow(/ENOENT: no such file or directory/);
+
+    unlinkSyncSafe(dir);
   });
 
-  it("should works with `onDone` option with empty argument (async event) ", () => {
-    expect.assertions(4);
-
+  it("should work with 'onDone' and 'dev' is 'false' options (async hook)", async () => {
     mkdirSyncSafe(dir);
 
     expect(fs.statSync(dir).isDirectory()).toBe(true);
 
-    return run({
-      onDone: [
-        {
-          args: [dir, "", [], {}],
-          cmd: "del"
-        }
-      ]
-    }).then(stats => {
-      const { warnings, errors } = stats.compilation;
-
-      expect(errors).toMatchSnapshot("errors");
-      expect(warnings).toMatchSnapshot("warnings");
-      expect(() => fs.statSync(dir)).toThrow(
-        /ENOENT: no such file or directory, stat/
-      );
-
-      unlinkSyncSafe(dir);
-
-      return stats;
-    });
-  });
-
-  it("should works with `onDone` and `dev` is `false` options (async event)", () => {
-    expect.assertions(4);
-
-    mkdirSyncSafe(dir);
-
-    expect(fs.statSync(dir).isDirectory()).toBe(true);
-
-    return run({
+    const stats = await compile({
       dev: false,
       onDone: [
         {
@@ -396,135 +435,134 @@ describe("execa-webpack-plugin", () => {
           cmd: "del"
         }
       ]
-    }).then(stats => {
-      const { warnings, errors } = stats.compilation;
-
-      expect(errors).toMatchSnapshot("errors");
-      expect(warnings).toMatchSnapshot("warnings");
-      expect(() => fs.statSync(dir)).toThrow(
-        /ENOENT: no such file or directory, stat/
-      );
-
-      unlinkSyncSafe(dir);
-
-      return stats;
     });
+
+    const { warnings, errors } = stats.compilation;
+
+    expect(logs).toMatchSnapshot("logs");
+    expect(errors).toMatchSnapshot("errors");
+    expect(warnings).toMatchSnapshot("warnings");
+    expect(() => fs.statSync(dir)).toThrow(
+      /ENOENT: no such file or directory, stat/
+    );
+
+    unlinkSyncSafe(dir);
   });
 
-  it("should throw error with `bail: true` option (sync event)", () => {
-    expect.assertions(1);
+  it("should throw error with 'bail: true' option (sync hook)", async () => {
+    expect.assertions(2);
 
-    return run({
-      bail: true,
-      logLevel: "silent",
+    try {
+      await compile({
+        bail: true,
+        onDone: [
+          {
+            cmd: "not-found"
+          }
+        ]
+      });
+    } catch (error) {
+      // eslint-disable-next-line jest/no-try-expect
+      expect(error).toMatchSnapshot();
+    }
+
+    expect(logs).toMatchSnapshot("logs");
+  });
+
+  it("should throw error with 'bail: true' option (async hook)", async () => {
+    expect.assertions(2);
+
+    try {
+      await compile({
+        bail: true,
+        onDone: [
+          {
+            cmd: "not-found"
+          }
+        ]
+      });
+    } catch (error) {
+      // eslint-disable-next-line jest/no-try-expect
+      expect(error).toMatchSnapshot();
+    }
+
+    expect(logs).toMatchSnapshot("logs");
+  });
+
+  it("should not throw error with 'bail: false' option (sync hook)", async () => {
+    const stats = await compile({
+      bail: false,
       onCompile: [
         {
           cmd: "not-found"
         }
       ]
-    }).catch(error => expect(error).toMatchSnapshot());
+    });
+
+    const { warnings, errors } = stats.compilation;
+
+    expect(logs).toMatchSnapshot("logs");
+    expect(errors).toMatchSnapshot("errors");
+    expect(warnings).toMatchSnapshot("warnings");
   });
 
-  it("should throw error with `bail: true` option (async event)", () => {
-    expect.assertions(1);
-
-    return run({
-      bail: true,
-      logLevel: "silent",
+  it("should not throw error with 'bail: false' option (async hook)", async () => {
+    const stats = await compile({
+      bail: false,
       onDone: [
         {
           cmd: "not-found"
         }
       ]
-    }).catch(error => expect(error).toMatchSnapshot());
-  });
-
-  it("should not throw error with `bail: false` option (sync event)", () => {
-    expect.assertions(2);
-
-    return run({
-      bail: false,
-      logLevel: "silent",
-      onCompile: [
-        {
-          cmd: "not-found"
-        }
-      ]
-    }).then(stats => {
-      const { warnings, errors } = stats.compilation;
-
-      expect(errors).toMatchSnapshot("errors");
-      expect(warnings).toMatchSnapshot("warnings");
-
-      return stats;
     });
+
+    const { warnings, errors } = stats.compilation;
+
+    expect(logs).toMatchSnapshot("logs");
+    expect(errors).toMatchSnapshot("errors");
+    expect(warnings).toMatchSnapshot("warnings");
   });
 
-  it("should not throw error with `bail: false` option (async event)", () => {
-    expect.assertions(2);
-
-    return run({
-      bail: false,
-      logLevel: "silent",
-      onDone: [
-        {
-          cmd: "not-found"
-        }
-      ]
-    }).then(stats => {
-      const { warnings, errors } = stats.compilation;
-
-      expect(errors).toMatchSnapshot("errors");
-      expect(warnings).toMatchSnapshot("warnings");
-
-      return stats;
-    });
-  });
-
-  it("should works and output 'stdout' and 'stderr' with `logLevel: 'info'` command (sync event)", () =>
-    run({
-      logLevel: "info",
+  it("should work and output 'stdout' and 'stderr' (sync hook)", async () => {
+    const stats = await compile({
       onCompile: [
         {
           args: [path.join(resourcesDir, "cli-stdout-stderr.js")],
           cmd: "node"
         }
       ]
-    }).then(stats => {
-      const { warnings, errors } = stats.compilation;
+    });
 
-      expect(errors).toMatchSnapshot("errors");
-      expect(warnings).toMatchSnapshot("warnings");
+    const { warnings, errors } = stats.compilation;
 
-      return stats;
-    }));
+    expect(logs).toMatchSnapshot("logs");
+    expect(errors).toMatchSnapshot("errors");
+    expect(warnings).toMatchSnapshot("warnings");
+  });
 
-  it("should works and output 'stdout' and 'stderr' with `logLevel: 'info'` command (async event)", () =>
-    run({
-      logLevel: "info",
+  it("should work and output 'stdout' and 'stderr' (async hook)", async () => {
+    const stats = await compile({
       onDone: [
         {
           args: [path.join(resourcesDir, "cli-stdout-stderr.js")],
           cmd: "node"
         }
       ]
-    }).then(stats => {
-      const { warnings, errors } = stats.compilation;
+    });
 
-      expect(errors).toMatchSnapshot("errors");
-      expect(warnings).toMatchSnapshot("warnings");
+    const { warnings, errors } = stats.compilation;
 
-      return stats;
-    }));
+    expect(logs).toMatchSnapshot("logs");
+    expect(errors).toMatchSnapshot("errors");
+    expect(warnings).toMatchSnapshot("warnings");
+  });
 
-  it("should works with nested commands (sync event)", () => {
-    expect.assertions(4);
-
+  it("should work with nested commands (sync hook)", async () => {
     mkdirSyncSafe(dir);
 
     expect(fs.statSync(dir).isDirectory()).toBe(true);
 
-    return run({
+    const stats = await compile({
       onCompile: [
         {
           args: [
@@ -536,29 +574,26 @@ describe("execa-webpack-plugin", () => {
           cmd: "del"
         }
       ]
-    }).then(stats => {
-      const { warnings, errors } = stats.compilation;
-
-      expect(errors).toMatchSnapshot("errors");
-      expect(warnings).toMatchSnapshot("warnings");
-      expect(() => fs.statSync(dir)).toThrow(
-        /ENOENT: no such file or directory, stat/
-      );
-
-      unlinkSyncSafe(dir);
-
-      return stats;
     });
+
+    const { warnings, errors } = stats.compilation;
+
+    expect(logs).toMatchSnapshot("logs");
+    expect(errors).toMatchSnapshot("errors");
+    expect(warnings).toMatchSnapshot("warnings");
+    expect(() => fs.statSync(dir)).toThrow(
+      /ENOENT: no such file or directory, stat/
+    );
+
+    unlinkSyncSafe(dir);
   });
 
-  it("should works with deep nested commands (sync event)", () => {
-    expect.assertions(4);
-
+  it("should work with deep nested commands (sync hook)", async () => {
     mkdirSyncSafe(dir);
 
     expect(fs.statSync(dir).isDirectory()).toBe(true);
 
-    return run({
+    const stats = await compile({
       onCompile: [
         {
           args: [
@@ -575,31 +610,28 @@ describe("execa-webpack-plugin", () => {
           cmd: "del"
         }
       ]
-    }).then(stats => {
-      const { warnings, errors } = stats.compilation;
-
-      expect(errors).toMatchSnapshot("errors");
-      expect(warnings).toMatchSnapshot("warnings");
-      expect(() => fs.statSync(dir)).toThrow(
-        /ENOENT: no such file or directory, stat/
-      );
-
-      unlinkSyncSafe(dir);
-
-      return stats;
     });
+
+    const { warnings, errors } = stats.compilation;
+
+    expect(logs).toMatchSnapshot("logs");
+    expect(errors).toMatchSnapshot("errors");
+    expect(warnings).toMatchSnapshot("warnings");
+    expect(() => fs.statSync(dir)).toThrow(
+      /ENOENT: no such file or directory, stat/
+    );
+
+    unlinkSyncSafe(dir);
   });
 
-  it("should works with multiple nested commands(sync event)", () => {
-    expect.assertions(6);
-
+  it("should work with multiple nested commands (sync hook)", async () => {
     mkdirSyncSafe(dir);
     mkdirSyncSafe(otherDir);
 
     expect(fs.statSync(dir).isDirectory()).toBe(true);
     expect(fs.statSync(otherDir).isDirectory()).toBe(true);
 
-    return run({
+    const stats = await compile({
       onCompile: [
         {
           args: [
@@ -615,33 +647,30 @@ describe("execa-webpack-plugin", () => {
           cmd: "del"
         }
       ]
-    }).then(stats => {
-      const { warnings, errors } = stats.compilation;
-
-      expect(errors).toMatchSnapshot("errors");
-      expect(warnings).toMatchSnapshot("warnings");
-      expect(() => fs.statSync(dir)).toThrow(
-        /ENOENT: no such file or directory, stat/
-      );
-      expect(() => fs.statSync(otherDir)).toThrow(
-        /ENOENT: no such file or directory, stat/
-      );
-
-      unlinkSyncSafe(dir);
-      unlinkSyncSafe(otherDir);
-
-      return stats;
     });
+
+    const { warnings, errors } = stats.compilation;
+
+    expect(logs).toMatchSnapshot("logs");
+    expect(errors).toMatchSnapshot("errors");
+    expect(warnings).toMatchSnapshot("warnings");
+    expect(() => fs.statSync(dir)).toThrow(
+      /ENOENT: no such file or directory, stat/
+    );
+    expect(() => fs.statSync(otherDir)).toThrow(
+      /ENOENT: no such file or directory, stat/
+    );
+
+    unlinkSyncSafe(dir);
+    unlinkSyncSafe(otherDir);
   });
 
-  it("should works with nested commands (async event)", () => {
-    expect.assertions(4);
-
+  it("should work with nested commands (async hook)", async () => {
     mkdirSyncSafe(dir);
 
     expect(fs.statSync(dir).isDirectory()).toBe(true);
 
-    return run({
+    const stats = await compile({
       onDone: [
         {
           args: [
@@ -653,29 +682,26 @@ describe("execa-webpack-plugin", () => {
           cmd: "del"
         }
       ]
-    }).then(stats => {
-      const { warnings, errors } = stats.compilation;
-
-      expect(errors).toMatchSnapshot("errors");
-      expect(warnings).toMatchSnapshot("warnings");
-      expect(() => fs.statSync(dir)).toThrow(
-        /ENOENT: no such file or directory, stat/
-      );
-
-      unlinkSyncSafe(dir);
-
-      return stats;
     });
+
+    const { warnings, errors } = stats.compilation;
+
+    expect(logs).toMatchSnapshot("logs");
+    expect(errors).toMatchSnapshot("errors");
+    expect(warnings).toMatchSnapshot("warnings");
+    expect(() => fs.statSync(dir)).toThrow(
+      /ENOENT: no such file or directory, stat/
+    );
+
+    unlinkSyncSafe(dir);
   });
 
-  it("should works with deep nested commands (async event)", () => {
-    expect.assertions(4);
-
+  it("should work with deep nested commands (async hook)", async () => {
     mkdirSyncSafe(dir);
 
     expect(fs.statSync(dir).isDirectory()).toBe(true);
 
-    return run({
+    const stats = await compile({
       onDone: [
         {
           args: [
@@ -692,31 +718,30 @@ describe("execa-webpack-plugin", () => {
           cmd: "del"
         }
       ]
-    }).then(stats => {
-      const { warnings, errors } = stats.compilation;
-
-      expect(errors).toMatchSnapshot("errors");
-      expect(warnings).toMatchSnapshot("warnings");
-      expect(() => fs.statSync(dir)).toThrow(
-        /ENOENT: no such file or directory, stat/
-      );
-
-      unlinkSyncSafe(dir);
-
-      return stats;
     });
+
+    const { warnings, errors } = stats.compilation;
+
+    expect(logs).toMatchSnapshot("logs");
+    expect(errors).toMatchSnapshot("errors");
+    expect(warnings).toMatchSnapshot("warnings");
+    expect(() => fs.statSync(dir)).toThrow(
+      /ENOENT: no such file or directory, stat/
+    );
+
+    unlinkSyncSafe(dir);
   });
 
-  it("should works with multiple nested commands (async event)", () => {
-    expect.assertions(6);
-
+  it("should work with multiple nested commands (async hook)", async () => {
     mkdirSyncSafe(dir);
     mkdirSyncSafe(otherDir);
+    mkdirSyncSafe(otherOtherDir);
 
     expect(fs.statSync(dir).isDirectory()).toBe(true);
     expect(fs.statSync(otherDir).isDirectory()).toBe(true);
+    expect(fs.statSync(otherOtherDir).isDirectory()).toBe(true);
 
-    return run({
+    const stats = await compile({
       onDone: [
         {
           args: [
@@ -727,36 +752,41 @@ describe("execa-webpack-plugin", () => {
             {
               args: [path.join(resourcesDir, "nested-other.js")],
               cmd: "node"
+            },
+            {
+              args: [path.join(resourcesDir, "nested-other-other.js")],
+              cmd: "node"
             }
           ],
           cmd: "del"
         }
       ]
-    }).then(stats => {
-      const { warnings, errors } = stats.compilation;
-
-      expect(errors).toMatchSnapshot("errors");
-      expect(warnings).toMatchSnapshot("warnings");
-      expect(() => fs.statSync(dir)).toThrow(
-        /ENOENT: no such file or directory, stat/
-      );
-      expect(() => fs.statSync(otherDir)).toThrow(
-        /ENOENT: no such file or directory, stat/
-      );
-
-      unlinkSyncSafe(dir);
-      unlinkSyncSafe(otherDir);
-
-      return stats;
     });
+
+    const { warnings, errors } = stats.compilation;
+
+    // Not a best solution, temporary
+    expect(logs.sort()).toMatchSnapshot("logs");
+    expect(errors).toMatchSnapshot("errors");
+    expect(warnings).toMatchSnapshot("warnings");
+    expect(() => fs.statSync(dir)).toThrow(
+      /ENOENT: no such file or directory, stat/
+    );
+    expect(() => fs.statSync(otherDir)).toThrow(
+      /ENOENT: no such file or directory, stat/
+    );
+    expect(() => fs.statSync(otherOtherDir)).toThrow(
+      /ENOENT: no such file or directory, stat/
+    );
+
+    unlinkSyncSafe(dir);
+    unlinkSyncSafe(otherDir);
+    unlinkSyncSafe(otherOtherDir);
   });
 
-  it("should works when nested commands return nothing and 'bail: false' (sync event)", () => {
-    expect.assertions(2);
-
-    return run({
+  it("should work when nested commands return nothing and 'bail: false' (sync hook)", async () => {
+    const stats = await compile({
       bail: false,
-      logLevel: "silent",
       onCompile: [
         {
           args: [
@@ -768,22 +798,18 @@ describe("execa-webpack-plugin", () => {
           cmd: "del"
         }
       ]
-    }).then(stats => {
-      const { warnings, errors } = stats.compilation;
-
-      expect(errors).toMatchSnapshot("errors");
-      expect(warnings).toMatchSnapshot("warnings");
-
-      return stats;
     });
+
+    const { warnings, errors } = stats.compilation;
+
+    expect(logs).toMatchSnapshot("logs");
+    expect(errors).toMatchSnapshot("errors");
+    expect(warnings).toMatchSnapshot("warnings");
   });
 
-  it("should works when nested commands return nothing and 'bail: false' (async event)", () => {
-    expect.assertions(2);
-
-    return run({
+  it("should work when nested commands return nothing and 'bail: false' (async hook)", async () => {
+    const stats = await compile({
       bail: false,
-      logLevel: "silent",
       onDone: [
         {
           args: [
@@ -795,26 +821,23 @@ describe("execa-webpack-plugin", () => {
           cmd: "del"
         }
       ]
-    }).then(stats => {
-      const { warnings, errors } = stats.compilation;
-
-      expect(errors).toMatchSnapshot("errors");
-      expect(warnings).toMatchSnapshot("warnings");
-
-      return stats;
     });
+
+    const { warnings, errors } = stats.compilation;
+
+    expect(logs).toMatchSnapshot("logs");
+    expect(errors).toMatchSnapshot("errors");
+    expect(warnings).toMatchSnapshot("warnings");
   });
 
-  it("should works with options (sync event)", () => {
-    expect.assertions(5);
-
+  it("should work with options (sync hook)", async () => {
     mkdirSyncSafe(dir);
     mkdirSyncSafe(nestedDir);
 
     expect(fs.statSync(dir).isDirectory()).toBe(true);
     expect(fs.statSync(nestedDir).isDirectory()).toBe(true);
 
-    return run({
+    const stats = await compile({
       onCompile: [
         {
           args: [nestedDir],
@@ -824,31 +847,28 @@ describe("execa-webpack-plugin", () => {
           }
         }
       ]
-    }).then(stats => {
-      const { warnings, errors } = stats.compilation;
-
-      expect(errors).toMatchSnapshot("errors");
-      expect(warnings).toMatchSnapshot("warnings");
-      expect(() => fs.statSync(nestedDir)).toThrow(
-        /ENOENT: no such file or directory, stat/
-      );
-
-      unlinkSyncSafe(dir);
-
-      return stats;
     });
+
+    const { warnings, errors } = stats.compilation;
+
+    expect(logs).toMatchSnapshot("logs");
+    expect(errors).toMatchSnapshot("errors");
+    expect(warnings).toMatchSnapshot("warnings");
+    expect(() => fs.statSync(nestedDir)).toThrow(
+      /ENOENT: no such file or directory, stat/
+    );
+
+    unlinkSyncSafe(dir);
   });
 
-  it("should works with options (async event)", () => {
-    expect.assertions(5);
-
+  it("should work with options (async hook)", async () => {
     mkdirSyncSafe(dir);
     mkdirSyncSafe(nestedDir);
 
     expect(fs.statSync(dir).isDirectory()).toBe(true);
     expect(fs.statSync(nestedDir).isDirectory()).toBe(true);
 
-    return run({
+    const stats = await compile({
       onDone: [
         {
           args: [nestedDir],
@@ -858,18 +878,17 @@ describe("execa-webpack-plugin", () => {
           }
         }
       ]
-    }).then(stats => {
-      const { warnings, errors } = stats.compilation;
-
-      expect(errors).toMatchSnapshot("errors");
-      expect(warnings).toMatchSnapshot("warnings");
-      expect(() => fs.statSync(nestedDir)).toThrow(
-        /ENOENT: no such file or directory, stat/
-      );
-
-      unlinkSyncSafe(dir);
-
-      return stats;
     });
+
+    const { warnings, errors } = stats.compilation;
+
+    expect(logs).toMatchSnapshot("logs");
+    expect(errors).toMatchSnapshot("errors");
+    expect(warnings).toMatchSnapshot("warnings");
+    expect(() => fs.statSync(nestedDir)).toThrow(
+      /ENOENT: no such file or directory, stat/
+    );
+
+    unlinkSyncSafe(dir);
   });
 });

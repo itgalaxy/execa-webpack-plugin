@@ -41,17 +41,16 @@ Note: [list of command options](https://github.com/sindresorhus/execa#options).
 
 ## Options
 
-|         Name          |    Type     |         Default         | Description                                                                                                                                   |
-| :-------------------: | :---------: | :---------------------: | :-------------------------------------------------------------------------------------------------------------------------------------------- |
-| **`on(NameOfEvent)`** |  `{Array}`  |          `[]`           | Array of scripts to execute on the event.                                                                                                     |  |
-|      **`bail`**       | `{Boolean}` | `compiler.options.bail` | Report the first error as a hard error instead of tolerating it.                                                                              |
-|       **`dev`**       | `{Boolean}` |         `true`          | Switch for development environments. This causes scripts to execute once. Useful for running HMR on webpack-dev-server or webpack watch mode. |
-|    **`logLevel`**     |  `string`   |         `warn`          | Enable logging.                                                                                                                               |
+|         Name         |    Type     |         Default         | Description                                                                                                                                   |
+| :------------------: | :---------: | :---------------------: | :-------------------------------------------------------------------------------------------------------------------------------------------- |
+| **`on(NameOfHook)`** |  `{Array}`  |          `[]`           | Array of commands to execute on the hook.                                                                                                     |  |
+|      **`bail`**      | `{Boolean}` | `compiler.options.bail` | Report the first error as a hard error instead of tolerating it.                                                                              |
+|      **`dev`**       | `{Boolean}` |         `true`          | Switch for development environments. This causes scripts to execute once. Useful for running HMR on webpack-dev-server or webpack watch mode. |
 
-### `on(NameOfEvent)`
+### `on(NameOfHook)`
 
-List of [events](https://webpack.js.org/api/compiler-hooks/).
-Name of event contain - `on` + event name (first character in upper case).
+List of [hooks](https://webpack.js.org/api/compiler-hooks/).
+The name of hook contains: `on` + hook name (first character in upper case).
 Examples: `onBeforeRun`, `onRun`, `onWatchRun`, `onCompile` and etc.
 
 **webpack.config.js**
@@ -142,19 +141,19 @@ module.exports = {
 };
 ```
 
-### `logLevel`
+## Examples
 
-Logging for commands.
-
-Supported logger levels [levels](https://github.com/webpack-contrib/webpack-log#level).
+### Set logger level
 
 **webpack.config.js**
 
 ```js
 module.exports = {
+  infrastructureLogging: {
+    level: "warn"
+  },
   plugins: [
     new ExecaPlugin({
-      logLevel: "info",
       onBeforeRun: [
         {
           args: ["build"],
