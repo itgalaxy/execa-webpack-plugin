@@ -4,6 +4,17 @@ All notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](http://semver.org).
 
+## 4.0.0 - 2019-09-16
+
+- Changed: the option `logLevel` is removed.
+- Changed: use built-in webpack logger.
+- Changed: minimum require `webpack` version is `4.37.0`.
+- Fixed: throw error on `infrastructureLog` hook.
+- Fixed: output warning on empty hook commands.
+- Fixed: argument is empty when nested command does't return nothing.
+- Fixed: error message.
+- Fixed: invalid hook signature for some hook
+
 ## 3.0.0 - 2019-06-25
 
 - Changed: minimum require node version is >= 8.9.0.

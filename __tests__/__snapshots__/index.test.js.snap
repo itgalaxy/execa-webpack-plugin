@@ -1,93 +1,1341 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`execa-webpack-plugin should not throw error with \`bail: false\` option (async event): errors 1`] = `Array []`;
+exports[`execa-webpack-plugin many arguments in hook (async hook): errors 1`] = `Array []`;
 
-exports[`execa-webpack-plugin should not throw error with \`bail: false\` option (async event): warnings 1`] = `Array []`;
+exports[`execa-webpack-plugin many arguments in hook (async hook): logs 1`] = `
+Array [
+  Array [
+    "ExecaPlugin",
+    "info",
+    Array [
+      "Running the \\"assetEmitted\\" hook",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "info",
+    Array [
+      "Run command \\"node /__tests__/resources/nothing.js\\" ",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "info",
+    Array [
+      "The \\"assetEmitted\\" hook completed",
+    ],
+  ],
+]
+`;
 
-exports[`execa-webpack-plugin should not throw error with \`bail: false\` option (sync event): errors 1`] = `Array []`;
+exports[`execa-webpack-plugin many arguments in hook (async hook): warnings 1`] = `Array []`;
 
-exports[`execa-webpack-plugin should not throw error with \`bail: false\` option (sync event): warnings 1`] = `Array []`;
+exports[`execa-webpack-plugin many arguments in hook (sync hook): errors 1`] = `Array []`;
 
-exports[`execa-webpack-plugin should throw error invalid \`onFooBar\` option (no events) 1`] = `"Cannot read property 'tap' of undefined"`;
+exports[`execa-webpack-plugin many arguments in hook (sync hook): logs 1`] = `
+Array [
+  Array [
+    "ExecaPlugin",
+    "info",
+    Array [
+      "Running the \\"thisCompilation\\" hook",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "info",
+    Array [
+      "Run command \\"node /__tests__/resources/nothing.js\\" ",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "info",
+    Array [
+      "The \\"thisCompilation\\" hook completed",
+    ],
+  ],
+]
+`;
 
-exports[`execa-webpack-plugin should throw error on \`on*\` options are empty (no events) 1`] = `"Known events not found"`;
+exports[`execa-webpack-plugin many arguments in hook (sync hook): warnings 1`] = `Array []`;
 
-exports[`execa-webpack-plugin should throw error with \`bail: true\` option (async event) 1`] = `[Error: Command failed with exit code 2 (ENOENT): not-found]`;
+exports[`execa-webpack-plugin should not throw error with 'bail: false' option (async hook): errors 1`] = `Array []`;
 
-exports[`execa-webpack-plugin should throw error with \`bail: true\` option (sync event) 1`] = `[Error: Command failed with exit code 2 (ENOENT): not-found]`;
+exports[`execa-webpack-plugin should not throw error with 'bail: false' option (async hook): logs 1`] = `
+Array [
+  Array [
+    "ExecaPlugin",
+    "info",
+    Array [
+      "Running the \\"done\\" hook",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "info",
+    Array [
+      "Run command \\"not-found\\" ",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "error",
+    Array [
+      [Error: Command "not-found" return "Command failed with exit code 2 (ENOENT): not-found"],
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "info",
+    Array [
+      "The \\"done\\" hook completed",
+    ],
+  ],
+]
+`;
 
-exports[`execa-webpack-plugin should works and output 'stdout' and 'stderr' with \`logLevel: 'info'\` command (async event): errors 1`] = `Array []`;
+exports[`execa-webpack-plugin should not throw error with 'bail: false' option (async hook): warnings 1`] = `Array []`;
 
-exports[`execa-webpack-plugin should works and output 'stdout' and 'stderr' with \`logLevel: 'info'\` command (async event): warnings 1`] = `Array []`;
+exports[`execa-webpack-plugin should not throw error with 'bail: false' option (sync hook): errors 1`] = `Array []`;
 
-exports[`execa-webpack-plugin should works and output 'stdout' and 'stderr' with \`logLevel: 'info'\` command (sync event): errors 1`] = `Array []`;
+exports[`execa-webpack-plugin should not throw error with 'bail: false' option (sync hook): logs 1`] = `
+Array [
+  Array [
+    "ExecaPlugin",
+    "info",
+    Array [
+      "Running the \\"compile\\" hook",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "info",
+    Array [
+      "Run command \\"not-found\\" ",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "error",
+    Array [
+      [Error: Command "not-found" return "Command failed with exit code 2 (ENOENT): not-found"],
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "info",
+    Array [
+      "The \\"compile\\" hook completed",
+    ],
+  ],
+]
+`;
 
-exports[`execa-webpack-plugin should works and output 'stdout' and 'stderr' with \`logLevel: 'info'\` command (sync event): warnings 1`] = `Array []`;
+exports[`execa-webpack-plugin should not throw error with 'bail: false' option (sync hook): warnings 1`] = `Array []`;
 
-exports[`execa-webpack-plugin should works when nested commands return nothing and 'bail: false' (async event): errors 1`] = `Array []`;
+exports[`execa-webpack-plugin should output warning on empty hook: logs 1`] = `
+Array [
+  Array [
+    "ExecaPlugin",
+    "info",
+    Array [
+      "Running the \\"compile\\" hook",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "warn",
+    Array [
+      "No commands found for \\"compile\\" hook",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "info",
+    Array [
+      "The \\"compile\\" hook completed",
+    ],
+  ],
+]
+`;
 
-exports[`execa-webpack-plugin should works when nested commands return nothing and 'bail: false' (async event): warnings 1`] = `Array []`;
+exports[`execa-webpack-plugin should throw error invalid 'onFooBar' option (no hooks) 1`] = `[Error: The hook "fooBar" not found]`;
 
-exports[`execa-webpack-plugin should works when nested commands return nothing and 'bail: false' (sync event): errors 1`] = `Array []`;
+exports[`execa-webpack-plugin should throw error invalid 'onFooBar' option (no hooks): logs 1`] = `Array []`;
 
-exports[`execa-webpack-plugin should works when nested commands return nothing and 'bail: false' (sync event): warnings 1`] = `Array []`;
+exports[`execa-webpack-plugin should throw error on 'infrastructureLog' hook 1`] = `[Error: Do not use "infrastructureLog" hook]`;
 
-exports[`execa-webpack-plugin should works with \`on*\` options: errors 1`] = `Array []`;
+exports[`execa-webpack-plugin should throw error on 'infrastructureLog' hook: logs 1`] = `Array []`;
 
-exports[`execa-webpack-plugin should works with \`on*\` options: warnings 1`] = `Array []`;
+exports[`execa-webpack-plugin should throw error on 'on*' options are empty (no events) 1`] = `[TypeError: No known hooks found]`;
 
-exports[`execa-webpack-plugin should works with \`onCompile\` and \`dev\` is \`false\` option (sync event): errors 1`] = `Array []`;
+exports[`execa-webpack-plugin should throw error on 'on*' options are empty (no events): logs 1`] = `Array []`;
 
-exports[`execa-webpack-plugin should works with \`onCompile\` and \`dev\` is \`false\` option (sync event): warnings 1`] = `Array []`;
+exports[`execa-webpack-plugin should throw error with 'bail: true' option (async hook) 1`] = `[Error: Command failed with exit code 2 (ENOENT): not-found]`;
 
-exports[`execa-webpack-plugin should works with \`onCompile\` option (sync event): errors 1`] = `Array []`;
+exports[`execa-webpack-plugin should throw error with 'bail: true' option (async hook): logs 1`] = `
+Array [
+  Array [
+    "ExecaPlugin",
+    "info",
+    Array [
+      "Running the \\"done\\" hook",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "info",
+    Array [
+      "Run command \\"not-found\\" ",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "error",
+    Array [
+      [Error: Command "not-found" return "Command failed with exit code 2 (ENOENT): not-found"],
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "info",
+    Array [
+      "The \\"done\\" hook completed",
+    ],
+  ],
+]
+`;
 
-exports[`execa-webpack-plugin should works with \`onCompile\` option (sync event): warnings 1`] = `Array []`;
+exports[`execa-webpack-plugin should throw error with 'bail: true' option (sync hook) 1`] = `[Error: Command failed with exit code 2 (ENOENT): not-found]`;
 
-exports[`execa-webpack-plugin should works with \`onCompile\` option with empty argument (sync event) : errors 1`] = `Array []`;
+exports[`execa-webpack-plugin should throw error with 'bail: true' option (sync hook): logs 1`] = `
+Array [
+  Array [
+    "ExecaPlugin",
+    "info",
+    Array [
+      "Running the \\"done\\" hook",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "info",
+    Array [
+      "Run command \\"not-found\\" ",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "error",
+    Array [
+      [Error: Command "not-found" return "Command failed with exit code 2 (ENOENT): not-found"],
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "info",
+    Array [
+      "The \\"done\\" hook completed",
+    ],
+  ],
+]
+`;
 
-exports[`execa-webpack-plugin should works with \`onCompile\` option with empty argument (sync event) : warnings 1`] = `Array []`;
+exports[`execa-webpack-plugin should work and output 'stdout' and 'stderr' (async hook): errors 1`] = `Array []`;
 
-exports[`execa-webpack-plugin should works with \`onDone\` and \`dev\` is \`false\` options (async event): errors 1`] = `Array []`;
+exports[`execa-webpack-plugin should work and output 'stdout' and 'stderr' (async hook): logs 1`] = `
+Array [
+  Array [
+    "ExecaPlugin",
+    "info",
+    Array [
+      "Running the \\"done\\" hook",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "info",
+    Array [
+      "Run command \\"node /__tests__/resources/cli-stdout-stderr.js\\" ",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "info",
+    Array [
+      "The output of the process on stdout: stdout",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "warn",
+    Array [
+      "The output of the process on stderr: stderr",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "info",
+    Array [
+      "The \\"done\\" hook completed",
+    ],
+  ],
+]
+`;
 
-exports[`execa-webpack-plugin should works with \`onDone\` and \`dev\` is \`false\` options (async event): warnings 1`] = `Array []`;
+exports[`execa-webpack-plugin should work and output 'stdout' and 'stderr' (async hook): warnings 1`] = `Array []`;
 
-exports[`execa-webpack-plugin should works with \`onDone\` option (async event): errors 1`] = `Array []`;
+exports[`execa-webpack-plugin should work and output 'stdout' and 'stderr' (sync hook): errors 1`] = `Array []`;
 
-exports[`execa-webpack-plugin should works with \`onDone\` option (async event): warnings 1`] = `Array []`;
+exports[`execa-webpack-plugin should work and output 'stdout' and 'stderr' (sync hook): logs 1`] = `
+Array [
+  Array [
+    "ExecaPlugin",
+    "info",
+    Array [
+      "Running the \\"compile\\" hook",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "info",
+    Array [
+      "Run command \\"node /__tests__/resources/cli-stdout-stderr.js\\" ",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "info",
+    Array [
+      "The output of the process on stdout: stdout",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "warn",
+    Array [
+      "The output of the process on stderr: stderr",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "info",
+    Array [
+      "The \\"compile\\" hook completed",
+    ],
+  ],
+]
+`;
 
-exports[`execa-webpack-plugin should works with \`onDone\` option with empty argument (async event) : errors 1`] = `Array []`;
+exports[`execa-webpack-plugin should work and output 'stdout' and 'stderr' (sync hook): warnings 1`] = `Array []`;
 
-exports[`execa-webpack-plugin should works with \`onDone\` option with empty argument (async event) : warnings 1`] = `Array []`;
+exports[`execa-webpack-plugin should work when nested commands return nothing and 'bail: false' (async hook): errors 1`] = `Array []`;
 
-exports[`execa-webpack-plugin should works with deep nested commands (async event): errors 1`] = `Array []`;
+exports[`execa-webpack-plugin should work when nested commands return nothing and 'bail: false' (async hook): logs 1`] = `
+Array [
+  Array [
+    "ExecaPlugin",
+    "info",
+    Array [
+      "Running the \\"done\\" hook",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "info",
+    Array [
+      "Run command \\"node /__tests__/resources/nothing.js\\" (the result will be used as an argument)",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "info",
+    Array [
+      "Run command \\"del \\" ",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "error",
+    Array [
+      [Error: Command "del " return "Command failed with exit code 1 (EPERM): del "],
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "info",
+    Array [
+      "The \\"done\\" hook completed",
+    ],
+  ],
+]
+`;
 
-exports[`execa-webpack-plugin should works with deep nested commands (async event): warnings 1`] = `Array []`;
+exports[`execa-webpack-plugin should work when nested commands return nothing and 'bail: false' (async hook): warnings 1`] = `Array []`;
 
-exports[`execa-webpack-plugin should works with deep nested commands (sync event): errors 1`] = `Array []`;
+exports[`execa-webpack-plugin should work when nested commands return nothing and 'bail: false' (sync hook): errors 1`] = `Array []`;
 
-exports[`execa-webpack-plugin should works with deep nested commands (sync event): warnings 1`] = `Array []`;
+exports[`execa-webpack-plugin should work when nested commands return nothing and 'bail: false' (sync hook): logs 1`] = `
+Array [
+  Array [
+    "ExecaPlugin",
+    "info",
+    Array [
+      "Running the \\"compile\\" hook",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "info",
+    Array [
+      "Run command \\"node /__tests__/resources/nothing.js\\" (the result will be used as an argument)",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "info",
+    Array [
+      "Run command \\"del \\" ",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "error",
+    Array [
+      [Error: Command "del " return "Command failed with exit code 1 (EPERM): del "],
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "info",
+    Array [
+      "The \\"compile\\" hook completed",
+    ],
+  ],
+]
+`;
 
-exports[`execa-webpack-plugin should works with multiple nested commands (async event): errors 1`] = `Array []`;
+exports[`execa-webpack-plugin should work when nested commands return nothing and 'bail: false' (sync hook): warnings 1`] = `Array []`;
 
-exports[`execa-webpack-plugin should works with multiple nested commands (async event): warnings 1`] = `Array []`;
+exports[`execa-webpack-plugin should work with 'on*' options: errors 1`] = `Array []`;
 
-exports[`execa-webpack-plugin should works with multiple nested commands(sync event): errors 1`] = `Array []`;
+exports[`execa-webpack-plugin should work with 'on*' options: logs 1`] = `
+Array [
+  Array [
+    "ExecaPlugin",
+    "info",
+    Array [
+      "Running the \\"environment\\" hook",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "info",
+    Array [
+      "Run command \\"node /__tests__/resources/nothing.js\\" ",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "info",
+    Array [
+      "The \\"environment\\" hook completed",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "info",
+    Array [
+      "Running the \\"afterEnvironment\\" hook",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "info",
+    Array [
+      "Run command \\"node /__tests__/resources/nothing.js\\" ",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "info",
+    Array [
+      "The \\"afterEnvironment\\" hook completed",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "info",
+    Array [
+      "Running the \\"entryOption\\" hook",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "info",
+    Array [
+      "Run command \\"node /__tests__/resources/nothing.js\\" ",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "info",
+    Array [
+      "The \\"entryOption\\" hook completed",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "info",
+    Array [
+      "Running the \\"afterPlugins\\" hook",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "info",
+    Array [
+      "Run command \\"node /__tests__/resources/nothing.js\\" ",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "info",
+    Array [
+      "The \\"afterPlugins\\" hook completed",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "info",
+    Array [
+      "Running the \\"afterResolvers\\" hook",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "info",
+    Array [
+      "Run command \\"node /__tests__/resources/nothing.js\\" ",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "info",
+    Array [
+      "The \\"afterResolvers\\" hook completed",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "info",
+    Array [
+      "Running the \\"beforeRun\\" hook",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "info",
+    Array [
+      "Run command \\"node /__tests__/resources/nothing.js\\" ",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "info",
+    Array [
+      "The \\"beforeRun\\" hook completed",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "info",
+    Array [
+      "Running the \\"run\\" hook",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "info",
+    Array [
+      "Run command \\"node /__tests__/resources/nothing.js\\" ",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "info",
+    Array [
+      "The \\"run\\" hook completed",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "info",
+    Array [
+      "Running the \\"normalModuleFactory\\" hook",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "info",
+    Array [
+      "Run command \\"node /__tests__/resources/nothing.js\\" ",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "info",
+    Array [
+      "The \\"normalModuleFactory\\" hook completed",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "info",
+    Array [
+      "Running the \\"contextModuleFactory\\" hook",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "info",
+    Array [
+      "Run command \\"node /__tests__/resources/nothing.js\\" ",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "info",
+    Array [
+      "The \\"contextModuleFactory\\" hook completed",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "info",
+    Array [
+      "Running the \\"beforeCompile\\" hook",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "info",
+    Array [
+      "Run command \\"node /__tests__/resources/nothing.js\\" ",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "info",
+    Array [
+      "The \\"beforeCompile\\" hook completed",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "info",
+    Array [
+      "Running the \\"compile\\" hook",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "info",
+    Array [
+      "Run command \\"node /__tests__/resources/nothing.js\\" ",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "info",
+    Array [
+      "The \\"compile\\" hook completed",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "info",
+    Array [
+      "Running the \\"thisCompilation\\" hook",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "info",
+    Array [
+      "Run command \\"node /__tests__/resources/nothing.js\\" ",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "info",
+    Array [
+      "The \\"thisCompilation\\" hook completed",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "info",
+    Array [
+      "Running the \\"compilation\\" hook",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "info",
+    Array [
+      "Run command \\"node /__tests__/resources/nothing.js\\" ",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "info",
+    Array [
+      "The \\"compilation\\" hook completed",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "info",
+    Array [
+      "Running the \\"make\\" hook",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "info",
+    Array [
+      "Run command \\"node /__tests__/resources/nothing.js\\" ",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "info",
+    Array [
+      "The \\"make\\" hook completed",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "info",
+    Array [
+      "Running the \\"afterCompile\\" hook",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "info",
+    Array [
+      "Run command \\"node /__tests__/resources/nothing.js\\" ",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "info",
+    Array [
+      "The \\"afterCompile\\" hook completed",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "info",
+    Array [
+      "Running the \\"shouldEmit\\" hook",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "info",
+    Array [
+      "Run command \\"node /__tests__/resources/nothing.js\\" ",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "info",
+    Array [
+      "The \\"shouldEmit\\" hook completed",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "info",
+    Array [
+      "Running the \\"emit\\" hook",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "info",
+    Array [
+      "Run command \\"node /__tests__/resources/nothing.js\\" ",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "info",
+    Array [
+      "The \\"emit\\" hook completed",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "info",
+    Array [
+      "Running the \\"afterEmit\\" hook",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "info",
+    Array [
+      "Run command \\"node /__tests__/resources/nothing.js\\" ",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "info",
+    Array [
+      "The \\"afterEmit\\" hook completed",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "info",
+    Array [
+      "Running the \\"done\\" hook",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "info",
+    Array [
+      "Run command \\"node /__tests__/resources/nothing.js\\" ",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "info",
+    Array [
+      "The \\"done\\" hook completed",
+    ],
+  ],
+]
+`;
 
-exports[`execa-webpack-plugin should works with multiple nested commands(sync event): warnings 1`] = `Array []`;
+exports[`execa-webpack-plugin should work with 'on*' options: warnings 1`] = `Array []`;
 
-exports[`execa-webpack-plugin should works with nested commands (async event): errors 1`] = `Array []`;
+exports[`execa-webpack-plugin should work with 'onCompile' and 'dev' is 'false' option (sync hook): errors 1`] = `Array []`;
 
-exports[`execa-webpack-plugin should works with nested commands (async event): warnings 1`] = `Array []`;
+exports[`execa-webpack-plugin should work with 'onCompile' and 'dev' is 'false' option (sync hook): logs 1`] = `
+Array [
+  Array [
+    "ExecaPlugin",
+    "info",
+    Array [
+      "Running the \\"compile\\" hook",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "info",
+    Array [
+      "Run command \\"del /__tests__/dir\\" ",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "info",
+    Array [
+      "The \\"compile\\" hook completed",
+    ],
+  ],
+]
+`;
 
-exports[`execa-webpack-plugin should works with nested commands (sync event): errors 1`] = `Array []`;
+exports[`execa-webpack-plugin should work with 'onCompile' and 'dev' is 'false' option (sync hook): warnings 1`] = `Array []`;
 
-exports[`execa-webpack-plugin should works with nested commands (sync event): warnings 1`] = `Array []`;
+exports[`execa-webpack-plugin should work with 'onCompile' option (sync hook): errors 1`] = `Array []`;
 
-exports[`execa-webpack-plugin should works with options (async event): errors 1`] = `Array []`;
+exports[`execa-webpack-plugin should work with 'onCompile' option (sync hook): logs 1`] = `
+Array [
+  Array [
+    "ExecaPlugin",
+    "info",
+    Array [
+      "Running the \\"compile\\" hook",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "info",
+    Array [
+      "Run command \\"del /__tests__/dir\\" ",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "info",
+    Array [
+      "The \\"compile\\" hook completed",
+    ],
+  ],
+]
+`;
 
-exports[`execa-webpack-plugin should works with options (async event): warnings 1`] = `Array []`;
+exports[`execa-webpack-plugin should work with 'onCompile' option (sync hook): warnings 1`] = `Array []`;
 
-exports[`execa-webpack-plugin should works with options (sync event): errors 1`] = `Array []`;
+exports[`execa-webpack-plugin should work with 'onDone' and 'dev' is 'false' options (async hook): errors 1`] = `Array []`;
 
-exports[`execa-webpack-plugin should works with options (sync event): warnings 1`] = `Array []`;
+exports[`execa-webpack-plugin should work with 'onDone' and 'dev' is 'false' options (async hook): logs 1`] = `
+Array [
+  Array [
+    "ExecaPlugin",
+    "info",
+    Array [
+      "Running the \\"done\\" hook",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "info",
+    Array [
+      "Run command \\"del /__tests__/dir\\" ",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "info",
+    Array [
+      "The \\"done\\" hook completed",
+    ],
+  ],
+]
+`;
+
+exports[`execa-webpack-plugin should work with 'onDone' and 'dev' is 'false' options (async hook): warnings 1`] = `Array []`;
+
+exports[`execa-webpack-plugin should work with 'onDone' option (async hook): errors 1`] = `Array []`;
+
+exports[`execa-webpack-plugin should work with 'onDone' option (async hook): logs 1`] = `
+Array [
+  Array [
+    "ExecaPlugin",
+    "info",
+    Array [
+      "Running the \\"done\\" hook",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "info",
+    Array [
+      "Run command \\"del /__tests__/dir\\" ",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "info",
+    Array [
+      "The \\"done\\" hook completed",
+    ],
+  ],
+]
+`;
+
+exports[`execa-webpack-plugin should work with 'onDone' option (async hook): warnings 1`] = `Array []`;
+
+exports[`execa-webpack-plugin should work with deep nested commands (async hook): errors 1`] = `Array []`;
+
+exports[`execa-webpack-plugin should work with deep nested commands (async hook): logs 1`] = `
+Array [
+  Array [
+    "ExecaPlugin",
+    "info",
+    Array [
+      "Running the \\"done\\" hook",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "info",
+    Array [
+      "Run command \\"node /__tests__/resources/nested-nested.js\\" (the result will be used as an argument)",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "info",
+    Array [
+      "The output of the process on stdout: /__tests__/resources/nested.js",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "info",
+    Array [
+      "Run command \\"node /__tests__/resources/nested.js\\" (the result will be used as an argument)",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "info",
+    Array [
+      "The output of the process on stdout: /__tests__/dir",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "info",
+    Array [
+      "Run command \\"del /__tests__/dir\\" ",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "info",
+    Array [
+      "The \\"done\\" hook completed",
+    ],
+  ],
+]
+`;
+
+exports[`execa-webpack-plugin should work with deep nested commands (async hook): warnings 1`] = `Array []`;
+
+exports[`execa-webpack-plugin should work with deep nested commands (sync hook): errors 1`] = `Array []`;
+
+exports[`execa-webpack-plugin should work with deep nested commands (sync hook): logs 1`] = `
+Array [
+  Array [
+    "ExecaPlugin",
+    "info",
+    Array [
+      "Running the \\"compile\\" hook",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "info",
+    Array [
+      "Run command \\"node /__tests__/resources/nested-nested.js\\" (the result will be used as an argument)",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "info",
+    Array [
+      "The output of the process on stdout: /__tests__/resources/nested.js",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "info",
+    Array [
+      "Run command \\"node /__tests__/resources/nested.js\\" (the result will be used as an argument)",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "info",
+    Array [
+      "The output of the process on stdout: /__tests__/dir",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "info",
+    Array [
+      "Run command \\"del /__tests__/dir\\" ",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "info",
+    Array [
+      "The \\"compile\\" hook completed",
+    ],
+  ],
+]
+`;
+
+exports[`execa-webpack-plugin should work with deep nested commands (sync hook): warnings 1`] = `Array []`;
+
+exports[`execa-webpack-plugin should work with multiple nested commands (async hook): errors 1`] = `Array []`;
+
+exports[`execa-webpack-plugin should work with multiple nested commands (async hook): logs 1`] = `
+Array [
+  Array [
+    "ExecaPlugin",
+    "info",
+    Array [
+      "Run command \\"del /__tests__/dir /__tests__/other-dir /__tests__/other-other-dir\\" ",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "info",
+    Array [
+      "Run command \\"node /__tests__/resources/nested-other-other.js\\" (the result will be used as an argument)",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "info",
+    Array [
+      "Run command \\"node /__tests__/resources/nested-other.js\\" (the result will be used as an argument)",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "info",
+    Array [
+      "Run command \\"node /__tests__/resources/nested.js\\" (the result will be used as an argument)",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "info",
+    Array [
+      "Running the \\"done\\" hook",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "info",
+    Array [
+      "The \\"done\\" hook completed",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "info",
+    Array [
+      "The output of the process on stdout: /__tests__/dir",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "info",
+    Array [
+      "The output of the process on stdout: /__tests__/other-dir",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "info",
+    Array [
+      "The output of the process on stdout: /__tests__/other-other-dir",
+    ],
+  ],
+]
+`;
+
+exports[`execa-webpack-plugin should work with multiple nested commands (async hook): warnings 1`] = `Array []`;
+
+exports[`execa-webpack-plugin should work with multiple nested commands (sync hook): errors 1`] = `Array []`;
+
+exports[`execa-webpack-plugin should work with multiple nested commands (sync hook): logs 1`] = `
+Array [
+  Array [
+    "ExecaPlugin",
+    "info",
+    Array [
+      "Running the \\"compile\\" hook",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "info",
+    Array [
+      "Run command \\"node /__tests__/resources/nested.js\\" (the result will be used as an argument)",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "info",
+    Array [
+      "The output of the process on stdout: /__tests__/dir",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "info",
+    Array [
+      "Run command \\"node /__tests__/resources/nested-other.js\\" (the result will be used as an argument)",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "info",
+    Array [
+      "The output of the process on stdout: /__tests__/other-dir",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "info",
+    Array [
+      "Run command \\"del /__tests__/dir /__tests__/other-dir\\" ",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "info",
+    Array [
+      "The \\"compile\\" hook completed",
+    ],
+  ],
+]
+`;
+
+exports[`execa-webpack-plugin should work with multiple nested commands (sync hook): warnings 1`] = `Array []`;
+
+exports[`execa-webpack-plugin should work with nested commands (async hook): errors 1`] = `Array []`;
+
+exports[`execa-webpack-plugin should work with nested commands (async hook): logs 1`] = `
+Array [
+  Array [
+    "ExecaPlugin",
+    "info",
+    Array [
+      "Running the \\"done\\" hook",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "info",
+    Array [
+      "Run command \\"node /__tests__/resources/nested.js\\" (the result will be used as an argument)",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "info",
+    Array [
+      "The output of the process on stdout: /__tests__/dir",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "info",
+    Array [
+      "Run command \\"del /__tests__/dir\\" ",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "info",
+    Array [
+      "The \\"done\\" hook completed",
+    ],
+  ],
+]
+`;
+
+exports[`execa-webpack-plugin should work with nested commands (async hook): warnings 1`] = `Array []`;
+
+exports[`execa-webpack-plugin should work with nested commands (sync hook): errors 1`] = `Array []`;
+
+exports[`execa-webpack-plugin should work with nested commands (sync hook): logs 1`] = `
+Array [
+  Array [
+    "ExecaPlugin",
+    "info",
+    Array [
+      "Running the \\"compile\\" hook",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "info",
+    Array [
+      "Run command \\"node /__tests__/resources/nested.js\\" (the result will be used as an argument)",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "info",
+    Array [
+      "The output of the process on stdout: /__tests__/dir",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "info",
+    Array [
+      "Run command \\"del /__tests__/dir\\" ",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "info",
+    Array [
+      "The \\"compile\\" hook completed",
+    ],
+  ],
+]
+`;
+
+exports[`execa-webpack-plugin should work with nested commands (sync hook): warnings 1`] = `Array []`;
+
+exports[`execa-webpack-plugin should work with options (async hook): errors 1`] = `Array []`;
+
+exports[`execa-webpack-plugin should work with options (async hook): logs 1`] = `
+Array [
+  Array [
+    "ExecaPlugin",
+    "info",
+    Array [
+      "Running the \\"done\\" hook",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "info",
+    Array [
+      "Run command \\"del /__tests__/dir/nested\\" ",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "info",
+    Array [
+      "The \\"done\\" hook completed",
+    ],
+  ],
+]
+`;
+
+exports[`execa-webpack-plugin should work with options (async hook): warnings 1`] = `Array []`;
+
+exports[`execa-webpack-plugin should work with options (sync hook): errors 1`] = `Array []`;
+
+exports[`execa-webpack-plugin should work with options (sync hook): logs 1`] = `
+Array [
+  Array [
+    "ExecaPlugin",
+    "info",
+    Array [
+      "Running the \\"compile\\" hook",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "info",
+    Array [
+      "Run command \\"del /__tests__/dir/nested\\" ",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "info",
+    Array [
+      "The \\"compile\\" hook completed",
+    ],
+  ],
+]
+`;
+
+exports[`execa-webpack-plugin should work with options (sync hook): warnings 1`] = `Array []`;

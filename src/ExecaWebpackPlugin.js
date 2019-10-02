@@ -2,13 +2,16 @@
 
 const CommandRunner = require("./CommandRunner");
 
-const eventTypeMap = {
+const hookTypeMap = {
   onShouldEmit: false,
   onDone: true,
+  // Only in webpack@5
+  afterDone: false,
   onAdditionalPass: true,
   onBeforeRun: true,
   onRun: true,
   onEmit: true,
+  onAssetEmitted: true,
   onAfterEmit: true,
 
   onThisCompilation: false,
@@ -26,81 +29,90 @@ const eventTypeMap = {
   onInvalid: false,
   onWatchClose: false,
 
+  onInfrastructureLog: false,
+
   // Will be remove in `webpack@5`
   onEnvironment: false,
+  // Will be remove in `webpack@5`
   onAfterEnvironment: false,
+  // Will be remove in `webpack@5`
   onAfterPlugins: false,
+  // Will be remove in `webpack@5`
   onAfterResolvers: false,
+  // Will be remove in `webpack@5`
   onEntryOption: false
 };
 
 function firstToLowerCase(str) {
-  return str.substr(0, 1).toLowerCase() + str.substr(1);
+  return str.slice(0, 1).toLowerCase() + str.slice(1);
 }
 
-class ExecaWebpackPlugin {
+function getStdout(result) {
+  return result && typeof result.stdout !== "undefined" ? result.stdout : "";
+}
+
+class ExecaPlugin {
   constructor(options) {
-    const defaultOptions = {
-      bail: null,
-      dev: true,
-      logLevel: "warn"
-    };
+    const defaultOptions = { bail: null, dev: true };
 
-    this.options = Object.assign(defaultOptions, options);
-    this.eventMap = {};
+    this.options = { ...defaultOptions, ...options };
+    this.hookMap = {};
 
-    Object.keys(this.options).forEach(eventType => {
-      if (eventType.startsWith("on")) {
-        this.eventMap[eventType] = this.options[eventType];
+    Object.keys(this.options).forEach(option => {
+      const isHook = option.startsWith("on");
+
+      if (!isHook) {
+        return;
       }
+
+      this.hookMap[option] = this.options[option];
     });
 
-    if (Object.keys(this.eventMap).length === 0) {
-      throw new TypeError("Known events not found");
+    if (Object.keys(this.hookMap).length === 0) {
+      throw new TypeError("No known hooks found");
     }
   }
 
-  execute(commands, async) {
-    const results = [];
-    const runCommand = command => {
-      if (async) {
-        return Promise.all(command.args).then(resolvedArgs => {
-          command.args = resolvedArgs.map(item =>
-            item[0] && item[0].stdout ? item[0].stdout : item
-          );
+  runCommands(commands, isAsync) {
+    const optionsForCommand = { bail: this.options.bail, logger: this.logger };
 
-          return new CommandRunner(this.options).run(command, async);
-        });
-      }
-
-      return new CommandRunner(this.options).run(command, async);
-    };
-
-    commands.forEach(command => {
-      if (command.args) {
-        command.args = command.args.map(arg => {
-          if (
-            typeof arg === "object" &&
-            Boolean(arg) &&
-            Object.keys(arg).length > 0
-          ) {
-            const commandResult = this.execute([arg], async);
-
-            return Array.isArray(commandResult)
-              ? commandResult[0]
-              : commandResult;
-          }
-
-          return async ? Promise.resolve(arg) : arg;
-        });
-      } else {
+    const runCommand = (command, asArg = false) => {
+      if (!command.args) {
         command.args = [];
       }
 
-      results.push(runCommand(command));
-    });
+      command.args = command.args.map(arg => {
+        if (arg !== null && typeof arg === "object") {
+          const argResult = runCommand(arg, true);
 
-    return async ? Promise.all(results) : results;
+          if (isAsync) {
+            return argResult.then(returnedValue => getStdout(returnedValue));
+          }
+
+          return getStdout(argResult);
+        }
+
+        return arg;
+      });
+
+      if (isAsync) {
+        return Promise.all(command.args).then(resolvedArgs => {
+          command.args = resolvedArgs;
+
+          return new CommandRunner(optionsForCommand).run(
+            command,
+            isAsync,
+            asArg
+          );
+        });
+      }
+
+      return new CommandRunner(optionsForCommand).run(command, isAsync, asArg);
+    };
+
+    const results = commands.map(command => runCommand(command));
+
+    return isAsync ? Promise.all(results) : results;
   }
 
   apply(compiler) {
@@ -108,49 +120,67 @@ class ExecaWebpackPlugin {
       this.options.bail = compiler.options.bail;
     }
 
-    const plugin = { name: "ExecaPlugin" };
+    this.logger = compiler.getInfrastructureLogger(this.constructor.name);
 
-    Object.keys(this.eventMap).forEach(event => {
-      const webpackEvent = firstToLowerCase(event.substr(2));
-      const isAsyncEventType = eventTypeMap[event];
+    Object.keys(this.hookMap).forEach(hook => {
+      const webpackHook = firstToLowerCase(hook.slice(2));
+      const isAsyncHook = hookTypeMap[hook];
 
-      const runCommands = (something, callback) => {
-        // eslint-disable-next-line consistent-return
-        const doneFn = error => {
-          if (this.options.dev) {
-            this.eventMap[event] = [];
+      if (!compiler.hooks[webpackHook]) {
+        throw new Error(`The hook "${webpackHook}" not found`);
+      }
+
+      if (webpackHook === "infrastructureLog") {
+        throw new Error(`Do not use "${webpackHook}" hook`);
+      }
+
+      compiler.hooks[webpackHook][isAsyncHook ? "tapAsync" : "tap"](
+        { name: this.constructor.name },
+        (...args) => {
+          this.logger.info(`Running the "${webpackHook}" hook`);
+
+          // eslint-disable-next-line consistent-return
+          const doneFn = error => {
+            this.logger.info(`The "${webpackHook}" hook completed`);
+
+            if (this.options.dev) {
+              this.hookMap[hook] = [];
+            }
+
+            if (isAsyncHook) {
+              const callback = args[args.length - 1];
+
+              return callback(error || null);
+            }
+
+            if (error) {
+              throw error;
+            }
+          };
+
+          if (this.hookMap[hook].length === 0) {
+            this.logger.warn(`No commands found for "${webpackHook}" hook`);
+
+            return doneFn();
           }
 
-          if (isAsyncEventType) {
-            return callback(error || null);
+          if (isAsyncHook) {
+            return this.runCommands(this.hookMap[hook], true)
+              .then(() => doneFn())
+              .catch(error => doneFn(error));
           }
 
-          if (error) {
-            throw error;
-          }
-        };
-
-        if (isAsyncEventType) {
-          this.execute(this.eventMap[event], true)
-            .then(() => doneFn())
-            .catch(error => doneFn(error));
-        } else {
           try {
-            this.execute(this.eventMap[event]);
+            this.runCommands(this.hookMap[hook], false);
           } catch (error) {
-            doneFn(error);
+            return doneFn(error);
           }
 
-          doneFn();
+          return doneFn();
         }
-      };
-
-      compiler.hooks[webpackEvent][isAsyncEventType ? "tapAsync" : "tap"](
-        plugin,
-        runCommands
       );
     });
   }
 }
 
-module.exports = ExecaWebpackPlugin;
+module.exports = ExecaPlugin;
