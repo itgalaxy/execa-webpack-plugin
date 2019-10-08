@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](http://semver.org).
 
+## 4.0.1 - 2019-10-08
+
+- Fixed: less unnecessary logging.
+
 ## 4.0.0 - 2019-09-16
 
 - Changed: the option `logLevel` is removed.

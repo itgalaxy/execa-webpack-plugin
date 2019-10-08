@@ -1,6 +1,6 @@
 {
   "name": "execa-webpack-plugin",
-  "version": "4.0.0",
+  "version": "4.0.1",
   "description": "A better `child_process` for `webpack`",
   "keywords": [
     "exec",
@@ -31,7 +31,7 @@
   "bugs": "https://github.com/itgalaxy/execa-webpack-plugin/issues",
   "main": "src/ExecaWebpackPlugin",
   "dependencies": {
-    "execa": "^2.0.4"
+    "execa": "^2.0.5"
   },
   "devDependencies": {
     "babel-eslint": "^10.0.3",
@@ -47,11 +47,11 @@
     "eslint-plugin-markdown": "^1.0.0",
     "eslint-plugin-node": "^10.0.0",
     "eslint-plugin-promise": "^4.2.1",
-    "eslint-plugin-react": "^7.15.0",
-    "eslint-plugin-unicorn": "^12.0.1",
+    "eslint-plugin-react": "^7.16.0",
+    "eslint-plugin-unicorn": "^12.0.2",
     "jest": "^24.9.0",
-    "husky": "^3.0.7",
-    "lint-staged": "^9.4.1",
+    "husky": "^3.0.8",
+    "lint-staged": "^9.4.2",
     "npm-run-all": "^4.1.5",
     "standard-version": "^7.0.0",
     "prettier": "^1.18.2",

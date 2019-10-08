@@ -25,13 +25,11 @@ class CommandRunner {
     const { stdout, stderr } = result;
 
     if (stdout) {
-      this.options.logger.info(
-        `The output of the process on stdout: ${stdout}`
-      );
+      this.options.logger.log(`The output of the process on stdout: ${stdout}`);
     }
 
     if (stderr) {
-      this.options.logger.warn(
+      this.options.logger.error(
         `The output of the process on stderr: ${stderr}`
       );
     }
@@ -50,7 +48,7 @@ class CommandRunner {
 
     options.stdio = ["ignore", "pipe", "pipe"];
 
-    this.options.logger.info(
+    this.options.logger.log(
       `Run command "${cmd}${args.length > 0 ? ` ${args.join(" ")}` : ""}" ${
         asArg ? "(the result will be used as an argument)" : ""
       }`

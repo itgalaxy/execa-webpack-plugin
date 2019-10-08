@@ -137,11 +137,11 @@ class ExecaPlugin {
       compiler.hooks[webpackHook][isAsyncHook ? "tapAsync" : "tap"](
         { name: this.constructor.name },
         (...args) => {
-          this.logger.info(`Running the "${webpackHook}" hook`);
+          this.logger.log(`Running the "${webpackHook}" hook`);
 
           // eslint-disable-next-line consistent-return
           const doneFn = error => {
-            this.logger.info(`The "${webpackHook}" hook completed`);
+            this.logger.log(`The "${webpackHook}" hook completed`);
 
             if (this.options.dev) {
               this.hookMap[hook] = [];
