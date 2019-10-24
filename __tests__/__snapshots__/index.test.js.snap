@@ -82,7 +82,7 @@ Array [
     "ExecaPlugin",
     "error",
     Array [
-      [Error: Command "not-found" return "Command failed with exit code 2 (ENOENT): not-found"],
+      [Error: Command "not-found" return "Command failed with ENOENT: not-found"],
     ],
   ],
   Array [
@@ -119,7 +119,7 @@ Array [
     "ExecaPlugin",
     "error",
     Array [
-      [Error: Command "not-found" return "Command failed with exit code 2 (ENOENT): not-found"],
+      [Error: Command "not-found" return "Command failed with ENOENT: not-found"],
     ],
   ],
   Array [
@@ -172,7 +172,7 @@ exports[`execa-webpack-plugin should throw error on 'on*' options are empty (no 
 
 exports[`execa-webpack-plugin should throw error on 'on*' options are empty (no events): logs 1`] = `Array []`;
 
-exports[`execa-webpack-plugin should throw error with 'bail: true' option (async hook) 1`] = `[Error: Command failed with exit code 2 (ENOENT): not-found]`;
+exports[`execa-webpack-plugin should throw error with 'bail: true' option (async hook) 1`] = `[Error: Command failed with ENOENT: not-found]`;
 
 exports[`execa-webpack-plugin should throw error with 'bail: true' option (async hook): logs 1`] = `
 Array [
@@ -194,7 +194,7 @@ Array [
     "ExecaPlugin",
     "error",
     Array [
-      [Error: Command "not-found" return "Command failed with exit code 2 (ENOENT): not-found"],
+      [Error: Command "not-found" return "Command failed with ENOENT: not-found"],
     ],
   ],
   Array [
@@ -207,7 +207,7 @@ Array [
 ]
 `;
 
-exports[`execa-webpack-plugin should throw error with 'bail: true' option (sync hook) 1`] = `[Error: Command failed with exit code 2 (ENOENT): not-found]`;
+exports[`execa-webpack-plugin should throw error with 'bail: true' option (sync hook) 1`] = `[Error: Command failed with ENOENT: not-found]`;
 
 exports[`execa-webpack-plugin should throw error with 'bail: true' option (sync hook): logs 1`] = `
 Array [
@@ -229,7 +229,7 @@ Array [
     "ExecaPlugin",
     "error",
     Array [
-      [Error: Command "not-found" return "Command failed with exit code 2 (ENOENT): not-found"],
+      [Error: Command "not-found" return "Command failed with ENOENT: not-found"],
     ],
   ],
   Array [
@@ -359,7 +359,7 @@ Array [
     "ExecaPlugin",
     "error",
     Array [
-      [Error: Command "del " return "Command failed with exit code 1 (EPERM): del "],
+      [Error: Command "del " return "Command failed with exit code 1: del "],
     ],
   ],
   Array [
@@ -403,7 +403,7 @@ Array [
     "ExecaPlugin",
     "error",
     Array [
-      [Error: Command "del " return "Command failed with exit code 1 (EPERM): del "],
+      [Error: Command "del " return "Command failed with exit code 1: del "],
     ],
   ],
   Array [
