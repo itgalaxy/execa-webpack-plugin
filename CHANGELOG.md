@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](http://semver.org).
 
+## 5.0.0 - 2019-10-24
+
+- Changed: minimum require `execa` version is `3.2.0`.
+- Changed: minimum require node version is >= 10.13.0.
+
 ## 4.0.1 - 2019-10-08
 
 - Fixed: less unnecessary logging.
