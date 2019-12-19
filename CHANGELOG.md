@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](http://semver.org).
 
+## 6.0.0 - 2019-12-19
+
+- Fixed: support webpack@5
+- Changed: minimum require `execa` version is `4.0.0`.
+
 ## 5.0.0 - 2019-10-24
 
 - Changed: minimum require `execa` version is `3.2.0`.

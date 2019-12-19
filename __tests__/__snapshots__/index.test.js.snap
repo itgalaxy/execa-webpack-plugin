@@ -82,7 +82,7 @@ Array [
     "ExecaPlugin",
     "error",
     Array [
-      [Error: Command "not-found" return "Command failed with ENOENT: not-found"],
+      "Error: Command \\"not-found\\" return \\"Command failed with ENOENT: not-found\\"",
     ],
   ],
   Array [
@@ -119,7 +119,7 @@ Array [
     "ExecaPlugin",
     "error",
     Array [
-      [Error: Command "not-found" return "Command failed with ENOENT: not-found"],
+      "Error: Command \\"not-found\\" return \\"Command failed with ENOENT: not-found\\"",
     ],
   ],
   Array [
@@ -194,7 +194,7 @@ Array [
     "ExecaPlugin",
     "error",
     Array [
-      [Error: Command "not-found" return "Command failed with ENOENT: not-found"],
+      "Error: Command \\"not-found\\" return \\"Command failed with ENOENT: not-found\\"",
     ],
   ],
   Array [
@@ -229,7 +229,7 @@ Array [
     "ExecaPlugin",
     "error",
     Array [
-      [Error: Command "not-found" return "Command failed with ENOENT: not-found"],
+      "Error: Command \\"not-found\\" return \\"Command failed with ENOENT: not-found\\"",
     ],
   ],
   Array [
@@ -359,7 +359,8 @@ Array [
     "ExecaPlugin",
     "error",
     Array [
-      [Error: Command "del " return "Command failed with exit code 1: del "],
+      "Error: Command \\"del \\" return \\"Command failed with exit code 1: del 
+TypeError: Expected a non-empty string",
     ],
   ],
   Array [
@@ -403,7 +404,8 @@ Array [
     "ExecaPlugin",
     "error",
     Array [
-      [Error: Command "del " return "Command failed with exit code 1: del "],
+      "Error: Command \\"del \\" return \\"Command failed with exit code 1: del 
+TypeError: Expected a non-empty string",
     ],
   ],
   Array [

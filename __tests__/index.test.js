@@ -5,6 +5,7 @@ const fs = require("fs");
 const webpack = require("webpack");
 const tempy = require("tempy");
 const ExecaPlugin = require("../src/ExecaWebpackPlugin");
+const { normalizeErrors, getErrors, getWarnings } = require("./helpers");
 
 const resourcesDir = path.join(__dirname, "resources");
 
@@ -27,6 +28,11 @@ function getConfig(pluginOptions = {}) {
           compiler.hooks.infrastructureLog.tap(
             "ExecaWebpackTest",
             (name, type, args) => {
+              if (type === "error") {
+                // eslint-disable-next-line no-param-reassign
+                args = normalizeErrors(args);
+              }
+
               logs.push([
                 name,
                 type,
@@ -302,11 +308,9 @@ describe("execa-webpack-plugin", () => {
       ]
     });
 
-    const { warnings, errors } = stats.compilation;
-
     expect(logs).toMatchSnapshot("logs");
-    expect(errors).toMatchSnapshot("errors");
-    expect(warnings).toMatchSnapshot("warnings");
+    expect(getErrors(stats)).toMatchSnapshot("errors");
+    expect(getWarnings(stats)).toMatchSnapshot("warnings");
 
     return stats;
   });
@@ -321,11 +325,9 @@ describe("execa-webpack-plugin", () => {
       ]
     });
 
-    const { warnings, errors } = stats.compilation;
-
     expect(logs).toMatchSnapshot("logs");
-    expect(errors).toMatchSnapshot("errors");
-    expect(warnings).toMatchSnapshot("warnings");
+    expect(getErrors(stats)).toMatchSnapshot("errors");
+    expect(getWarnings(stats)).toMatchSnapshot("warnings");
   });
 
   it("many arguments in hook (async hook)", async () => {
@@ -338,11 +340,9 @@ describe("execa-webpack-plugin", () => {
       ]
     });
 
-    const { warnings, errors } = stats.compilation;
-
     expect(logs).toMatchSnapshot("logs");
-    expect(errors).toMatchSnapshot("errors");
-    expect(warnings).toMatchSnapshot("warnings");
+    expect(getErrors(stats)).toMatchSnapshot("errors");
+    expect(getWarnings(stats)).toMatchSnapshot("warnings");
   });
 
   it("should work with 'onCompile' option (sync hook)", async () => {
@@ -359,11 +359,9 @@ describe("execa-webpack-plugin", () => {
       ]
     });
 
-    const { warnings, errors } = stats.compilation;
-
     expect(logs).toMatchSnapshot("logs");
-    expect(errors).toMatchSnapshot("errors");
-    expect(warnings).toMatchSnapshot("warnings");
+    expect(getErrors(stats)).toMatchSnapshot("errors");
+    expect(getWarnings(stats)).toMatchSnapshot("warnings");
     expect(() => fs.statSync(dir)).toThrow(
       /ENOENT: no such file or directory, stat/
     );
@@ -386,11 +384,9 @@ describe("execa-webpack-plugin", () => {
       ]
     });
 
-    const { warnings, errors } = stats.compilation;
-
     expect(logs).toMatchSnapshot("logs");
-    expect(errors).toMatchSnapshot("errors");
-    expect(warnings).toMatchSnapshot("warnings");
+    expect(getErrors(stats)).toMatchSnapshot("errors");
+    expect(getWarnings(stats)).toMatchSnapshot("warnings");
     expect(() => fs.statSync(dir)).toThrow(
       /ENOENT: no such file or directory, stat/
     );
@@ -412,11 +408,9 @@ describe("execa-webpack-plugin", () => {
       ]
     });
 
-    const { warnings, errors } = stats.compilation;
-
     expect(logs).toMatchSnapshot("logs");
-    expect(errors).toMatchSnapshot("errors");
-    expect(warnings).toMatchSnapshot("warnings");
+    expect(getErrors(stats)).toMatchSnapshot("errors");
+    expect(getWarnings(stats)).toMatchSnapshot("warnings");
     expect(() => fs.statSync(dir)).toThrow(/ENOENT: no such file or directory/);
 
     unlinkSyncSafe(dir);
@@ -437,11 +431,9 @@ describe("execa-webpack-plugin", () => {
       ]
     });
 
-    const { warnings, errors } = stats.compilation;
-
     expect(logs).toMatchSnapshot("logs");
-    expect(errors).toMatchSnapshot("errors");
-    expect(warnings).toMatchSnapshot("warnings");
+    expect(getErrors(stats)).toMatchSnapshot("errors");
+    expect(getWarnings(stats)).toMatchSnapshot("warnings");
     expect(() => fs.statSync(dir)).toThrow(
       /ENOENT: no such file or directory, stat/
     );
@@ -499,11 +491,9 @@ describe("execa-webpack-plugin", () => {
       ]
     });
 
-    const { warnings, errors } = stats.compilation;
-
     expect(logs).toMatchSnapshot("logs");
-    expect(errors).toMatchSnapshot("errors");
-    expect(warnings).toMatchSnapshot("warnings");
+    expect(getErrors(stats)).toMatchSnapshot("errors");
+    expect(getWarnings(stats)).toMatchSnapshot("warnings");
   });
 
   it("should not throw error with 'bail: false' option (async hook)", async () => {
@@ -516,11 +506,9 @@ describe("execa-webpack-plugin", () => {
       ]
     });
 
-    const { warnings, errors } = stats.compilation;
-
     expect(logs).toMatchSnapshot("logs");
-    expect(errors).toMatchSnapshot("errors");
-    expect(warnings).toMatchSnapshot("warnings");
+    expect(getErrors(stats)).toMatchSnapshot("errors");
+    expect(getWarnings(stats)).toMatchSnapshot("warnings");
   });
 
   it("should work and output 'stdout' and 'stderr' (sync hook)", async () => {
@@ -533,11 +521,9 @@ describe("execa-webpack-plugin", () => {
       ]
     });
 
-    const { warnings, errors } = stats.compilation;
-
     expect(logs).toMatchSnapshot("logs");
-    expect(errors).toMatchSnapshot("errors");
-    expect(warnings).toMatchSnapshot("warnings");
+    expect(getErrors(stats)).toMatchSnapshot("errors");
+    expect(getWarnings(stats)).toMatchSnapshot("warnings");
   });
 
   it("should work and output 'stdout' and 'stderr' (async hook)", async () => {
@@ -550,11 +536,9 @@ describe("execa-webpack-plugin", () => {
       ]
     });
 
-    const { warnings, errors } = stats.compilation;
-
     expect(logs).toMatchSnapshot("logs");
-    expect(errors).toMatchSnapshot("errors");
-    expect(warnings).toMatchSnapshot("warnings");
+    expect(getErrors(stats)).toMatchSnapshot("errors");
+    expect(getWarnings(stats)).toMatchSnapshot("warnings");
   });
 
   it("should work with nested commands (sync hook)", async () => {
@@ -576,11 +560,9 @@ describe("execa-webpack-plugin", () => {
       ]
     });
 
-    const { warnings, errors } = stats.compilation;
-
     expect(logs).toMatchSnapshot("logs");
-    expect(errors).toMatchSnapshot("errors");
-    expect(warnings).toMatchSnapshot("warnings");
+    expect(getErrors(stats)).toMatchSnapshot("errors");
+    expect(getWarnings(stats)).toMatchSnapshot("warnings");
     expect(() => fs.statSync(dir)).toThrow(
       /ENOENT: no such file or directory, stat/
     );
@@ -612,11 +594,9 @@ describe("execa-webpack-plugin", () => {
       ]
     });
 
-    const { warnings, errors } = stats.compilation;
-
     expect(logs).toMatchSnapshot("logs");
-    expect(errors).toMatchSnapshot("errors");
-    expect(warnings).toMatchSnapshot("warnings");
+    expect(getErrors(stats)).toMatchSnapshot("errors");
+    expect(getWarnings(stats)).toMatchSnapshot("warnings");
     expect(() => fs.statSync(dir)).toThrow(
       /ENOENT: no such file or directory, stat/
     );
@@ -649,11 +629,9 @@ describe("execa-webpack-plugin", () => {
       ]
     });
 
-    const { warnings, errors } = stats.compilation;
-
     expect(logs).toMatchSnapshot("logs");
-    expect(errors).toMatchSnapshot("errors");
-    expect(warnings).toMatchSnapshot("warnings");
+    expect(getErrors(stats)).toMatchSnapshot("errors");
+    expect(getWarnings(stats)).toMatchSnapshot("warnings");
     expect(() => fs.statSync(dir)).toThrow(
       /ENOENT: no such file or directory, stat/
     );
@@ -684,11 +662,9 @@ describe("execa-webpack-plugin", () => {
       ]
     });
 
-    const { warnings, errors } = stats.compilation;
-
     expect(logs).toMatchSnapshot("logs");
-    expect(errors).toMatchSnapshot("errors");
-    expect(warnings).toMatchSnapshot("warnings");
+    expect(getErrors(stats)).toMatchSnapshot("errors");
+    expect(getWarnings(stats)).toMatchSnapshot("warnings");
     expect(() => fs.statSync(dir)).toThrow(
       /ENOENT: no such file or directory, stat/
     );
@@ -720,11 +696,9 @@ describe("execa-webpack-plugin", () => {
       ]
     });
 
-    const { warnings, errors } = stats.compilation;
-
     expect(logs).toMatchSnapshot("logs");
-    expect(errors).toMatchSnapshot("errors");
-    expect(warnings).toMatchSnapshot("warnings");
+    expect(getErrors(stats)).toMatchSnapshot("errors");
+    expect(getWarnings(stats)).toMatchSnapshot("warnings");
     expect(() => fs.statSync(dir)).toThrow(
       /ENOENT: no such file or directory, stat/
     );
@@ -763,12 +737,10 @@ describe("execa-webpack-plugin", () => {
       ]
     });
 
-    const { warnings, errors } = stats.compilation;
-
     // Not a best solution, temporary
     expect(logs.sort()).toMatchSnapshot("logs");
-    expect(errors).toMatchSnapshot("errors");
-    expect(warnings).toMatchSnapshot("warnings");
+    expect(getErrors(stats)).toMatchSnapshot("errors");
+    expect(getWarnings(stats)).toMatchSnapshot("warnings");
     expect(() => fs.statSync(dir)).toThrow(
       /ENOENT: no such file or directory, stat/
     );
@@ -800,11 +772,9 @@ describe("execa-webpack-plugin", () => {
       ]
     });
 
-    const { warnings, errors } = stats.compilation;
-
     expect(logs).toMatchSnapshot("logs");
-    expect(errors).toMatchSnapshot("errors");
-    expect(warnings).toMatchSnapshot("warnings");
+    expect(getErrors(stats)).toMatchSnapshot("errors");
+    expect(getWarnings(stats)).toMatchSnapshot("warnings");
   });
 
   it("should work when nested commands return nothing and 'bail: false' (async hook)", async () => {
@@ -823,11 +793,9 @@ describe("execa-webpack-plugin", () => {
       ]
     });
 
-    const { warnings, errors } = stats.compilation;
-
     expect(logs).toMatchSnapshot("logs");
-    expect(errors).toMatchSnapshot("errors");
-    expect(warnings).toMatchSnapshot("warnings");
+    expect(getErrors(stats)).toMatchSnapshot("errors");
+    expect(getWarnings(stats)).toMatchSnapshot("warnings");
   });
 
   it("should work with options (sync hook)", async () => {
@@ -849,11 +817,9 @@ describe("execa-webpack-plugin", () => {
       ]
     });
 
-    const { warnings, errors } = stats.compilation;
-
     expect(logs).toMatchSnapshot("logs");
-    expect(errors).toMatchSnapshot("errors");
-    expect(warnings).toMatchSnapshot("warnings");
+    expect(getErrors(stats)).toMatchSnapshot("errors");
+    expect(getWarnings(stats)).toMatchSnapshot("warnings");
     expect(() => fs.statSync(nestedDir)).toThrow(
       /ENOENT: no such file or directory, stat/
     );
@@ -880,11 +846,9 @@ describe("execa-webpack-plugin", () => {
       ]
     });
 
-    const { warnings, errors } = stats.compilation;
-
     expect(logs).toMatchSnapshot("logs");
-    expect(errors).toMatchSnapshot("errors");
-    expect(warnings).toMatchSnapshot("warnings");
+    expect(getErrors(stats)).toMatchSnapshot("errors");
+    expect(getWarnings(stats)).toMatchSnapshot("warnings");
     expect(() => fs.statSync(nestedDir)).toThrow(
       /ENOENT: no such file or directory, stat/
     );
