@@ -1,6 +1,6 @@
 {
   "name": "execa-webpack-plugin",
-  "version": "5.0.0",
+  "version": "6.0.0",
   "description": "A better `child_process` for `webpack`",
   "keywords": [
     "exec",
@@ -31,37 +31,37 @@
   "bugs": "https://github.com/itgalaxy/execa-webpack-plugin/issues",
   "main": "src/ExecaWebpackPlugin",
   "dependencies": {
-    "execa": "^3.2.0"
+    "execa": "^4.0.0"
   },
   "devDependencies": {
     "babel-eslint": "^10.0.3",
     "del-cli": "^3.0.0",
-    "eslint": "^6.5.1",
+    "eslint": "^6.7.2",
     "eslint-plugin-ava": "^9.0.0",
     "eslint-plugin-html": "^6.0.0",
-    "eslint-plugin-import": "^2.18.2",
-    "eslint-plugin-itgalaxy": "^113.0.0",
-    "eslint-plugin-jest": "^22.20.0",
+    "eslint-plugin-import": "^2.19.1",
+    "eslint-plugin-itgalaxy": "^117.0.0",
+    "eslint-plugin-jest": "^23.1.1",
     "eslint-plugin-jsx-a11y": "^6.2.3",
     "eslint-plugin-lodash": "^6.0.0",
     "eslint-plugin-markdown": "^1.0.1",
     "eslint-plugin-node": "^10.0.0",
     "eslint-plugin-promise": "^4.2.1",
-    "eslint-plugin-react": "^7.16.0",
-    "eslint-plugin-unicorn": "^12.1.0",
+    "eslint-plugin-react": "^7.17.0",
+    "eslint-plugin-unicorn": "^14.0.1",
     "jest": "^24.9.0",
-    "husky": "^3.0.9",
-    "lint-staged": "^9.4.2",
+    "husky": "^3.1.0",
+    "lint-staged": "^9.5.0",
     "npm-run-all": "^4.1.5",
-    "standard-version": "^7.0.0",
-    "prettier": "^1.18.2",
-    "remark-cli": "^7.0.0",
+    "standard-version": "^7.0.1",
+    "prettier": "^1.19.1",
+    "remark-cli": "^7.0.1",
     "remark-preset-lint-itgalaxy": "^15.0.0",
     "tempy": "^0.3.0",
-    "webpack": "^4.41.2"
+    "webpack": "^4.41.4"
   },
   "peerDependencies": {
-    "webpack": "^4.37.0"
+    "webpack": "^4.37.0 || ^5.0.0"
   },
   "scripts": {
     "lint:prettier": "prettier --list-different '{src,__tests__}/**/*.{js,cjs,mjs,jsx,md,yml,yaml}' '*.{js,cjs,mjs,jsx,md,yml,yaml}'",
@@ -72,8 +72,8 @@
     "fix:eslint": "npm run lint:eslint -- --fix",
     "fix": "npm-run-all -c -l -p \"fix:**\" -s prettier",
     "pretest": "npm run lint",
-    "test:only": "jest --testPathIgnorePatterns=resources",
-    "test:coverage": "jest --testPathIgnorePatterns=resources --coverage",
+    "test:only": "jest",
+    "test:coverage": "jest --coverage",
     "test": "npm run test:coverage",
     "release": "standard-version"
   },

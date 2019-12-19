@@ -30,6 +30,11 @@ matrix:
     - node_js: "10"
       script: npm run $JOB_PART
       env: JOB_PART=test:only
+    - node_js: "10"
+      script:
+        - npm i webpack@next
+        - npm run $JOB_PART
+      env: JOB_PART=test:only
 
 before_install:
   - npm i -g npm@latest
