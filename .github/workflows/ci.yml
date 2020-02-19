@@ -51,11 +51,10 @@ jobs:
         tags: [latest, next]
         node: [10, 12, 13]
         os: [ubuntu-latest, windows-latest, macos-latest]
-    #        include:
-    #          - os: ubuntu-latest
-    #            node: 13
-    #            env:
-    #              NEXT: true
+        exclude:
+          - tags: [next]
+            os: [ubuntu-latest, windows-latest, macos-latest]
+            node: [12, 13]
 
     steps:
       - uses: actions/checkout@v2
