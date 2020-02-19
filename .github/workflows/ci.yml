@@ -51,9 +51,10 @@ jobs:
         node: [10, 12, 13]
         os: [ubuntu-latest, windows-latest, macos-latest]
         include:
-          - name: next
-            node: 13
-            next: true
+          # includes a new variable of npm with a value of 2 for the matrix leg matching the os and version
+          - os: windows-latest
+            node: 4
+            npm: 2
 
     steps:
       - uses: actions/checkout@v2
@@ -70,8 +71,8 @@ jobs:
         run: npm ci
 
       - name: Install webpack@next
+        if: ${{ matrix.node == "4" }}
         run: npm i webpack@next
-        if: ${{ runner.next }}
 
       - name: Test
         run: npm run test:only
