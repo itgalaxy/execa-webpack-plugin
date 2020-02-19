@@ -72,7 +72,7 @@ jobs:
         run: npm ci
 
       - name: Install webpack@next
-        if: ${{ matrix.node == 4 }}
+        if: ${{ matrix.env.NEXT }}
         run: npm i webpack@next
 
       - name: Test
