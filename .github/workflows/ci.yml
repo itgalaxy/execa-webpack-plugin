@@ -41,20 +41,15 @@ jobs:
         run: npm run pretest
 
   test:
-    name: Test on Node.js ${{ matrix.node }}, ${{ matrix.os }} and ${{ matrix.tag }}
+    name: Test on Node.js ${{ matrix.node }} and ${{ matrix.os }}
 
     runs-on: ${{ matrix.os }}
 
     strategy:
       fail-fast: false
       matrix:
-        tags: [latest, next]
         node: [10, 12, 13]
         os: [ubuntu-latest, windows-latest, macos-latest]
-        exclude:
-          - tags: [next]
-            os: [ubuntu-latest, windows-latest, macos-latest]
-            node: [12, 13]
 
     steps:
       - uses: actions/checkout@v2
@@ -70,8 +65,36 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Install webpack@${{ matrix.tag }}
-        run: npm i webpack@${{ matrix.tag }}
+      - name: Test
+        run: npm run test:only
+
+  test-next:
+    name: Test on Node.js ${{ matrix.node }} and ${{ matrix.os }} (next)
+
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        node: [10]
+        os: [ubuntu-latest, windows-latest, macos-latest]
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Use Node.js ${{ matrix.node }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node }}
+
+      - name: Install latest npm
+        run: npm install --global npm@latest
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install webpack@next
+        run: npm i webpack@next
 
       - name: Test
         run: npm run test:only
