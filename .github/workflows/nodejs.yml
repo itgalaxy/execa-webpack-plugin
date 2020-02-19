@@ -7,7 +7,7 @@ on:
       - next
   pull_request:
     branches:
-      - '**'
+      - "**"
 
 env:
   CI: true
@@ -50,8 +50,6 @@ jobs:
       matrix:
         node: [10, 12, 13]
         os: [ubuntu-latest, windows-latest, macos-latest]
-        include:
-          - node: 10
 
     steps:
       - uses: actions/checkout@v2
