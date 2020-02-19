@@ -10,6 +10,11 @@ function removeCWD(str) {
     cwd = cwd.replaceAll("\\", "/");
   }
 
+  console.log(str);
+  console.log(process.cwd());
+  console.log(cwd);
+  console.log(isWin);
+
   return str.replace(new RegExp(cwd, "g"), "");
 }
 
