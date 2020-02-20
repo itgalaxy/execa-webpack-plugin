@@ -11,6 +11,9 @@ function removeCWD(str) {
     cwd = cwd.replace(/\\/g, "/");
   }
 
+  console.log(str);
+  console.log(cwd);
+
   return str.replace(new RegExp(cwd, "g"), "");
 }
 
