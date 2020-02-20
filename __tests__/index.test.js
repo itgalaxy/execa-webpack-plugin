@@ -1,5 +1,6 @@
 "use strict";
 
+const execa = require("execa");
 const path = require("path");
 const fs = require("fs");
 const webpack = require("webpack");
@@ -827,6 +828,14 @@ describe("execa-webpack-plugin", () => {
 
     expect(fs.statSync(dir).isDirectory()).toBe(true);
     expect(fs.statSync(nestedDir).isDirectory()).toBe(true);
+
+    const result = await execa("del", [nestedDir], {
+      cwd: dir
+    });
+
+    console.log(result);
+
+    mkdirSyncSafe(nestedDir);
 
     const stats = await compile({
       onDone: [
