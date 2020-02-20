@@ -33,6 +33,8 @@ function getConfig(pluginOptions = {}) {
                 args = normalizeErrors(args);
               }
 
+              console.log(args);
+
               logs.push([name, type, normalizeErrors(args)]);
 
               return false;

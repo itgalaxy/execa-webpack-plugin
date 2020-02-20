@@ -4,8 +4,6 @@ function removeCWD(str) {
   const isWin = process.platform === "win32";
   let cwd = process.cwd();
 
-  console.log(str);
-
   if (isWin) {
     // eslint-disable-next-line no-param-reassign, unicorn/prefer-replace-all
     str = str.replace(/\\/g, "/");
