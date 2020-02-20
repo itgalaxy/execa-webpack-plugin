@@ -65,16 +65,16 @@ function compile(options) {
 function mkdirSyncSafe(dir) {
   try {
     fs.mkdirSync(dir);
-  } catch (ignoreError) {
-    // Nothing
+  } catch (error) {
+    console.log(error);
   }
 }
 
 function unlinkSyncSafe(dir) {
   try {
     fs.rmdirSync(dir);
-  } catch (ignoreError) {
-    // Nothing
+  } catch (error) {
+    console.log(error);
   }
 }
 
@@ -821,9 +821,12 @@ describe("execa-webpack-plugin", () => {
     unlinkSyncSafe(dir);
   });
 
-  it("should work with options (async hook)", async () => {
+  it.only("should work with options (async hook)", async () => {
     mkdirSyncSafe(dir);
     mkdirSyncSafe(nestedDir);
+
+    console.log(dir);
+    console.log(nestedDir);
 
     expect(fs.statSync(dir).isDirectory()).toBe(true);
     expect(fs.statSync(nestedDir).isDirectory()).toBe(true);
