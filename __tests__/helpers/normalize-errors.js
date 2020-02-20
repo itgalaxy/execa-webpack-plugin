@@ -4,16 +4,16 @@ function removeCWD(str) {
   const isWin = process.platform === "win32";
   let cwd = process.cwd();
 
+  console.log(str);
+  console.log(process.cwd());
+  console.log(cwd);
+  console.log(isWin);
+
   if (isWin) {
     // eslint-disable-next-line no-param-reassign,
     str = str.replaceAll("\\", "/");
     cwd = cwd.replaceAll("\\", "/");
   }
-
-  console.log(str);
-  console.log(process.cwd());
-  console.log(cwd);
-  console.log(isWin);
 
   return str.replace(new RegExp(cwd, "g"), "");
 }
