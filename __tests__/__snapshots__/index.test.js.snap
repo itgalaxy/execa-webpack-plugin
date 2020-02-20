@@ -15,7 +15,7 @@ Array [
     "ExecaPlugin",
     "log",
     Array [
-      "Run command \\"node /__tests__/resources/nothing.js\\" ",
+      "Run command \\"node /__tests__/resources/nothing.js\\"",
     ],
   ],
   Array [
@@ -45,7 +45,7 @@ Array [
     "ExecaPlugin",
     "log",
     Array [
-      "Run command \\"node /__tests__/resources/nothing.js\\" ",
+      "Run command \\"node /__tests__/resources/nothing.js\\"",
     ],
   ],
   Array [
@@ -75,7 +75,7 @@ Array [
     "ExecaPlugin",
     "log",
     Array [
-      "Run command \\"not-found\\" ",
+      "Run command \\"not-found\\"",
     ],
   ],
   Array [
@@ -112,7 +112,7 @@ Array [
     "ExecaPlugin",
     "log",
     Array [
-      "Run command \\"not-found\\" ",
+      "Run command \\"not-found\\"",
     ],
   ],
   Array [
@@ -187,7 +187,7 @@ Array [
     "ExecaPlugin",
     "log",
     Array [
-      "Run command \\"not-found\\" ",
+      "Run command \\"not-found\\"",
     ],
   ],
   Array [
@@ -222,7 +222,7 @@ Array [
     "ExecaPlugin",
     "log",
     Array [
-      "Run command \\"not-found\\" ",
+      "Run command \\"not-found\\"",
     ],
   ],
   Array [
@@ -257,7 +257,7 @@ Array [
     "ExecaPlugin",
     "log",
     Array [
-      "Run command \\"node /__tests__/resources/cli-stdout-stderr.js\\" ",
+      "Run command \\"node /__tests__/resources/cli-stdout-stderr.js\\"",
     ],
   ],
   Array [
@@ -301,7 +301,7 @@ Array [
     "ExecaPlugin",
     "log",
     Array [
-      "Run command \\"node /__tests__/resources/cli-stdout-stderr.js\\" ",
+      "Run command \\"node /__tests__/resources/cli-stdout-stderr.js\\"",
     ],
   ],
   Array [
@@ -352,7 +352,7 @@ Array [
     "ExecaPlugin",
     "log",
     Array [
-      "Run command \\"del \\" ",
+      "Run command \\"del \\"",
     ],
   ],
   Array [
@@ -397,7 +397,7 @@ Array [
     "ExecaPlugin",
     "log",
     Array [
-      "Run command \\"del \\" ",
+      "Run command \\"del \\"",
     ],
   ],
   Array [
@@ -435,7 +435,7 @@ Array [
     "ExecaPlugin",
     "log",
     Array [
-      "Run command \\"node /__tests__/resources/nothing.js\\" ",
+      "Run command \\"node /__tests__/resources/nothing.js\\"",
     ],
   ],
   Array [
@@ -456,7 +456,7 @@ Array [
     "ExecaPlugin",
     "log",
     Array [
-      "Run command \\"node /__tests__/resources/nothing.js\\" ",
+      "Run command \\"node /__tests__/resources/nothing.js\\"",
     ],
   ],
   Array [
@@ -477,7 +477,7 @@ Array [
     "ExecaPlugin",
     "log",
     Array [
-      "Run command \\"node /__tests__/resources/nothing.js\\" ",
+      "Run command \\"node /__tests__/resources/nothing.js\\"",
     ],
   ],
   Array [
@@ -498,7 +498,7 @@ Array [
     "ExecaPlugin",
     "log",
     Array [
-      "Run command \\"node /__tests__/resources/nothing.js\\" ",
+      "Run command \\"node /__tests__/resources/nothing.js\\"",
     ],
   ],
   Array [
@@ -519,7 +519,7 @@ Array [
     "ExecaPlugin",
     "log",
     Array [
-      "Run command \\"node /__tests__/resources/nothing.js\\" ",
+      "Run command \\"node /__tests__/resources/nothing.js\\"",
     ],
   ],
   Array [
@@ -540,7 +540,7 @@ Array [
     "ExecaPlugin",
     "log",
     Array [
-      "Run command \\"node /__tests__/resources/nothing.js\\" ",
+      "Run command \\"node /__tests__/resources/nothing.js\\"",
     ],
   ],
   Array [
@@ -561,7 +561,7 @@ Array [
     "ExecaPlugin",
     "log",
     Array [
-      "Run command \\"node /__tests__/resources/nothing.js\\" ",
+      "Run command \\"node /__tests__/resources/nothing.js\\"",
     ],
   ],
   Array [
@@ -582,7 +582,7 @@ Array [
     "ExecaPlugin",
     "log",
     Array [
-      "Run command \\"node /__tests__/resources/nothing.js\\" ",
+      "Run command \\"node /__tests__/resources/nothing.js\\"",
     ],
   ],
   Array [
@@ -603,7 +603,7 @@ Array [
     "ExecaPlugin",
     "log",
     Array [
-      "Run command \\"node /__tests__/resources/nothing.js\\" ",
+      "Run command \\"node /__tests__/resources/nothing.js\\"",
     ],
   ],
   Array [
@@ -624,7 +624,7 @@ Array [
     "ExecaPlugin",
     "log",
     Array [
-      "Run command \\"node /__tests__/resources/nothing.js\\" ",
+      "Run command \\"node /__tests__/resources/nothing.js\\"",
     ],
   ],
   Array [
@@ -645,7 +645,7 @@ Array [
     "ExecaPlugin",
     "log",
     Array [
-      "Run command \\"node /__tests__/resources/nothing.js\\" ",
+      "Run command \\"node /__tests__/resources/nothing.js\\"",
     ],
   ],
   Array [
@@ -666,7 +666,7 @@ Array [
     "ExecaPlugin",
     "log",
     Array [
-      "Run command \\"node /__tests__/resources/nothing.js\\" ",
+      "Run command \\"node /__tests__/resources/nothing.js\\"",
     ],
   ],
   Array [
@@ -687,7 +687,7 @@ Array [
     "ExecaPlugin",
     "log",
     Array [
-      "Run command \\"node /__tests__/resources/nothing.js\\" ",
+      "Run command \\"node /__tests__/resources/nothing.js\\"",
     ],
   ],
   Array [
@@ -708,7 +708,7 @@ Array [
     "ExecaPlugin",
     "log",
     Array [
-      "Run command \\"node /__tests__/resources/nothing.js\\" ",
+      "Run command \\"node /__tests__/resources/nothing.js\\"",
     ],
   ],
   Array [
@@ -729,7 +729,7 @@ Array [
     "ExecaPlugin",
     "log",
     Array [
-      "Run command \\"node /__tests__/resources/nothing.js\\" ",
+      "Run command \\"node /__tests__/resources/nothing.js\\"",
     ],
   ],
   Array [
@@ -750,7 +750,7 @@ Array [
     "ExecaPlugin",
     "log",
     Array [
-      "Run command \\"node /__tests__/resources/nothing.js\\" ",
+      "Run command \\"node /__tests__/resources/nothing.js\\"",
     ],
   ],
   Array [
@@ -771,7 +771,7 @@ Array [
     "ExecaPlugin",
     "log",
     Array [
-      "Run command \\"node /__tests__/resources/nothing.js\\" ",
+      "Run command \\"node /__tests__/resources/nothing.js\\"",
     ],
   ],
   Array [
@@ -792,7 +792,7 @@ Array [
     "ExecaPlugin",
     "log",
     Array [
-      "Run command \\"node /__tests__/resources/nothing.js\\" ",
+      "Run command \\"node /__tests__/resources/nothing.js\\"",
     ],
   ],
   Array [
@@ -813,7 +813,7 @@ Array [
     "ExecaPlugin",
     "log",
     Array [
-      "Run command \\"node /__tests__/resources/nothing.js\\" ",
+      "Run command \\"node /__tests__/resources/nothing.js\\"",
     ],
   ],
   Array [
@@ -843,7 +843,7 @@ Array [
     "ExecaPlugin",
     "log",
     Array [
-      "Run command \\"del /__tests__/dir\\" ",
+      "Run command \\"del /__tests__/dir\\"",
     ],
   ],
   Array [
@@ -873,7 +873,7 @@ Array [
     "ExecaPlugin",
     "log",
     Array [
-      "Run command \\"del /__tests__/dir\\" ",
+      "Run command \\"del /__tests__/dir\\"",
     ],
   ],
   Array [
@@ -903,7 +903,7 @@ Array [
     "ExecaPlugin",
     "log",
     Array [
-      "Run command \\"del /__tests__/dir\\" ",
+      "Run command \\"del /__tests__/dir\\"",
     ],
   ],
   Array [
@@ -933,7 +933,7 @@ Array [
     "ExecaPlugin",
     "log",
     Array [
-      "Run command \\"del /__tests__/dir\\" ",
+      "Run command \\"del /__tests__/dir\\"",
     ],
   ],
   Array [
@@ -991,7 +991,7 @@ Array [
     "ExecaPlugin",
     "log",
     Array [
-      "Run command \\"del /__tests__/dir\\" ",
+      "Run command \\"del /__tests__/dir\\"",
     ],
   ],
   Array [
@@ -1049,7 +1049,7 @@ Array [
     "ExecaPlugin",
     "log",
     Array [
-      "Run command \\"del /__tests__/dir\\" ",
+      "Run command \\"del /__tests__/dir\\"",
     ],
   ],
   Array [
@@ -1072,7 +1072,7 @@ Array [
     "ExecaPlugin",
     "log",
     Array [
-      "Run command \\"del /__tests__/dir /__tests__/other-dir /__tests__/other-other-dir\\" ",
+      "Run command \\"del /__tests__/dir /__tests__/other-dir /__tests__/other-other-dir\\"",
     ],
   ],
   Array [
@@ -1179,7 +1179,7 @@ Array [
     "ExecaPlugin",
     "log",
     Array [
-      "Run command \\"del /__tests__/dir /__tests__/other-dir\\" ",
+      "Run command \\"del /__tests__/dir /__tests__/other-dir\\"",
     ],
   ],
   Array [
@@ -1223,7 +1223,7 @@ Array [
     "ExecaPlugin",
     "log",
     Array [
-      "Run command \\"del /__tests__/dir\\" ",
+      "Run command \\"del /__tests__/dir\\"",
     ],
   ],
   Array [
@@ -1267,7 +1267,7 @@ Array [
     "ExecaPlugin",
     "log",
     Array [
-      "Run command \\"del /__tests__/dir\\" ",
+      "Run command \\"del /__tests__/dir\\"",
     ],
   ],
   Array [
@@ -1297,7 +1297,7 @@ Array [
     "ExecaPlugin",
     "log",
     Array [
-      "Run command \\"del /__tests__/dir/nested\\" ",
+      "Run command \\"del /__tests__/dir/nested\\"",
     ],
   ],
   Array [
@@ -1327,7 +1327,7 @@ Array [
     "ExecaPlugin",
     "log",
     Array [
-      "Run command \\"del /__tests__/dir/nested\\" ",
+      "Run command \\"del /__tests__/dir/nested\\"",
     ],
   ],
   Array [

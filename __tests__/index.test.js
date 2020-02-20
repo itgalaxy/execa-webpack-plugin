@@ -33,15 +33,7 @@ function getConfig(pluginOptions = {}) {
                 args = normalizeErrors(args);
               }
 
-              logs.push([
-                name,
-                type,
-                args.map(arg =>
-                  typeof arg === "string"
-                    ? arg.replace(new RegExp(process.cwd(), "g"), "")
-                    : arg
-                )
-              ]);
+              logs.push([name, type, normalizeErrors(args)]);
 
               return false;
             }

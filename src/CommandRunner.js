@@ -49,8 +49,8 @@ class CommandRunner {
     options.stdio = ["ignore", "pipe", "pipe"];
 
     this.options.logger.log(
-      `Run command "${cmd}${args.length > 0 ? ` ${args.join(" ")}` : ""}" ${
-        asArg ? "(the result will be used as an argument)" : ""
+      `Run command "${cmd}${args.length > 0 ? ` ${args.join(" ")}` : ""}"${
+        asArg ? " (the result will be used as an argument)" : ""
       }`
     );
 
