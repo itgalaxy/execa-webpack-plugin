@@ -25,7 +25,15 @@ Array [
     "ExecaPlugin",
     "log",
     Array [
-      "Run command \\"del __tests__/dir/nested\\"",
+      "Run command \\"del --help\\"",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "log",
+    Array [
+      "The output of the process on stdout: 
+  Delete files and directories - Cross-platform",
     ],
   ],
   Array [

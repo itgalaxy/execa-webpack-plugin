@@ -828,10 +828,13 @@ describe("execa-webpack-plugin", () => {
     expect(fs.statSync(dir).isDirectory()).toBe(true);
     expect(fs.statSync(nestedDir).isDirectory()).toBe(true);
 
+    console.log(process.cwd());
+    console.log(fs.statSync(nestedDir).isDirectory());
+
     const stats = await compile({
       onDone: [
         {
-          args: [path.relative(process.cwd(), nestedDir)],
+          args: ['--help'],
           cmd: "del",
           // TODO
           // options: {
