@@ -13,6 +13,7 @@ function removeCWD(str) {
 
   console.log(str);
   console.log(cwd);
+  console.log(str.replace(new RegExp(cwd, "g"), ""));
 
   return str.replace(new RegExp(cwd, "g"), "");
 }
