@@ -825,20 +825,18 @@ describe("execa-webpack-plugin", () => {
     mkdirSyncSafe(dir);
     mkdirSyncSafe(nestedDir);
 
-    console.log(dir);
-    console.log(nestedDir);
-
     expect(fs.statSync(dir).isDirectory()).toBe(true);
     expect(fs.statSync(nestedDir).isDirectory()).toBe(true);
 
     const stats = await compile({
       onDone: [
         {
-          args: [nestedDir],
+          args: [path.relative(process.cwd(), nestedDir)],
           cmd: "del",
-          options: {
-            cwd: dir
-          }
+          // TODO
+          // options: {
+          //  cwd: dir
+          // }
         }
       ]
     });

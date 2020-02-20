@@ -25,7 +25,7 @@ Array [
     "ExecaPlugin",
     "log",
     Array [
-      "Run command \\"del /__tests__/dir/nested\\"",
+      "Run command \\"del __tests__/dir/nested\\"",
     ],
   ],
   Array [
