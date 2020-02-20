@@ -829,9 +829,15 @@ describe("execa-webpack-plugin", () => {
     expect(fs.statSync(dir).isDirectory()).toBe(true);
     expect(fs.statSync(nestedDir).isDirectory()).toBe(true);
 
-    const result = await execa("del", [nestedDir], {
-      cwd: dir
-    });
+    let result;
+
+    try {
+      result = await execa("del", [nestedDir], {
+        cwd: dir
+      });
+    } catch (error) {
+      console.log(error);
+    }
 
     console.log(result);
 
