@@ -1,6 +1,5 @@
 "use strict";
 
-const execa = require("execa");
 const path = require("path");
 const fs = require("fs");
 const webpack = require("webpack");
@@ -33,8 +32,6 @@ function getConfig(pluginOptions = {}) {
                 // eslint-disable-next-line no-param-reassign
                 args = normalizeErrors(args);
               }
-
-              console.log(args);
 
               logs.push([name, type, normalizeErrors(args)]);
 
