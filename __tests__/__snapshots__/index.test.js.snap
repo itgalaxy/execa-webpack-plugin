@@ -326,6 +326,261 @@ Array [
 
 exports[`execa-webpack-plugin should work and output 'stdout' and 'stderr' (sync hook): warnings 1`] = `Array []`;
 
+exports[`execa-webpack-plugin should work multiple commands and do not overload the system (the number of cores is 1) (async hook): errors 1`] = `Array []`;
+
+exports[`execa-webpack-plugin should work multiple commands and do not overload the system (the number of cores is 1) (async hook): logs 1`] = `
+Array [
+  Array [
+    "ExecaPlugin",
+    "log",
+    Array [
+      "Running the \\"done\\" hook",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "log",
+    Array [
+      "Run command \\"node /__tests__/resources/nothing.js\\"",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "log",
+    Array [
+      "Run command \\"node /__tests__/resources/nothing.js\\"",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "log",
+    Array [
+      "Run command \\"node /__tests__/resources/nothing.js\\"",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "log",
+    Array [
+      "Run command \\"node /__tests__/resources/nothing.js\\"",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "log",
+    Array [
+      "The \\"done\\" hook completed",
+    ],
+  ],
+]
+`;
+
+exports[`execa-webpack-plugin should work multiple commands and do not overload the system (the number of cores is 1) (async hook): warnings 1`] = `Array []`;
+
+exports[`execa-webpack-plugin should work multiple commands and do not overload the system (the number of cores is 2) (async hook): errors 1`] = `Array []`;
+
+exports[`execa-webpack-plugin should work multiple commands and do not overload the system (the number of cores is 2) (async hook): logs 1`] = `
+Array [
+  Array [
+    "ExecaPlugin",
+    "log",
+    Array [
+      "Running the \\"done\\" hook",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "log",
+    Array [
+      "Run command \\"node /__tests__/resources/nothing.js\\"",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "log",
+    Array [
+      "Run command \\"node /__tests__/resources/nothing.js\\"",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "log",
+    Array [
+      "Run command \\"node /__tests__/resources/nothing.js\\"",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "log",
+    Array [
+      "Run command \\"node /__tests__/resources/nothing.js\\"",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "log",
+    Array [
+      "The \\"done\\" hook completed",
+    ],
+  ],
+]
+`;
+
+exports[`execa-webpack-plugin should work multiple commands and do not overload the system (the number of cores is 2) (async hook): warnings 1`] = `Array []`;
+
+exports[`execa-webpack-plugin should work multiple commands and do not overload the system (the number of cores is 4) (async hook): errors 1`] = `Array []`;
+
+exports[`execa-webpack-plugin should work multiple commands and do not overload the system (the number of cores is 4) (async hook): logs 1`] = `
+Array [
+  Array [
+    "ExecaPlugin",
+    "log",
+    Array [
+      "Running the \\"done\\" hook",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "log",
+    Array [
+      "Run command \\"node /__tests__/resources/nothing.js\\"",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "log",
+    Array [
+      "Run command \\"node /__tests__/resources/nothing.js\\"",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "log",
+    Array [
+      "Run command \\"node /__tests__/resources/nothing.js\\"",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "log",
+    Array [
+      "Run command \\"node /__tests__/resources/nothing.js\\"",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "log",
+    Array [
+      "The \\"done\\" hook completed",
+    ],
+  ],
+]
+`;
+
+exports[`execa-webpack-plugin should work multiple commands and do not overload the system (the number of cores is 4) (async hook): warnings 1`] = `Array []`;
+
+exports[`execa-webpack-plugin should work multiple commands and do not overload the system (the number of cores is 4) (sync hook): errors 1`] = `Array []`;
+
+exports[`execa-webpack-plugin should work multiple commands and do not overload the system (the number of cores is 4) (sync hook): logs 1`] = `
+Array [
+  Array [
+    "ExecaPlugin",
+    "log",
+    Array [
+      "Running the \\"compile\\" hook",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "log",
+    Array [
+      "Run command \\"node /__tests__/resources/nothing.js\\"",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "log",
+    Array [
+      "Run command \\"node /__tests__/resources/nothing.js\\"",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "log",
+    Array [
+      "Run command \\"node /__tests__/resources/nothing.js\\"",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "log",
+    Array [
+      "Run command \\"node /__tests__/resources/nothing.js\\"",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "log",
+    Array [
+      "The \\"compile\\" hook completed",
+    ],
+  ],
+]
+`;
+
+exports[`execa-webpack-plugin should work multiple commands and do not overload the system (the number of cores is 4) (sync hook): warnings 1`] = `Array []`;
+
+exports[`execa-webpack-plugin should work multiple commands and do not overload the system (the number of cores is 16) (async hook): errors 1`] = `Array []`;
+
+exports[`execa-webpack-plugin should work multiple commands and do not overload the system (the number of cores is 16) (async hook): logs 1`] = `
+Array [
+  Array [
+    "ExecaPlugin",
+    "log",
+    Array [
+      "Running the \\"done\\" hook",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "log",
+    Array [
+      "Run command \\"node /__tests__/resources/nothing.js\\"",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "log",
+    Array [
+      "Run command \\"node /__tests__/resources/nothing.js\\"",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "log",
+    Array [
+      "Run command \\"node /__tests__/resources/nothing.js\\"",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "log",
+    Array [
+      "Run command \\"node /__tests__/resources/nothing.js\\"",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "log",
+    Array [
+      "The \\"done\\" hook completed",
+    ],
+  ],
+]
+`;
+
+exports[`execa-webpack-plugin should work multiple commands and do not overload the system (the number of cores is 16) (async hook): warnings 1`] = `Array []`;
+
 exports[`execa-webpack-plugin should work when nested commands return nothing and 'bail: false' (async hook): errors 1`] = `Array []`;
 
 exports[`execa-webpack-plugin should work when nested commands return nothing and 'bail: false' (async hook): logs 1`] = `

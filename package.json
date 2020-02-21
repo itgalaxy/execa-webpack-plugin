@@ -31,7 +31,8 @@
   "bugs": "https://github.com/itgalaxy/execa-webpack-plugin/issues",
   "main": "src/ExecaWebpackPlugin",
   "dependencies": {
-    "execa": "^4.0.0"
+    "execa": "^4.0.0",
+    "p-limit": "^2.2.2"
   },
   "devDependencies": {
     "babel-eslint": "^10.0.3",

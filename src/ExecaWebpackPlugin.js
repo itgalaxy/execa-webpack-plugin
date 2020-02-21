@@ -1,5 +1,7 @@
 "use strict";
 
+const os = require("os");
+const pLimit = require("p-limit");
 const CommandRunner = require("./CommandRunner");
 
 const hookTypeMap = {
@@ -73,6 +75,14 @@ class ExecaPlugin {
     }
   }
 
+  static getConcurrency() {
+    // In some cases cpus() returns undefined
+    // https://github.com/nodejs/node/issues/19022
+    const cpus = os.cpus() || { length: 1 };
+
+    return Math.max(1, cpus.length - 1);
+  }
+
   runCommands(commands, isAsync) {
     const optionsForCommand = { bail: this.options.bail, logger: this.logger };
 
@@ -110,7 +120,11 @@ class ExecaPlugin {
       return new CommandRunner(optionsForCommand).run(command, isAsync, asArg);
     };
 
-    const results = commands.map(command => runCommand(command));
+    const concurrency = ExecaPlugin.getConcurrency();
+    const limit = pLimit(concurrency);
+    const results = commands.map(command =>
+      isAsync ? limit(() => runCommand(command)) : runCommand(command)
+    );
 
     return isAsync ? Promise.all(results) : results;
   }
