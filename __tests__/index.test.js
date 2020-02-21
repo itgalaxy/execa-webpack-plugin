@@ -832,9 +832,7 @@ describe("execa-webpack-plugin", () => {
     let result;
 
     try {
-      result = await execa("del", [`"${nestedDir}"`], {
-        cwd: dir
-      });
+      result = await execa("del", [__dirname]);
     } catch (error) {
       console.log(error)
     }
