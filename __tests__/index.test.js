@@ -447,7 +447,7 @@ describe("execa-webpack-plugin", () => {
       });
     } catch (error) {
       // eslint-disable-next-line jest/no-try-expect
-      expect(error.shortMessage).toMatchSnapshot();
+      expect(error.shortMessage).toMatch(/ENOENT/);
     }
 
     expect(logs).toMatchSnapshot("logs");
@@ -467,7 +467,7 @@ describe("execa-webpack-plugin", () => {
       });
     } catch (error) {
       // eslint-disable-next-line jest/no-try-expect
-      expect(error.shortMessage).toMatchSnapshot();
+      expect(error.shortMessage).toMatch(/ENOENT/);
     }
 
     expect(logs).toMatchSnapshot("logs");
