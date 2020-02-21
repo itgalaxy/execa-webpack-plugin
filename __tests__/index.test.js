@@ -833,7 +833,8 @@ describe("execa-webpack-plugin", () => {
 
     try {
       result = await execa("del", [nestedDir], {
-        cwd: dir
+        cwd: dir,
+        windowsVerbatimArguments: true
       });
     } catch (error) {
       console.log(error);
