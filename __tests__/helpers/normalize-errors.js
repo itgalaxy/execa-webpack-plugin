@@ -4,12 +4,9 @@ function removeCWD(str) {
   const isWin = process.platform === "win32";
   let cwd = process.cwd();
 
-  console.log(str);
-  console.log(/ENOENT/.test(str));
-
   if (/ENOENT/.test(str)) {
     // eslint-disable-next-line no-param-reassign
-    str = str.replace(/return ".+?"/, 'return "ENOENT"');
+    str = str.replace(/return .+/, 'return "ENOENT"');
   }
 
   if (isWin) {

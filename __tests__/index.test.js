@@ -433,7 +433,7 @@ describe("execa-webpack-plugin", () => {
     unlinkSyncSafe(dir);
   });
 
-  it.only("should throw error with 'bail: true' option (sync hook)", async () => {
+  it("should throw error with 'bail: true' option (sync hook)", async () => {
     expect.assertions(2);
 
     try {
