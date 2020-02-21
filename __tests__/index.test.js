@@ -1,5 +1,6 @@
 "use strict";
 
+const os = require("os");
 const path = require("path");
 const fs = require("fs");
 const webpack = require("webpack");
@@ -846,5 +847,183 @@ describe("execa-webpack-plugin", () => {
     );
 
     unlinkSyncSafe(dir);
+  });
+
+  it("should work multiple commands and do not overload the system (the number of cores is 1) (async hook)", async () => {
+    const spy = jest.spyOn(os, "cpus").mockImplementation(() => [{}]);
+
+    const stats = await compile({
+      onDone: [
+        {
+          args: [path.join(resourcesDir, "nothing.js")],
+          cmd: "node"
+        },
+        {
+          args: [path.join(resourcesDir, "nothing.js")],
+          cmd: "node"
+        },
+        {
+          args: [path.join(resourcesDir, "nothing.js")],
+          cmd: "node"
+        },
+        {
+          args: [path.join(resourcesDir, "nothing.js")],
+          cmd: "node"
+        }
+      ]
+    });
+
+    expect(logs).toMatchSnapshot("logs");
+    expect(getErrors(stats)).toMatchSnapshot("errors");
+    expect(getWarnings(stats)).toMatchSnapshot("warnings");
+
+    spy.mockRestore();
+  });
+
+  it("should work multiple commands and do not overload the system (the number of cores is 2) (async hook)", async () => {
+    const spy = jest.spyOn(os, "cpus").mockImplementation(() => [{}, {}]);
+
+    const stats = await compile({
+      onDone: [
+        {
+          args: [path.join(resourcesDir, "nothing.js")],
+          cmd: "node"
+        },
+        {
+          args: [path.join(resourcesDir, "nothing.js")],
+          cmd: "node"
+        },
+        {
+          args: [path.join(resourcesDir, "nothing.js")],
+          cmd: "node"
+        },
+        {
+          args: [path.join(resourcesDir, "nothing.js")],
+          cmd: "node"
+        }
+      ]
+    });
+
+    expect(logs).toMatchSnapshot("logs");
+    expect(getErrors(stats)).toMatchSnapshot("errors");
+    expect(getWarnings(stats)).toMatchSnapshot("warnings");
+
+    spy.mockRestore();
+  });
+
+  it("should work multiple commands and do not overload the system (the number of cores is 4) (async hook)", async () => {
+    const spy = jest
+      .spyOn(os, "cpus")
+      .mockImplementation(() => [{}, {}, {}, {}]);
+
+    const stats = await compile({
+      onDone: [
+        {
+          args: [path.join(resourcesDir, "nothing.js")],
+          cmd: "node"
+        },
+        {
+          args: [path.join(resourcesDir, "nothing.js")],
+          cmd: "node"
+        },
+        {
+          args: [path.join(resourcesDir, "nothing.js")],
+          cmd: "node"
+        },
+        {
+          args: [path.join(resourcesDir, "nothing.js")],
+          cmd: "node"
+        }
+      ]
+    });
+
+    expect(logs).toMatchSnapshot("logs");
+    expect(getErrors(stats)).toMatchSnapshot("errors");
+    expect(getWarnings(stats)).toMatchSnapshot("warnings");
+
+    spy.mockRestore();
+  });
+
+  it("should work multiple commands and do not overload the system (the number of cores is 16) (async hook)", async () => {
+    const spy = jest
+      .spyOn(os, "cpus")
+      .mockImplementation(() => [
+        {},
+        {},
+        {},
+        {},
+        {},
+        {},
+        {},
+        {},
+        {},
+        {},
+        {},
+        {},
+        {},
+        {},
+        {},
+        {}
+      ]);
+
+    const stats = await compile({
+      onDone: [
+        {
+          args: [path.join(resourcesDir, "nothing.js")],
+          cmd: "node"
+        },
+        {
+          args: [path.join(resourcesDir, "nothing.js")],
+          cmd: "node"
+        },
+        {
+          args: [path.join(resourcesDir, "nothing.js")],
+          cmd: "node"
+        },
+        {
+          args: [path.join(resourcesDir, "nothing.js")],
+          cmd: "node"
+        }
+      ]
+    });
+
+    expect(logs).toMatchSnapshot("logs");
+    expect(getErrors(stats)).toMatchSnapshot("errors");
+    expect(getWarnings(stats)).toMatchSnapshot("warnings");
+
+    spy.mockRestore();
+  });
+
+  it("should work multiple commands and do not overload the system (the number of cores is 4) (sync hook)", async () => {
+    const spy = jest
+      .spyOn(os, "cpus")
+      .mockImplementation(() => [{}, {}, {}, {}]);
+
+    const stats = await compile({
+      onCompile: [
+        {
+          args: [path.join(resourcesDir, "nothing.js")],
+          cmd: "node"
+        },
+        {
+          args: [path.join(resourcesDir, "nothing.js")],
+          cmd: "node"
+        },
+        {
+          args: [path.join(resourcesDir, "nothing.js")],
+          cmd: "node"
+        },
+        {
+          args: [path.join(resourcesDir, "nothing.js")],
+          cmd: "node"
+        }
+      ]
+    });
+
+    expect(logs).toMatchSnapshot("logs");
+    expect(getErrors(stats)).toMatchSnapshot("errors");
+    expect(getWarnings(stats)).toMatchSnapshot("warnings");
+
+    spy.mockRestore();
   });
 });
