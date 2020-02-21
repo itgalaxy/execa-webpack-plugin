@@ -832,9 +832,9 @@ describe("execa-webpack-plugin", () => {
     let result;
 
     try {
-      result = await execa("del", [__dirname]);
+      result = await execa("dir", [__dirname]);
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
 
     console.log(result);
