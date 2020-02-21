@@ -829,23 +829,11 @@ describe("execa-webpack-plugin", () => {
     expect(fs.statSync(dir).isDirectory()).toBe(true);
     expect(fs.statSync(nestedDir).isDirectory()).toBe(true);
 
-    let result;
-
-    try {
-      result = await execa("rmdir", [nestedDir]);
-    } catch (error) {
-      console.log(error);
-    }
-
-    console.log(result);
-
-    mkdirSyncSafe(nestedDir);
-
     const stats = await compile({
       onDone: [
         {
           args: [nestedDir],
-          cmd: "del",
+          cmd: "rmdir",
           options: {
             cwd: dir
           }
