@@ -15,7 +15,7 @@ Array [
     "ExecaPlugin",
     "log",
     Array [
-      "Run command \\"node /__tests__/resources/nothing.js\\" ",
+      "Run command \\"node /__tests__/resources/nothing.js\\"",
     ],
   ],
   Array [
@@ -45,7 +45,7 @@ Array [
     "ExecaPlugin",
     "log",
     Array [
-      "Run command \\"node /__tests__/resources/nothing.js\\" ",
+      "Run command \\"node /__tests__/resources/nothing.js\\"",
     ],
   ],
   Array [
@@ -75,14 +75,14 @@ Array [
     "ExecaPlugin",
     "log",
     Array [
-      "Run command \\"not-found\\" ",
+      "Run command \\"not-found\\"",
     ],
   ],
   Array [
     "ExecaPlugin",
     "error",
     Array [
-      "Error: Command \\"not-found\\" return \\"Command failed with ENOENT: not-found\\"",
+      "Error: Command \\"not-found\\" return \\"ENOENT\\"",
     ],
   ],
   Array [
@@ -112,14 +112,14 @@ Array [
     "ExecaPlugin",
     "log",
     Array [
-      "Run command \\"not-found\\" ",
+      "Run command \\"not-found\\"",
     ],
   ],
   Array [
     "ExecaPlugin",
     "error",
     Array [
-      "Error: Command \\"not-found\\" return \\"Command failed with ENOENT: not-found\\"",
+      "Error: Command \\"not-found\\" return \\"ENOENT\\"",
     ],
   ],
   Array [
@@ -172,8 +172,6 @@ exports[`execa-webpack-plugin should throw error on 'on*' options are empty (no 
 
 exports[`execa-webpack-plugin should throw error on 'on*' options are empty (no events): logs 1`] = `Array []`;
 
-exports[`execa-webpack-plugin should throw error with 'bail: true' option (async hook) 1`] = `[Error: Command failed with ENOENT: not-found]`;
-
 exports[`execa-webpack-plugin should throw error with 'bail: true' option (async hook): logs 1`] = `
 Array [
   Array [
@@ -187,14 +185,14 @@ Array [
     "ExecaPlugin",
     "log",
     Array [
-      "Run command \\"not-found\\" ",
+      "Run command \\"not-found\\"",
     ],
   ],
   Array [
     "ExecaPlugin",
     "error",
     Array [
-      "Error: Command \\"not-found\\" return \\"Command failed with ENOENT: not-found\\"",
+      "Error: Command \\"not-found\\" return \\"ENOENT\\"",
     ],
   ],
   Array [
@@ -206,8 +204,6 @@ Array [
   ],
 ]
 `;
-
-exports[`execa-webpack-plugin should throw error with 'bail: true' option (sync hook) 1`] = `[Error: Command failed with ENOENT: not-found]`;
 
 exports[`execa-webpack-plugin should throw error with 'bail: true' option (sync hook): logs 1`] = `
 Array [
@@ -222,14 +218,14 @@ Array [
     "ExecaPlugin",
     "log",
     Array [
-      "Run command \\"not-found\\" ",
+      "Run command \\"not-found\\"",
     ],
   ],
   Array [
     "ExecaPlugin",
     "error",
     Array [
-      "Error: Command \\"not-found\\" return \\"Command failed with ENOENT: not-found\\"",
+      "Error: Command \\"not-found\\" return \\"ENOENT\\"",
     ],
   ],
   Array [
@@ -257,7 +253,7 @@ Array [
     "ExecaPlugin",
     "log",
     Array [
-      "Run command \\"node /__tests__/resources/cli-stdout-stderr.js\\" ",
+      "Run command \\"node /__tests__/resources/cli-stdout-stderr.js\\"",
     ],
   ],
   Array [
@@ -301,7 +297,7 @@ Array [
     "ExecaPlugin",
     "log",
     Array [
-      "Run command \\"node /__tests__/resources/cli-stdout-stderr.js\\" ",
+      "Run command \\"node /__tests__/resources/cli-stdout-stderr.js\\"",
     ],
   ],
   Array [
@@ -352,15 +348,14 @@ Array [
     "ExecaPlugin",
     "log",
     Array [
-      "Run command \\"del \\" ",
+      "Run command \\"rmdir \\"",
     ],
   ],
   Array [
     "ExecaPlugin",
     "error",
     Array [
-      "Error: Command \\"del \\" return \\"Command failed with exit code 1: del 
-TypeError: Expected a non-empty string",
+      "Error: Command \\"rmdir \\" return \\"Command failed with exit code 1: rmdir ",
     ],
   ],
   Array [
@@ -397,15 +392,14 @@ Array [
     "ExecaPlugin",
     "log",
     Array [
-      "Run command \\"del \\" ",
+      "Run command \\"rmdir \\"",
     ],
   ],
   Array [
     "ExecaPlugin",
     "error",
     Array [
-      "Error: Command \\"del \\" return \\"Command failed with exit code 1: del 
-TypeError: Expected a non-empty string",
+      "Error: Command \\"rmdir \\" return \\"Command failed with exit code 1: rmdir ",
     ],
   ],
   Array [
@@ -435,7 +429,7 @@ Array [
     "ExecaPlugin",
     "log",
     Array [
-      "Run command \\"node /__tests__/resources/nothing.js\\" ",
+      "Run command \\"node /__tests__/resources/nothing.js\\"",
     ],
   ],
   Array [
@@ -456,7 +450,7 @@ Array [
     "ExecaPlugin",
     "log",
     Array [
-      "Run command \\"node /__tests__/resources/nothing.js\\" ",
+      "Run command \\"node /__tests__/resources/nothing.js\\"",
     ],
   ],
   Array [
@@ -477,7 +471,7 @@ Array [
     "ExecaPlugin",
     "log",
     Array [
-      "Run command \\"node /__tests__/resources/nothing.js\\" ",
+      "Run command \\"node /__tests__/resources/nothing.js\\"",
     ],
   ],
   Array [
@@ -498,7 +492,7 @@ Array [
     "ExecaPlugin",
     "log",
     Array [
-      "Run command \\"node /__tests__/resources/nothing.js\\" ",
+      "Run command \\"node /__tests__/resources/nothing.js\\"",
     ],
   ],
   Array [
@@ -519,7 +513,7 @@ Array [
     "ExecaPlugin",
     "log",
     Array [
-      "Run command \\"node /__tests__/resources/nothing.js\\" ",
+      "Run command \\"node /__tests__/resources/nothing.js\\"",
     ],
   ],
   Array [
@@ -540,7 +534,7 @@ Array [
     "ExecaPlugin",
     "log",
     Array [
-      "Run command \\"node /__tests__/resources/nothing.js\\" ",
+      "Run command \\"node /__tests__/resources/nothing.js\\"",
     ],
   ],
   Array [
@@ -561,7 +555,7 @@ Array [
     "ExecaPlugin",
     "log",
     Array [
-      "Run command \\"node /__tests__/resources/nothing.js\\" ",
+      "Run command \\"node /__tests__/resources/nothing.js\\"",
     ],
   ],
   Array [
@@ -582,7 +576,7 @@ Array [
     "ExecaPlugin",
     "log",
     Array [
-      "Run command \\"node /__tests__/resources/nothing.js\\" ",
+      "Run command \\"node /__tests__/resources/nothing.js\\"",
     ],
   ],
   Array [
@@ -603,7 +597,7 @@ Array [
     "ExecaPlugin",
     "log",
     Array [
-      "Run command \\"node /__tests__/resources/nothing.js\\" ",
+      "Run command \\"node /__tests__/resources/nothing.js\\"",
     ],
   ],
   Array [
@@ -624,7 +618,7 @@ Array [
     "ExecaPlugin",
     "log",
     Array [
-      "Run command \\"node /__tests__/resources/nothing.js\\" ",
+      "Run command \\"node /__tests__/resources/nothing.js\\"",
     ],
   ],
   Array [
@@ -645,7 +639,7 @@ Array [
     "ExecaPlugin",
     "log",
     Array [
-      "Run command \\"node /__tests__/resources/nothing.js\\" ",
+      "Run command \\"node /__tests__/resources/nothing.js\\"",
     ],
   ],
   Array [
@@ -666,7 +660,7 @@ Array [
     "ExecaPlugin",
     "log",
     Array [
-      "Run command \\"node /__tests__/resources/nothing.js\\" ",
+      "Run command \\"node /__tests__/resources/nothing.js\\"",
     ],
   ],
   Array [
@@ -687,7 +681,7 @@ Array [
     "ExecaPlugin",
     "log",
     Array [
-      "Run command \\"node /__tests__/resources/nothing.js\\" ",
+      "Run command \\"node /__tests__/resources/nothing.js\\"",
     ],
   ],
   Array [
@@ -708,7 +702,7 @@ Array [
     "ExecaPlugin",
     "log",
     Array [
-      "Run command \\"node /__tests__/resources/nothing.js\\" ",
+      "Run command \\"node /__tests__/resources/nothing.js\\"",
     ],
   ],
   Array [
@@ -729,7 +723,7 @@ Array [
     "ExecaPlugin",
     "log",
     Array [
-      "Run command \\"node /__tests__/resources/nothing.js\\" ",
+      "Run command \\"node /__tests__/resources/nothing.js\\"",
     ],
   ],
   Array [
@@ -750,7 +744,7 @@ Array [
     "ExecaPlugin",
     "log",
     Array [
-      "Run command \\"node /__tests__/resources/nothing.js\\" ",
+      "Run command \\"node /__tests__/resources/nothing.js\\"",
     ],
   ],
   Array [
@@ -771,7 +765,7 @@ Array [
     "ExecaPlugin",
     "log",
     Array [
-      "Run command \\"node /__tests__/resources/nothing.js\\" ",
+      "Run command \\"node /__tests__/resources/nothing.js\\"",
     ],
   ],
   Array [
@@ -792,7 +786,7 @@ Array [
     "ExecaPlugin",
     "log",
     Array [
-      "Run command \\"node /__tests__/resources/nothing.js\\" ",
+      "Run command \\"node /__tests__/resources/nothing.js\\"",
     ],
   ],
   Array [
@@ -813,7 +807,7 @@ Array [
     "ExecaPlugin",
     "log",
     Array [
-      "Run command \\"node /__tests__/resources/nothing.js\\" ",
+      "Run command \\"node /__tests__/resources/nothing.js\\"",
     ],
   ],
   Array [
@@ -843,7 +837,7 @@ Array [
     "ExecaPlugin",
     "log",
     Array [
-      "Run command \\"del /__tests__/dir\\" ",
+      "Run command \\"rmdir /__tests__/dir\\"",
     ],
   ],
   Array [
@@ -873,7 +867,7 @@ Array [
     "ExecaPlugin",
     "log",
     Array [
-      "Run command \\"del /__tests__/dir\\" ",
+      "Run command \\"rmdir /__tests__/dir\\"",
     ],
   ],
   Array [
@@ -903,7 +897,7 @@ Array [
     "ExecaPlugin",
     "log",
     Array [
-      "Run command \\"del /__tests__/dir\\" ",
+      "Run command \\"rmdir /__tests__/dir\\"",
     ],
   ],
   Array [
@@ -933,7 +927,7 @@ Array [
     "ExecaPlugin",
     "log",
     Array [
-      "Run command \\"del /__tests__/dir\\" ",
+      "Run command \\"rmdir /__tests__/dir\\"",
     ],
   ],
   Array [
@@ -991,7 +985,7 @@ Array [
     "ExecaPlugin",
     "log",
     Array [
-      "Run command \\"del /__tests__/dir\\" ",
+      "Run command \\"rmdir /__tests__/dir\\"",
     ],
   ],
   Array [
@@ -1049,7 +1043,7 @@ Array [
     "ExecaPlugin",
     "log",
     Array [
-      "Run command \\"del /__tests__/dir\\" ",
+      "Run command \\"rmdir /__tests__/dir\\"",
     ],
   ],
   Array [
@@ -1072,13 +1066,6 @@ Array [
     "ExecaPlugin",
     "log",
     Array [
-      "Run command \\"del /__tests__/dir /__tests__/other-dir /__tests__/other-other-dir\\" ",
-    ],
-  ],
-  Array [
-    "ExecaPlugin",
-    "log",
-    Array [
       "Run command \\"node /__tests__/resources/nested-other-other.js\\" (the result will be used as an argument)",
     ],
   ],
@@ -1094,6 +1081,13 @@ Array [
     "log",
     Array [
       "Run command \\"node /__tests__/resources/nested.js\\" (the result will be used as an argument)",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "log",
+    Array [
+      "Run command \\"rmdir /__tests__/dir /__tests__/other-dir /__tests__/other-other-dir\\"",
     ],
   ],
   Array [
@@ -1179,7 +1173,7 @@ Array [
     "ExecaPlugin",
     "log",
     Array [
-      "Run command \\"del /__tests__/dir /__tests__/other-dir\\" ",
+      "Run command \\"rmdir /__tests__/dir /__tests__/other-dir\\"",
     ],
   ],
   Array [
@@ -1223,7 +1217,7 @@ Array [
     "ExecaPlugin",
     "log",
     Array [
-      "Run command \\"del /__tests__/dir\\" ",
+      "Run command \\"rmdir /__tests__/dir\\"",
     ],
   ],
   Array [
@@ -1267,7 +1261,7 @@ Array [
     "ExecaPlugin",
     "log",
     Array [
-      "Run command \\"del /__tests__/dir\\" ",
+      "Run command \\"rmdir /__tests__/dir\\"",
     ],
   ],
   Array [
@@ -1297,7 +1291,7 @@ Array [
     "ExecaPlugin",
     "log",
     Array [
-      "Run command \\"del /__tests__/dir/nested\\" ",
+      "Run command \\"rmdir /__tests__/dir/nested\\"",
     ],
   ],
   Array [
@@ -1327,7 +1321,7 @@ Array [
     "ExecaPlugin",
     "log",
     Array [
-      "Run command \\"del /__tests__/dir/nested\\" ",
+      "Run command \\"rmdir /__tests__/dir/nested\\"",
     ],
   ],
   Array [

@@ -1,7 +1,7 @@
 # execa-webpack-plugin
 
 [![NPM version](https://img.shields.io/npm/v/execa-webpack-plugin.svg)](https://www.npmjs.org/package/execa-webpack-plugin)
-[![Travis Build Status](https://img.shields.io/travis/itgalaxy/execa-webpack-plugin/master.svg?label=build)](https://travis-ci.org/itgalaxy/execa-webpack-plugin)
+[![Build Status](https://github.com/itgalaxy/execa-webpack-plugin/workflows/CI/badge.svg)](https://github.com/itgalaxy/execa-webpack-plugin/actions)
 [![dependencies Status](https://david-dm.org/itgalaxy/execa-webpack-plugin/status.svg)](https://david-dm.org/itgalaxy/execa-webpack-plugin)
 [![devDependencies Status](https://david-dm.org/itgalaxy/execa-webpack-plugin/dev-status.svg)](https://david-dm.org/itgalaxy/execa-webpack-plugin?type=dev)
 

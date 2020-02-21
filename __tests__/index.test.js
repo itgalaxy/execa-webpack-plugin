@@ -33,15 +33,7 @@ function getConfig(pluginOptions = {}) {
                 args = normalizeErrors(args);
               }
 
-              logs.push([
-                name,
-                type,
-                args.map(arg =>
-                  typeof arg === "string"
-                    ? arg.replace(new RegExp(process.cwd(), "g"), "")
-                    : arg
-                )
-              ]);
+              logs.push([name, type, normalizeErrors(args)]);
 
               return false;
             }
@@ -88,7 +80,7 @@ describe("execa-webpack-plugin", () => {
   const dir = path.join(__dirname, "dir");
   const nestedDir = path.join(dir, "nested");
   const otherDir = path.join(__dirname, "other-dir");
-  const otherOtherDir = path.join(__dirname, "other-dir");
+  const otherOtherDir = path.join(__dirname, "other-other-dir");
 
   beforeEach(() => {
     logs = [];
@@ -354,7 +346,7 @@ describe("execa-webpack-plugin", () => {
       onCompile: [
         {
           args: [dir],
-          cmd: "del"
+          cmd: "rmdir"
         }
       ]
     });
@@ -379,7 +371,7 @@ describe("execa-webpack-plugin", () => {
       onCompile: [
         {
           args: [dir],
-          cmd: "del"
+          cmd: "rmdir"
         }
       ]
     });
@@ -403,7 +395,7 @@ describe("execa-webpack-plugin", () => {
       onDone: [
         {
           args: [dir],
-          cmd: "del"
+          cmd: "rmdir"
         }
       ]
     });
@@ -426,7 +418,7 @@ describe("execa-webpack-plugin", () => {
       onDone: [
         {
           args: [dir],
-          cmd: "del"
+          cmd: "rmdir"
         }
       ]
     });
@@ -455,7 +447,7 @@ describe("execa-webpack-plugin", () => {
       });
     } catch (error) {
       // eslint-disable-next-line jest/no-try-expect
-      expect(error).toMatchSnapshot();
+      expect(error.shortMessage).toMatch(/ENOENT/);
     }
 
     expect(logs).toMatchSnapshot("logs");
@@ -475,7 +467,7 @@ describe("execa-webpack-plugin", () => {
       });
     } catch (error) {
       // eslint-disable-next-line jest/no-try-expect
-      expect(error).toMatchSnapshot();
+      expect(error.shortMessage).toMatch(/ENOENT/);
     }
 
     expect(logs).toMatchSnapshot("logs");
@@ -555,7 +547,7 @@ describe("execa-webpack-plugin", () => {
               cmd: "node"
             }
           ],
-          cmd: "del"
+          cmd: "rmdir"
         }
       ]
     });
@@ -589,7 +581,7 @@ describe("execa-webpack-plugin", () => {
               cmd: "node"
             }
           ],
-          cmd: "del"
+          cmd: "rmdir"
         }
       ]
     });
@@ -624,7 +616,7 @@ describe("execa-webpack-plugin", () => {
               cmd: "node"
             }
           ],
-          cmd: "del"
+          cmd: "rmdir"
         }
       ]
     });
@@ -657,7 +649,7 @@ describe("execa-webpack-plugin", () => {
               cmd: "node"
             }
           ],
-          cmd: "del"
+          cmd: "rmdir"
         }
       ]
     });
@@ -691,7 +683,7 @@ describe("execa-webpack-plugin", () => {
               cmd: "node"
             }
           ],
-          cmd: "del"
+          cmd: "rmdir"
         }
       ]
     });
@@ -732,7 +724,7 @@ describe("execa-webpack-plugin", () => {
               cmd: "node"
             }
           ],
-          cmd: "del"
+          cmd: "rmdir"
         }
       ]
     });
@@ -767,7 +759,7 @@ describe("execa-webpack-plugin", () => {
               cmd: "node"
             }
           ],
-          cmd: "del"
+          cmd: "rmdir"
         }
       ]
     });
@@ -788,7 +780,7 @@ describe("execa-webpack-plugin", () => {
               cmd: "node"
             }
           ],
-          cmd: "del"
+          cmd: "rmdir"
         }
       ]
     });
@@ -809,7 +801,7 @@ describe("execa-webpack-plugin", () => {
       onCompile: [
         {
           args: [nestedDir],
-          cmd: "del",
+          cmd: "rmdir",
           options: {
             cwd: dir
           }
@@ -838,7 +830,7 @@ describe("execa-webpack-plugin", () => {
       onDone: [
         {
           args: [nestedDir],
-          cmd: "del",
+          cmd: "rmdir",
           options: {
             cwd: dir
           }
