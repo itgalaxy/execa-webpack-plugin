@@ -80,7 +80,7 @@ describe("execa-webpack-plugin", () => {
   const dir = path.join(__dirname, "dir");
   const nestedDir = path.join(dir, "nested");
   const otherDir = path.join(__dirname, "other-dir");
-  const otherOtherDir = path.join(__dirname, "other-dir");
+  const otherOtherDir = path.join(__dirname, "other-other-dir");
 
   beforeEach(() => {
     logs = [];

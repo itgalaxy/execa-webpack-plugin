@@ -1070,14 +1070,6 @@ exports[`execa-webpack-plugin should work with multiple nested commands (async h
 Array [
   Array [
     "ExecaPlugin",
-    "error",
-    Array [
-      "Error: Command \\"rmdir /__tests__/dir /__tests__/other-dir /__tests__/other-other-dir\\" return \\"Command failed with exit code 1: rmdir /__tests__/dir /__tests__/other-dir /__tests__/other-other-dir
-rmdir: failed to remove '/__tests__/other-other-dir': No such file or directory\\"",
-    ],
-  ],
-  Array [
-    "ExecaPlugin",
     "log",
     Array [
       "Run command \\"node /__tests__/resources/nested-other-other.js\\" (the result will be used as an argument)",
