@@ -63,16 +63,16 @@ function compile(options) {
 function mkdirSyncSafe(dir) {
   try {
     fs.mkdirSync(dir);
-  } catch (error) {
-    console.log(error);
+  } catch (ignoreError) {
+    // Nothing
   }
 }
 
 function unlinkSyncSafe(dir) {
   try {
     fs.rmdirSync(dir);
-  } catch (error) {
-    console.log(error);
+  } catch (ignoreError) {
+    // Nothing
   }
 }
 
@@ -346,7 +346,7 @@ describe("execa-webpack-plugin", () => {
       onCompile: [
         {
           args: [dir],
-          cmd: "del"
+          cmd: "rmdir"
         }
       ]
     });
@@ -371,7 +371,7 @@ describe("execa-webpack-plugin", () => {
       onCompile: [
         {
           args: [dir],
-          cmd: "del"
+          cmd: "rmdir"
         }
       ]
     });
@@ -395,7 +395,7 @@ describe("execa-webpack-plugin", () => {
       onDone: [
         {
           args: [dir],
-          cmd: "del"
+          cmd: "rmdir"
         }
       ]
     });
@@ -418,7 +418,7 @@ describe("execa-webpack-plugin", () => {
       onDone: [
         {
           args: [dir],
-          cmd: "del"
+          cmd: "rmdir"
         }
       ]
     });
@@ -547,7 +547,7 @@ describe("execa-webpack-plugin", () => {
               cmd: "node"
             }
           ],
-          cmd: "del"
+          cmd: "rmdir"
         }
       ]
     });
@@ -581,7 +581,7 @@ describe("execa-webpack-plugin", () => {
               cmd: "node"
             }
           ],
-          cmd: "del"
+          cmd: "rmdir"
         }
       ]
     });
@@ -616,7 +616,7 @@ describe("execa-webpack-plugin", () => {
               cmd: "node"
             }
           ],
-          cmd: "del"
+          cmd: "rmdir"
         }
       ]
     });
@@ -649,7 +649,7 @@ describe("execa-webpack-plugin", () => {
               cmd: "node"
             }
           ],
-          cmd: "del"
+          cmd: "rmdir"
         }
       ]
     });
@@ -683,7 +683,7 @@ describe("execa-webpack-plugin", () => {
               cmd: "node"
             }
           ],
-          cmd: "del"
+          cmd: "rmdir"
         }
       ]
     });
@@ -724,7 +724,7 @@ describe("execa-webpack-plugin", () => {
               cmd: "node"
             }
           ],
-          cmd: "del"
+          cmd: "rmdir"
         }
       ]
     });
@@ -759,7 +759,7 @@ describe("execa-webpack-plugin", () => {
               cmd: "node"
             }
           ],
-          cmd: "del"
+          cmd: "rmdir"
         }
       ]
     });
@@ -780,7 +780,7 @@ describe("execa-webpack-plugin", () => {
               cmd: "node"
             }
           ],
-          cmd: "del"
+          cmd: "rmdir"
         }
       ]
     });
@@ -801,7 +801,7 @@ describe("execa-webpack-plugin", () => {
       onCompile: [
         {
           args: [nestedDir],
-          cmd: "del",
+          cmd: "rmdir",
           options: {
             cwd: dir
           }
@@ -819,7 +819,7 @@ describe("execa-webpack-plugin", () => {
     unlinkSyncSafe(dir);
   });
 
-  it.only("should work with options (async hook)", async () => {
+  it("should work with options (async hook)", async () => {
     mkdirSyncSafe(dir);
     mkdirSyncSafe(nestedDir);
 
