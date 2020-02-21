@@ -359,8 +359,7 @@ Array [
     "ExecaPlugin",
     "error",
     Array [
-      "Error: Command \\"rmdir \\" return \\"Command failed with exit code 1: rmdir 
-rmdir: failed to remove '': No such file or directory\\"",
+      "Error: Command \\"rmdir \\" return \\"Command failed with exit code 1: rmdir ",
     ],
   ],
   Array [
@@ -404,8 +403,7 @@ Array [
     "ExecaPlugin",
     "error",
     Array [
-      "Error: Command \\"rmdir \\" return \\"Command failed with exit code 1: rmdir 
-rmdir: failed to remove '': No such file or directory\\"",
+      "Error: Command \\"rmdir \\" return \\"Command failed with exit code 1: rmdir ",
     ],
   ],
   Array [
