@@ -59,6 +59,12 @@ function compile(options) {
   });
 }
 
+function watch(options, handler) {
+  const compiler = webpack(getConfig(options));
+
+  return compiler.watch({ poll: true }, handler);
+}
+
 /* eslint-disable no-sync */
 
 function mkdirSyncSafe(dir) {
@@ -1025,5 +1031,109 @@ describe("execa-webpack-plugin", () => {
     expect(getWarnings(stats)).toMatchSnapshot("warnings");
 
     spy.mockRestore();
+  });
+
+  it("should work in watch mode", done => {
+    let counter = 0;
+
+    const watching = watch(
+      {
+        onDone: [
+          {
+            args: [path.join(resourcesDir, "nothing.js")],
+            cmd: "node"
+          }
+        ]
+      },
+      (error, stats) => {
+        counter += 1;
+
+        if (error) {
+          return done(error);
+        }
+
+        if (counter === 1) {
+          return watching.invalidate();
+        }
+
+        expect(logs).toMatchSnapshot("logs");
+        expect(getErrors(stats)).toMatchSnapshot("errors");
+        expect(getWarnings(stats)).toMatchSnapshot("warnings");
+
+        watching.close();
+
+        return done();
+      }
+    );
+  });
+
+  it("should work in watch mode when the 'dev' option is 'false'", done => {
+    let counter = 0;
+
+    const watching = watch(
+      {
+        dev: false,
+        onDone: [
+          {
+            args: [path.join(resourcesDir, "nothing.js")],
+            cmd: "node"
+          }
+        ]
+      },
+      (error, stats) => {
+        counter += 1;
+
+        if (error) {
+          return done(error);
+        }
+
+        if (counter === 1) {
+          return watching.invalidate();
+        }
+
+        expect(logs).toMatchSnapshot("logs");
+        expect(getErrors(stats)).toMatchSnapshot("errors");
+        expect(getWarnings(stats)).toMatchSnapshot("warnings");
+
+        watching.close();
+
+        return done();
+      }
+    );
+  });
+
+  it("should work in watch mode when the 'dev' option is 'true'", done => {
+    let counter = 0;
+
+    const watching = watch(
+      {
+        dev: true,
+        onDone: [
+          {
+            args: [path.join(resourcesDir, "nothing.js")],
+            cmd: "node"
+          }
+        ]
+      },
+      (error, stats) => {
+        counter += 1;
+
+        if (error) {
+          return done(error);
+        }
+
+        if (counter === 1) {
+          return watching.invalidate();
+        }
+
+        expect(logs).toMatchSnapshot("logs");
+        expect(getErrors(stats)).toMatchSnapshot("errors");
+        expect(getWarnings(stats)).toMatchSnapshot("warnings");
+
+        watching.close();
+
+        return done();
+      }
+    );
   });
 });

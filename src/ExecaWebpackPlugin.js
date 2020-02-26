@@ -45,14 +45,6 @@ const hookTypeMap = {
   onEntryOption: false
 };
 
-function firstToLowerCase(str) {
-  return str.slice(0, 1).toLowerCase() + str.slice(1);
-}
-
-function getStdout(result) {
-  return result && typeof result.stdout !== "undefined" ? result.stdout : "";
-}
-
 class ExecaPlugin {
   constructor(options) {
     const defaultOptions = { bail: null, dev: true };
@@ -75,6 +67,12 @@ class ExecaPlugin {
     }
   }
 
+  static getWebpackHookName(str) {
+    const hookName = str.slice(2);
+
+    return hookName.slice(0, 1).toLowerCase() + hookName.slice(1);
+  }
+
   static getConcurrency() {
     // In some cases cpus() returns undefined
     // https://github.com/nodejs/node/issues/19022
@@ -83,7 +81,11 @@ class ExecaPlugin {
     return Math.max(1, cpus.length - 1);
   }
 
-  runCommands(commands, isAsync) {
+  static getStdout(result) {
+    return result && typeof result.stdout !== "undefined" ? result.stdout : "";
+  }
+
+  runCommands(hook, isAsync) {
     const optionsForCommand = { bail: this.options.bail, logger: this.logger };
 
     const runCommand = (command, asArg = false) => {
@@ -96,10 +98,12 @@ class ExecaPlugin {
           const argResult = runCommand(arg, true);
 
           if (isAsync) {
-            return argResult.then(returnedValue => getStdout(returnedValue));
+            return argResult.then(returnedValue =>
+              ExecaPlugin.getStdout(returnedValue)
+            );
           }
 
-          return getStdout(argResult);
+          return ExecaPlugin.getStdout(argResult);
         }
 
         return arg;
@@ -122,9 +126,43 @@ class ExecaPlugin {
 
     const concurrency = ExecaPlugin.getConcurrency();
     const limit = pLimit(concurrency);
-    const results = commands.map(command =>
-      isAsync ? limit(() => runCommand(command)) : runCommand(command)
-    );
+    const commands = this.hookMap[hook];
+
+    if (commands.length === 0) {
+      this.logger.warn(
+        `No commands found for the "${ExecaPlugin.getWebpackHookName(
+          hook
+        )}" hook`
+      );
+
+      return [];
+    }
+
+    const results = commands
+      .filter(command => {
+        if (this.options.dev) {
+          return Boolean(command.executed) === false;
+        }
+
+        return true;
+      })
+      .map(command => {
+        if (isAsync) {
+          return limit(() =>
+            runCommand(command).then(result => {
+              command.executed = true;
+
+              return result;
+            })
+          );
+        }
+
+        const result = runCommand(command);
+
+        command.executed = true;
+
+        return result;
+      });
 
     return isAsync ? Promise.all(results) : results;
   }
@@ -137,7 +175,7 @@ class ExecaPlugin {
     this.logger = compiler.getInfrastructureLogger(this.constructor.name);
 
     Object.keys(this.hookMap).forEach(hook => {
-      const webpackHook = firstToLowerCase(hook.slice(2));
+      const webpackHook = ExecaPlugin.getWebpackHookName(hook);
       const isAsyncHook = hookTypeMap[hook];
 
       if (!compiler.hooks[webpackHook]) {
@@ -145,7 +183,7 @@ class ExecaPlugin {
       }
 
       if (webpackHook === "infrastructureLog") {
-        throw new Error(`Do not use "${webpackHook}" hook`);
+        throw new Error(`Do not use the "${webpackHook}" hook`);
       }
 
       compiler.hooks[webpackHook][isAsyncHook ? "tapAsync" : "tap"](
@@ -156,10 +194,6 @@ class ExecaPlugin {
           // eslint-disable-next-line consistent-return
           const doneFn = error => {
             this.logger.log(`The "${webpackHook}" hook completed`);
-
-            if (this.options.dev) {
-              this.hookMap[hook] = [];
-            }
 
             if (isAsyncHook) {
               const callback = args[args.length - 1];
@@ -172,20 +206,14 @@ class ExecaPlugin {
             }
           };
 
-          if (this.hookMap[hook].length === 0) {
-            this.logger.warn(`No commands found for "${webpackHook}" hook`);
-
-            return doneFn();
-          }
-
           if (isAsyncHook) {
-            return this.runCommands(this.hookMap[hook], true)
+            return this.runCommands(hook, true)
               .then(() => doneFn())
               .catch(error => doneFn(error));
           }
 
           try {
-            this.runCommands(this.hookMap[hook], false);
+            this.runCommands(hook, false);
           } catch (error) {
             return doneFn(error);
           }

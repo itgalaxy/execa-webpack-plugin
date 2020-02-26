@@ -147,7 +147,7 @@ Array [
     "ExecaPlugin",
     "warn",
     Array [
-      "No commands found for \\"compile\\" hook",
+      "No commands found for the \\"compile\\" hook",
     ],
   ],
   Array [
@@ -164,7 +164,7 @@ exports[`execa-webpack-plugin should throw error invalid 'onFooBar' option (no h
 
 exports[`execa-webpack-plugin should throw error invalid 'onFooBar' option (no hooks): logs 1`] = `Array []`;
 
-exports[`execa-webpack-plugin should throw error on 'infrastructureLog' hook 1`] = `[Error: Do not use "infrastructureLog" hook]`;
+exports[`execa-webpack-plugin should throw error on 'infrastructureLog' hook 1`] = `[Error: Do not use the "infrastructureLog" hook]`;
 
 exports[`execa-webpack-plugin should throw error on 'infrastructureLog' hook: logs 1`] = `Array []`;
 
@@ -325,6 +325,145 @@ Array [
 `;
 
 exports[`execa-webpack-plugin should work and output 'stdout' and 'stderr' (sync hook): warnings 1`] = `Array []`;
+
+exports[`execa-webpack-plugin should work in watch mode when the 'dev' option is 'false': errors 1`] = `Array []`;
+
+exports[`execa-webpack-plugin should work in watch mode when the 'dev' option is 'false': logs 1`] = `
+Array [
+  Array [
+    "ExecaPlugin",
+    "log",
+    Array [
+      "Running the \\"done\\" hook",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "log",
+    Array [
+      "Run command \\"node /__tests__/resources/nothing.js\\"",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "log",
+    Array [
+      "The \\"done\\" hook completed",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "log",
+    Array [
+      "Running the \\"done\\" hook",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "log",
+    Array [
+      "Run command \\"node /__tests__/resources/nothing.js\\"",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "log",
+    Array [
+      "The \\"done\\" hook completed",
+    ],
+  ],
+]
+`;
+
+exports[`execa-webpack-plugin should work in watch mode when the 'dev' option is 'false': warnings 1`] = `Array []`;
+
+exports[`execa-webpack-plugin should work in watch mode when the 'dev' option is 'true': errors 1`] = `Array []`;
+
+exports[`execa-webpack-plugin should work in watch mode when the 'dev' option is 'true': logs 1`] = `
+Array [
+  Array [
+    "ExecaPlugin",
+    "log",
+    Array [
+      "Running the \\"done\\" hook",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "log",
+    Array [
+      "Run command \\"node /__tests__/resources/nothing.js\\"",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "log",
+    Array [
+      "The \\"done\\" hook completed",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "log",
+    Array [
+      "Running the \\"done\\" hook",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "log",
+    Array [
+      "The \\"done\\" hook completed",
+    ],
+  ],
+]
+`;
+
+exports[`execa-webpack-plugin should work in watch mode when the 'dev' option is 'true': warnings 1`] = `Array []`;
+
+exports[`execa-webpack-plugin should work in watch mode: errors 1`] = `Array []`;
+
+exports[`execa-webpack-plugin should work in watch mode: logs 1`] = `
+Array [
+  Array [
+    "ExecaPlugin",
+    "log",
+    Array [
+      "Running the \\"done\\" hook",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "log",
+    Array [
+      "Run command \\"node /__tests__/resources/nothing.js\\"",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "log",
+    Array [
+      "The \\"done\\" hook completed",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "log",
+    Array [
+      "Running the \\"done\\" hook",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "log",
+    Array [
+      "The \\"done\\" hook completed",
+    ],
+  ],
+]
+`;
+
+exports[`execa-webpack-plugin should work in watch mode: warnings 1`] = `Array []`;
 
 exports[`execa-webpack-plugin should work multiple commands and do not overload the system (the number of cores is 1) (async hook): errors 1`] = `Array []`;
 
