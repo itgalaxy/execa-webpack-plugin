@@ -3,13 +3,11 @@
 module.exports = {
   "*.{js,cjs,mjs,jsx,ts,tsx}": [
     "prettier --list-different",
-    "eslint --report-unused-disable-directives",
-    "git add"
+    "eslint --report-unused-disable-directives"
   ],
-  "*.{md,markdown,mdown,mkdn,mkd,mdwn,mkdown,ron}": [
+  "!(CHANGELOG).{md,markdown,mdown,mkdn,mkd,mdwn,mkdown,ron}": [
     "prettier --list-different",
-    "remark -f -q",
-    "git add"
+    "remark -f -q"
   ],
-  "*.{yml,yaml}": ["prettier --list-different", "git add"]
+  "*.{yml,yaml}": ["prettier --list-different"]
 };

@@ -1,8 +1,14 @@
-# Change Log
+# Changelog
 
-All notable changes to this project will be documented in this file.
+All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
-This project adheres to [Semantic Versioning](http://semver.org).
+### [6.0.1](https://github.com/itgalaxy/execa-webpack-plugin/compare/v6.0.0...v6.0.1) (2020-02-26)
+
+
+### Bug Fixes
+
+* do not log the `No commands` message in the `dev` mode ([#41](https://github.com/itgalaxy/execa-webpack-plugin/issues/41)) ([a3b56d3](https://github.com/itgalaxy/execa-webpack-plugin/commit/a3b56d3479f11658f5d559bbfdd111b24803740c))
+* do not overload system when a hook is async ([#40](https://github.com/itgalaxy/execa-webpack-plugin/issues/40)) ([50260b3](https://github.com/itgalaxy/execa-webpack-plugin/commit/50260b39cec564d6f56e0cbb61790cab64289415))
 
 ## 6.0.0 - 2019-12-19
 
