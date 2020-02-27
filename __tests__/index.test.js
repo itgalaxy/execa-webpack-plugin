@@ -146,9 +146,17 @@ describe("execa-webpack-plugin", () => {
     expect(logs).toMatchSnapshot("logs");
   });
 
-  it("should output warning on empty hook", async () => {
+  it("should output warning on empty sync hook", async () => {
     await compile({
       onCompile: []
+    });
+
+    expect(logs).toMatchSnapshot("logs");
+  });
+
+  it("should output warning on empty async hook", async () => {
+    await compile({
+      onDone: []
     });
 
     expect(logs).toMatchSnapshot("logs");
