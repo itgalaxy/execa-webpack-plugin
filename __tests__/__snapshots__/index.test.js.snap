@@ -134,7 +134,33 @@ Array [
 
 exports[`execa-webpack-plugin should not throw error with 'bail: false' option (sync hook): warnings 1`] = `Array []`;
 
-exports[`execa-webpack-plugin should output warning on empty hook: logs 1`] = `
+exports[`execa-webpack-plugin should output warning on empty async hook: logs 1`] = `
+Array [
+  Array [
+    "ExecaPlugin",
+    "log",
+    Array [
+      "Running the \\"done\\" hook",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "warn",
+    Array [
+      "No commands found for the \\"done\\" hook",
+    ],
+  ],
+  Array [
+    "ExecaPlugin",
+    "log",
+    Array [
+      "The \\"done\\" hook completed",
+    ],
+  ],
+]
+`;
+
+exports[`execa-webpack-plugin should output warning on empty sync hook: logs 1`] = `
 Array [
   Array [
     "ExecaPlugin",

@@ -135,7 +135,7 @@ class ExecaPlugin {
         )}" hook`
       );
 
-      return [];
+      return Promise.resolve();
     }
 
     const results = commands
