@@ -5,6 +5,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [6.0.2](https://github.com/itgalaxy/execa-webpack-plugin/compare/v6.0.1...v6.0.2) (2020-02-27)
+
+
+### Bug Fixes
+
+* do not crash on empty async hook ([#42](https://github.com/itgalaxy/execa-webpack-plugin/issues/42)) ([7db078e](https://github.com/itgalaxy/execa-webpack-plugin/commit/7db078e53468f2e4c185e72100c51e88ad274227))
+
 ### [6.0.1](https://github.com/itgalaxy/execa-webpack-plugin/compare/v6.0.0...v6.0.1) (2020-02-26)
 
 
