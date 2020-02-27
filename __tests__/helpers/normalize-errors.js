@@ -10,9 +10,8 @@ function removeCWD(str) {
   }
 
   if (isWin) {
-    // eslint-disable-next-line no-param-reassign, unicorn/prefer-replace-all
+    // eslint-disable-next-line no-param-reassign
     str = str.replace(/\\/g, "/");
-    // eslint-disable-next-line unicorn/prefer-replace-all
     cwd = cwd.replace(/\\/g, "/");
   }
 

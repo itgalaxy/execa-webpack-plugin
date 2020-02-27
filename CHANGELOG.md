@@ -1,5 +1,8 @@
 # Changelog
 
+<!--lint disable -->
+<!-- prettier-ignore-start -->
+
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
 ### [6.0.1](https://github.com/itgalaxy/execa-webpack-plugin/compare/v6.0.0...v6.0.1) (2020-02-26)
@@ -97,3 +100,5 @@ All notable changes to this project will be documented in this file. See [standa
 ## 1.0.0 - 2017-12-22
 
 - Chore: public initial release.
+
+<!-- prettier-ignore-end -->
